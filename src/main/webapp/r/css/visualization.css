@@ -1,0 +1,201 @@
+/* 组件库span图 by zenglican 2014-02-21 19:37:41 */
+@charset "UTF-8";
+        .sequence-line{ stroke-width: 2px;}
+        .dash-line{ stroke-dasharray: 2px; stroke: #f60;}
+        .solid-line{ stroke:#1f77b4;}
+        .chain-block{ fill: transparent; stroke: #B86315;}
+        .trace-dependency{ padding: 10px; border: 1px solid #ccc; overflow: auto;}
+        .trace-dependency .title{ text-align: center;}
+        /* span chart 2014-02-14 15:03:31 */
+        .time_overhead{ border: 1px solid #D8ACAC; border-width: 1px 1px 0;}
+        .time_overhead_item{ height: 24px; line-height: 24px; border-bottom: 1px solid #D8ACAC; overflow: hidden;}
+        .time_overhead_item_name{ float: left; padding-left: 10px; width: 200px; border-right: 1px solid #93D361; color: #527A33;}
+        .time_overhead_item_ctime{ float: left; padding-left: 10px; color: #f60; font-style: italic; font-family: Constantia, Georgia; font-size: 14px;}
+        .rect_wrap{ float: left; height: 22px; border: 1px solid #C124D6; border-right: none;}
+        .rect_wrap span{ border: none; border-right: 1px solid #C124D6;}
+
+        .time_overhead_item_rect{ float: left; height: 22px; /* border: 1px solid #C124D6; */ border-right: 1px solid #C124D6;
+             background: #f9c7f9;
+            background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.01, #f9c7f9), to(#9589ad));
+            background: -webkit-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: -moz-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: -o-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: linear-gradient(#f9c7f9 1%, #9589ad 100%); 
+            border: 1px solid #C124D6;
+        }
+        .time_overhead_bg_0{
+            background: #f9c7f9;
+            background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.01, #f9c7f9), to(#9589ad));
+            background: -webkit-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: -moz-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: -o-linear-gradient(#f9c7f9 1%, #9589ad 100%);
+            background: linear-gradient(#f9c7f9 1%, #9589ad 100%);
+        }
+        .time_overhead_bg_1{
+           background: #87e0fd;
+background: -moz-linear-gradient(top,  #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#87e0fd), color-stop(40%,#53cbf1), color-stop(100%,#05abe0));
+background: -webkit-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+background: -o-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+background: -ms-linear-gradient(top,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+background: linear-gradient(to bottom,  #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 );
+        }
+        .time_overhead_bg_2{
+         background: #cdeb8e;
+background: -moz-linear-gradient(top,  #cdeb8e 0%, #a5c956 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdeb8e), color-stop(100%,#a5c956));
+background: -webkit-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%);
+background: -o-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%);
+background: -ms-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%);
+background: linear-gradient(to bottom,  #cdeb8e 0%,#a5c956 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 );
+   
+        }
+        .time_overhead_bg_3{
+        background: #ffa84c;
+background: -moz-linear-gradient(top,  #ffa84c 0%, #ff7b0d 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa84c), color-stop(100%,#ff7b0d));
+background: -webkit-linear-gradient(top,  #ffa84c 0%,#ff7b0d 100%);
+background: -o-linear-gradient(top,  #ffa84c 0%,#ff7b0d 100%);
+background: -ms-linear-gradient(top,  #ffa84c 0%,#ff7b0d 100%);
+background: linear-gradient(to bottom,  #ffa84c 0%,#ff7b0d 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa84c', endColorstr='#ff7b0d',GradientType=0 );
+    
+        }
+        .time_overhead_bg_4{
+           background: #feccb1;
+background: -moz-linear-gradient(top,  #feccb1 0%, #f17432 50%, #ea5507 51%, #fb955e 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feccb1), color-stop(50%,#f17432), color-stop(51%,#ea5507), color-stop(100%,#fb955e));
+background: -webkit-linear-gradient(top,  #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
+background: -o-linear-gradient(top,  #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
+background: -ms-linear-gradient(top,  #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
+background: linear-gradient(to bottom,  #feccb1 0%,#f17432 50%,#ea5507 51%,#fb955e 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feccb1', endColorstr='#fb955e',GradientType=0 );
+ 
+        }
+        .time_overhead_bg_5{
+           background: #ffff88;
+background: -moz-linear-gradient(top,  #ffff88 0%, #ffff88 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffff88), color-stop(100%,#ffff88));
+background: -webkit-linear-gradient(top,  #ffff88 0%,#ffff88 100%);
+background: -o-linear-gradient(top,  #ffff88 0%,#ffff88 100%);
+background: -ms-linear-gradient(top,  #ffff88 0%,#ffff88 100%);
+background: linear-gradient(to bottom,  #ffff88 0%,#ffff88 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffff88',GradientType=0 );
+ 
+        }
+        .time_overhead_bg_6{
+           background: #f6f8f9;
+background: -moz-linear-gradient(top,  #f6f8f9 0%, #e5ebee 50%, #d7dee3 51%, #f5f7f9 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f8f9), color-stop(50%,#e5ebee), color-stop(51%,#d7dee3), color-stop(100%,#f5f7f9));
+background: -webkit-linear-gradient(top,  #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+background: -o-linear-gradient(top,  #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+background: -ms-linear-gradient(top,  #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+background: linear-gradient(to bottom,  #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=0 );
+ 
+        }
+        .time_overhead_bg_7{
+
+        }
+        .time_overhead_bg_8{
+
+        }
+        .time_overhead_bg_9{
+
+        }
+        .time_overhead_bg_10{}
+        
+/* 2014-03-19 19:45:12 */
+.chain-block.active{ stroke: #0014FF;}
+.chart-item-container{ height: 100%;}
+
+/* trace全局树 2014-04-10 17:21:21 */
+.svg-tree {
+  /*border: 1px solid black;*/
+  overflow: hidden;
+}
+.svg-tree text {
+  fill:#756363;
+  font-size: 12px;
+}
+.node rect {
+  stroke-width: 1px;
+  stroke: #333;
+  fill: #fff;
+}
+.edgeLabel rect {
+  fill: #fff;
+}
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1.5px;
+  fill: none;
+}
+
+.svg-tree .rootClass rect{ fill: #f60;}
+.svg-tree .unknownclass rect{ stroke:#A916D8; stroke-dasharray: 2px;}
+.svg-tree .unknownclass text{ fill: #A916D8;}
+.svg-tree .hover rect{ fill: #EBDC72;}
+.j_global_table_wrap{ overflow-x: auto;}
+
+/* 2014-05-13 15:18:13 拓扑图节点hover 显示tips内容 */
+.rel{ position: relative;}
+.node-hover-tips{ display: none; position: absolute; z-index: 10; top: 10px; right: 10px; width: 350px; min-height: 50px; padding: 10px; background-color: rgba(47,150,180,1); color: #fff; text-align: left;}
+.node-hover-tips p{ margin-bottom: 5px;}
+.node-hover-tips .title{ line-height: 1; margin-top: 0; padding-bottom: 5px; border-bottom: 1px solid #ccc;}
+.node-hover-tips .caption{ float: left; color: #C3DA25; text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);}
+.node-hover-tips .tools{ float: right;}
+.node-hover-tips .ico-close{ display: inline-block; width: 16px; height: 16px; background: transparent url(../img/portlet-remove-icon-white.png) 0 0 no-repeat; cursor: pointer;}
+.node-hover-tips ol{ list-style-position: inside; margin: 0; max-height: 200px; overflow-y: auto;}
+.node-hover-tips .table-wrap{ max-height: 80%; overflow-y: auto;}
+.node-hover-tips td{ text-align: left;}
+.node-hover-tips code{ float: left; margin-right: 5px; margin-top: 2px; margin-bottom: 2px;}
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #eaeaea;
+  border-left: 1px solid #cecece;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #cecece;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaaaaa;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+}
+/* 截断文字 */
+.hide-text-20{ width: 20em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin: 0 auto;}
+.hide-text-30{ width: 30em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin: 0 auto;}
+.hide-text-40{ width: 40em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin: 0 auto;}
+.hide-text-50{ width: 50em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin: 0 auto;}
+.hide-text-60{ width: 60em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; margin: 0 auto;}
+/* 2014-06-16 11:38:41 拓扑树 显示延迟数据 */
+.node-tips{ display: none; position: absolute; border: 1px dotted #AC1634; border-radius: 4px!important; padding: 2px; color: #AA467E;}
+.node-tips em{ margin-left: 5px; color: #163607;}
+/* 单链树 */
+.tree-tips{ text-align: right;}
+.tree-tips div{ display: inline-block; margin-left: 10px;}
+.tree-tips span{ display: inline-block; width: 16px; height: 12px; margin-right: 5px;}
+.tree-tips label{ display: inline-block;}
+.tree-tips div:first-child span{ background-color: #A365C0;}
+.tree-tips div:last-child span{ background-color: #A3A33C;}
+.tree-tips div:first-child label{ color: #A365C0;}
+.tree-tips div:last-child label{ color: #A3A33C;}

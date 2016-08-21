@@ -1,0 +1,46 @@
+/* 2014-05-22 14:28:20 by zenglican */
+#container { margin:0px auto 0 auto; background:white; border-radius:0px; padding:0px; overflow:hidden; }
+.jstree { overflow:auto;}
+#data { margin-left:320px; }
+#data textarea { margin:0; padding:0; height:100%; width:100%; border:0; background:white; display:block; line-height:18px; resize:none; }
+#data, #code { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
+
+/*.jstree .jstree-icon { background-image:url('assets/plugins/jstree/dist/themes/default/file_sprite.png'); background-repeat: no-repeat; }*/
+.jstree .folder { background:url('file_sprite.png') right bottom no-repeat; }
+.jstree .file { background:url('file_sprite.png') 0 0 no-repeat; }
+.jstree .file-pdf { background-position: -32px 0 }
+.jstree .file-as { background-position: -36px 0 }
+.jstree .file-c { background-position: -72px -0px }
+.jstree .file-iso { background-position: -108px -0px }
+.jstree .file-htm, .jstree .file-html, .jstree .file-xml, .jstree .file-xsl { background-position: -126px -0px }
+.jstree .file-cf { background-position: -162px -0px }
+.jstree .file-cpp { background-position: -216px -0px }
+.jstree .file-cs { background-position: -236px -0px }
+.jstree .file-sql { background-position: -272px -0px }
+.jstree .file-xls, .jstree .file-xlsx { background-position: -362px -0px }
+.jstree .file-h { background-position: -488px -0px }
+.jstree .file-crt, .jstree .file-pem, .jstree .file-cer { background-position: -452px -18px }
+.jstree .file-php { background-position: -108px -18px }
+.jstree .file-jpg, .jstree .file-jpeg, .jstree .file-png, .jstree .file-gif, .jstree .file-bmp { background-position: -126px -18px;background-image:url('file_sprite.png'); }
+.jstree .file-ppt, .jstree .file-pptx { background-position: -144px -18px;background-image:url('file_sprite.png'); }
+.jstree .file-rb { background-position: -180px -18px;background-image:url('file_sprite.png'); }
+.jstree .file-text, .jstree .file-txt, .jstree .file-md, .jstree .file-log, .jstree .file-htaccess { background-position: -254px -18px }
+.jstree .file-doc, .jstree .file-docx { background-position: -362px -18px;background-image:url('file_sprite.png');}
+.jstree .file-zip, .jstree .file-gz, .jstree .file-tar, .jstree .file-rar { background-position: -416px -18px;background-image:url('file_sprite.png'); }
+.jstree .file-js { background-position: -434px -18px;background-image:url('file_sprite.png'); }
+.jstree .file-css { background-position: -144px -0px;background-image:url('file_sprite.png'); }
+.jstree .file-fla { background-position: -398px -0px;background-image:url('file_sprite.png'); }
+.jstree .file-link { background-position: -488px bottom;background-image:url('file_sprite.png'); }
+/*.jstree-default-small .jstree-node{ line-height: 20px; min-height: 20px;}*/
+/*.jstree-default-small .jstree-anchor{ line-height: 22px; min-height: 22px;}*/
+.jstree-default-small .jstree-anchor {
+	line-height: 22px;
+	min-height: 22px;
+	border: 1px dashed #1997BE;
+	padding-top: 2px;
+	margin: 3px 0;
+}
+/* web质量系统 2014-05-22 14:50:00 */
+.jstree-type-1{ padding: 10px 0;}
+/* trace 系统 */
+.jstree-type-2{ width: 320px;}
