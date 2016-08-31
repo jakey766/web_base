@@ -1,3 +1,30 @@
+//兼容IE BEGIN
+if(!window.console){
+	console = (function(){
+		var instance = null;
+		function Constructor(){
+		}
+		Constructor.prototype = {
+			log : function(str){
+			}
+		}
+		function getInstance(){
+			if(instance == null){
+				instance =  new Constructor();
+			}
+			return instance;
+		}
+		return getInstance();
+	})();
+}
+if(!window.sessionStorage){
+	sessionStorage = (function(){
+		var instance = {};
+		return instance;
+	});
+}
+//兼容IE END
+
 var App = function () {
 
     // IE mode

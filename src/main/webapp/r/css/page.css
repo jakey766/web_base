@@ -1,4 +1,4 @@
-/* 组件库 by zenglican 2013-10-31 */
+/* 自定义页面样式 jiangkunpeng */
 @charset "UTF-8";
 /*---- 全局 ----*/
 .mt10 {
@@ -46,7 +46,7 @@
 .red{color:red;}
 
 /* 系统版本信息 */
-.container-fluid .brand{width:auto;color:#00FBD5;font-weight:bold}
+.container-fluid .brand{width:auto;width:200px\9;color:#00FBD5;font-weight:bold}
 a.sys_version{float:left;display:inline-block;margin:12px 0 12px 20px;color:#999;}
 /* 日期控件 */
 input.laydate-icon{width:160px;}
@@ -55,17 +55,6 @@ input.laydate-icon{width:160px;}
 .radio_label{float: left;padding:0 !important;margin: 0 !important;margin-top:8px !important;margin-right:15px !important;}
 .radio_label input[type="radio"]{margin-top:0px;margin-left:5px;}
 .radio_label input[type="checkbox"]{margin-top:0px;margin-left:5px;}
-/* 自定义展开/收缩 */
-.my_tools{width:20px;height:30px;float:right;}
-.my_tools a{float:right;width:14px;height:16px;display:block;}
-.my_tools a.expand{background-image:url(http://s1.yy.com/sysop_fed_lib/assets/img/portlet-expand-icon.png)}
-.my_tools a.collapse{background-image:url(http://s1.yy.com/sysop_fed_lib/assets/img/portlet-collapse-icon.png)}
-.control-group div.expand{height:60px;overflow: hidden;}
-
-/* 更多展开/收缩 */
-.extra_row{width:100%;text-align:center;margin-top:-6px;height:25px;margin-left:-5px;margin-right:-5px;padding-right:10px;border-top:1px solid #ddd;}
-.extra_row .extra_label{margin-top:-1px;height:22px;position:relative;display:inline-block;border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;border-top: 1px solid #fff;padding:0px 10px 0px 10px;cursor:pointer;}
-.extra_row .extra_label .my_tools{width:20px;height:22px;padding-top:2px;}
 
 /* 表单内部行 */
 .controls .inner-row{padding-top:5px;}
@@ -109,40 +98,6 @@ ul.page-sidebar-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > 
 ul.page-sidebar-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > li > a {padding-left: 65px !important;}
 ul.page-sidebar-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > li > ul.sub-menu > li > a {padding-left: 80px !important;}
 
-/* 右键菜单 */
-.contextMenu {
-	position: absolute;
-	width: 120px;
-	z-index: 99999;
-	border: solid 1px #CCC;
-	background: #EEE;
-	padding: 0px;
-	margin: 0px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	display: none;
-	cursor:default;
-}
-.contextMenu a {
-	color: #333;
-	text-decoration: none;
-	display: block;
-	line-height: 20px;
-	height: 20px;
-	background-position: 6px center;
-	background-repeat: no-repeat;
-	outline: none;
-	padding: 1px 5px;
-	padding-left: 28px;
-	border: 1px #EEE solid;
-}
-.contextMenu li:hover a {
-	background-color: #D2E6FF;
-	color: black;
-	border: 1px #84ACDD solid;
-	opacity: 0.8;
-	filter: alpha(opacity = 80);
-}
 
 /* 圆角 Begin */
 .container-fluid{
@@ -159,5 +114,10 @@ div, input, select, textarea, table, p, a, button, ul, li {
 	-webkit-border-radius: 4px !important;
 	-moz-border-radius: 4px !important;
 	border-radius: 4px !important;
+}
+div.page-content{
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	border-radius: 0px !important;
 }
 /* 圆角 End */
