@@ -17,12 +17,14 @@ if(!window.console){
 		return getInstance();
 	})();
 }
+/*
 if(!window.sessionStorage){
 	sessionStorage = (function(){
 		var instance = {};
 		return instance;
 	});
 }
+*/
 //兼容IE END
 
 var App = function () {
@@ -65,13 +67,13 @@ var App = function () {
         if (isIE10) {
             jQuery('html').addClass('ie10'); // detect IE10 version
         }
-    }
+    };
 
     // 切换theme
     var handleTheme = function () {
         var cookie_color = $.cookie('style_color');
         if(cookie_color !== undefined && cookie_color !== ''){
-            $('#style_color').attr("href", "http://s1.yy.com/sysop_fed_lib/assets/css/themes/" + cookie_color + ".css");
+            $('#style_color').attr("href", "../css/themes/" + cookie_color + ".css");
         }
         var panel = $('.color-panel');
 
@@ -177,7 +179,7 @@ var App = function () {
 
         // handle theme colors
         var setColor = function (color) {
-            $('#style_color').attr("href", "http://s1.yy.com/sysop_fed_lib/assets/css/themes/" + color + ".css");
+            $('#style_color').attr("href", "../css/themes/" + color + ".css");
             $.cookie('style_color', color);                
         }
 
@@ -199,7 +201,7 @@ var App = function () {
         });
 
         $('.layout-option, .header-option, .sidebar-option, .footer-option', panel).change(setLayout);
-    }
+    };
 
 
     var handleDesktopTabletContents = function () {
@@ -228,14 +230,14 @@ var App = function () {
                 }
             });
         }
-    }
+    };
 
     var handleSidebarState = function () {
         
         if ($(window).width() < 980) {
             $('body').removeClass("page-sidebar-closed");
         }
-    }
+    };
 
     var runResponsiveHandlers = function () {
         
@@ -243,7 +245,7 @@ var App = function () {
             var each = responsiveHandlers[i];
             each.call();
         }
-    }
+    };
 
     var handleResponsive = function () {
         handleTooltips();
@@ -253,13 +255,13 @@ var App = function () {
         handleChoosenSelect();
         handleFixedSidebar();
         runResponsiveHandlers();
-    }
+    };
 
     var handleResponsiveOnInit = function () {
         handleSidebarState();
         handleDesktopTabletContents();
         handleSidebarAndContentHeight();
-    }
+    };
 
     var handleResponsiveOnResize = function () {
         var resize;
@@ -287,7 +289,7 @@ var App = function () {
                 }, 50); 
             });
         }   
-    }
+    };
 
     var handleSidebarAndContentHeight = function () {
         var content = $('.page-content');
@@ -311,7 +313,7 @@ var App = function () {
                 content.attr('style', 'min-height:' + h + 'px !important');
             } 
         }          
-    }
+    };
 
     var handleSidebarMenu = function (hideOtherMenus) {
         jQuery('.page-sidebar').on('click', 'li > a', function (e) {
@@ -400,7 +402,7 @@ var App = function () {
                     async: false
                 });
         });
-    }
+    };
 
     var _calculateFixedSidebarViewportHeight = function () {
         var sidebarHeight = $(window).height() - $('.header').height();
@@ -408,7 +410,7 @@ var App = function () {
             sidebarHeight = sidebarHeight - $('.footer').height();
         }
         return sidebarHeight; 
-    }
+    };
 
     var handleFixedSidebar = function () {
         var menu = $('.page-sidebar-menu');
@@ -440,7 +442,7 @@ var App = function () {
             });
             handleSidebarAndContentHeight();
         }
-    }
+    };
 
     var handleFixedSidebarHoverable = function () {
         if ($('body').hasClass('page-sidebar-fixed') === false) {
@@ -478,7 +480,7 @@ var App = function () {
                 $(this).removeClass('page-sidebar-hovering');
             });
         });
-    }
+    };
 
     var handleSidebarToggler = function () {
         
@@ -520,7 +522,7 @@ var App = function () {
                 return false; //<---- Add this line
             }
         });
-    }
+    };
 
     var handleHorizontalMenu = function () {
         //handle hor menu search form toggler click
@@ -548,7 +550,7 @@ var App = function () {
                     return false;
                 }
             });
-    }
+    };
 
     var handleGoTop = function () {
         /* set variables locally for increased performance */
@@ -556,7 +558,7 @@ var App = function () {
             App.scrollTo();
             e.preventDefault();
         });
-    }
+    };
 
     var handlePortletTools = function () {
         jQuery('body').on('click', '.portlet > .portlet-title > .tools > a.remove', function (e) {
@@ -584,7 +586,7 @@ var App = function () {
                 el.slideDown(200);
             }
         });
-    }
+    };
 
     var handleUniform = function () {
         if (!jQuery().uniform) {
@@ -599,7 +601,7 @@ var App = function () {
                 }
             });
         }
-    }
+    };
 
     var handleAccordions = function () {
         $(".accordion").collapse().height('auto');
@@ -614,7 +616,7 @@ var App = function () {
                 scrollTop: lastClicked.offset().top - 150
             }, 'slow');
         });
-    }
+    };
 
     var handleTabs = function () {
 
@@ -646,7 +648,7 @@ var App = function () {
             var tabid = location.hash.substr(1);
             $('a[href="#'+tabid+'"]').click();
         }
-    }
+    };
 
     var handleScrollers = function () {
         $('.scroller').each(function () {
@@ -666,7 +668,7 @@ var App = function () {
                         disableFadeOut: true
                     });
             });
-    }
+    };
 
     var handleTooltips = function () {
         if (App.isTouchDevice()) { 
@@ -674,13 +676,13 @@ var App = function () {
         } else {
             jQuery('.tooltips').tooltip();
         }
-    }
+    };
 
     var handleDropdowns = function () {
         $('body').on('click', '.dropdown-menu.hold-on-click', function(e){
             e.stopPropagation();
         })
-    }
+    };
 
     var handleModal = function () {
         
@@ -697,7 +699,7 @@ var App = function () {
                 $('body').removeClass('modal-open');
             }
         });
-    }
+    };
 
     var handlePopovers = function () {
         jQuery('.popovers').popover();
@@ -706,7 +708,7 @@ var App = function () {
                 lastPopedPopover.popover('hide');
             } 
         });
-    }
+    };
 
     var handleChoosenSelect = function () {
         if (!jQuery().chosen) {
@@ -718,7 +720,7 @@ var App = function () {
                 allow_single_deselect: $(this).attr("data-with-deselect") == "1" ? true : false
             });
         });
-    }
+    };
 
     var handleFancybox = function () {
         if (!jQuery.fancybox) {
@@ -738,7 +740,7 @@ var App = function () {
                 }
             });
         }
-    }
+    };
 
     var handleFixInputPlaceholderForIE = function () {
         //fix html5 placeholder attribute for ie7 & ie8
@@ -765,7 +767,7 @@ var App = function () {
                 });
             });
         }
-    }
+    };
 
     var handleFullScreenMode = function() {
         function toggleFullScreen() {
@@ -792,7 +794,14 @@ var App = function () {
         $('#trigger_fullscreen').click(function() {
             toggleFullScreen();
         });
-    }
+    };
+
+    //阻止表单提交，采用ajax提交数据
+    var returnFormSubmit = function(){
+        $('form').on('submit',function(){
+            return false;
+        })
+    };
 
     return {
 
@@ -825,7 +834,8 @@ var App = function () {
             App.getExampleCode();
             window.prettyPrint && prettyPrint();
             App.goBack();
-            App.hightlightNav();
+            returnFormSubmit();
+            //App.hightlightNav();
             $.validator !== undefined && $.validator.setDefaults({
                 errorElement: 'span', // 定义错误提示信息标签
                 errorClass: 'help-inline', // 定义错误提示信息class
@@ -902,7 +912,7 @@ var App = function () {
         blockUI: function (el, centerY) {
             var el = jQuery(el); 
             el.block({
-                    message: '<img src="./assets/img/ajax-loading.gif" align="" />',
+                    message: '<img src="../img/ajax-loading.gif" align="" />',
                     centerY: centerY != undefined ? centerY : true,
                     css: {
                         top: '10%',
@@ -1081,7 +1091,6 @@ var App = function () {
         })
         */
         validate: function(form,callback,rules,msg){ // rules = 验证规则
-            console.log(form)
             if(msg === undefined){
                 msg === {};
             }
@@ -1089,11 +1098,11 @@ var App = function () {
                 messages: msg,
                 rules: rules,
                 invalidHandler: function (event, validator) { //display error alert on form submit   
-                    console.log('表单填写有误，请重新填写。')
+                    //console.log('表单填写有误，请重新填写。')
                     App.scrollTo($(form), -60);
                 },
                 submitHandler: function (form) {
-                    console.log('验证成功');
+                    //console.log('验证成功');
                     // 将表单数据提交到后台 do something
                     callback && callback();
                 }
@@ -1190,16 +1199,15 @@ var App = function () {
             $.each(indexArray,function(i,n){
                 aoColumns[n] = {type: "checkbox", values:oTable.api().column(n).data().unique().sort()}
             })
-            console.log(oTable)
+            //console.log(oTable)
             oTable.columnFilter({
                 sPlaceHolder:'head:after',
                 aoColumns:aoColumns
             })
         }
     }
-
-
 }();
+
 // 控制chrome控制台功能，能够保持数组、对象等元素，方便复制数据。 2014-05-22 18:47:07
 ;(function(console){
 console.o = function(data){

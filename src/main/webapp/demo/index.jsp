@@ -8,17 +8,17 @@
 <meta charset="utf-8" />
 <title>Demo</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<link rel="shortcut icon" href="${path}r/img/ico.ico" />
-<link href="${path}r/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<link href="${path}r/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
-<link href="${path}r/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-<link href="${path}r/plugins/uniform/css/uniform.default.css" rel="stylesheet" />
-<link href="${path}r/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
-<link href="${path}r/css/style-metro.css" rel="stylesheet" />
-<link href="${path}r/css/style.css" rel="stylesheet" />
-<link href="${path}r/css/style-responsive.css" rel="stylesheet" />
-<link href="${path}r/css/themes/default.css" rel="stylesheet" id="style_color" />
-<link href="${path}r/css/page.css" rel="stylesheet" />
+<link rel="shortcut icon" href="${PATH}r/img/ico.ico" />
+<link href="${PATH}r/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="${PATH}r/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<link href="${PATH}r/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="${PATH}r/plugins/uniform/css/uniform.default.css" rel="stylesheet" />
+<link href="${PATH}r/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+<link href="${PATH}r/css/style-metro.css" rel="stylesheet" />
+<link href="${PATH}r/css/style.css" rel="stylesheet" />
+<link href="${PATH}r/css/style-responsive.css" rel="stylesheet" />
+<link href="${PATH}r/css/themes/default.css" rel="stylesheet" id="style_color" />
+<link href="${PATH}r/css/page.css" rel="stylesheet" />
 </head>
 <body class="page-header-fixed">
     <!-- BEGIN 页面头部 -->   
@@ -28,13 +28,13 @@
             <div class="container-fluid">
                 <!-- BEGIN LOGO -->
                 <a class="brand" href="index.html">
-                    <img width="30" height="30" src="${path}r/img/ico.png" alt="logo" />
+                    <img width="30" height="30" src="${PATH}r/img/ico.png" alt="logo" />
                     <span>Demo</span>
                 </a>
                 <!-- END LOGO -->
                 <!-- BEGIN 响应式时 菜单按钮 -->
                 <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                    <img src="${path}r/img/menu-toggler.png" alt="" />
+                    <img src="${PATH}r/img/menu-toggler.png" alt="" />
                 </a>
                 <!-- END 响应式时 菜单按钮 -->            
                 <!-- BEGIN 导航条右侧菜单 -->              
@@ -134,25 +134,25 @@
     </div>
     <!-- END FOOTER -->
 </body>
-<script src="${path}r/plugins/jquery-1.10.1.min.js"></script>
-<script src="${path}r/plugins/jquery-migrate-1.2.1.min.js"></script>
-<script src="${path}r/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
-<script src="${path}r/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="${path}r/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" ></script>
+<script src="${PATH}r/plugins/jquery-1.10.1.min.js"></script>
+<script src="${PATH}r/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script src="${PATH}r/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="${PATH}r/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="${PATH}r/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" ></script>
 <!-- fixed ie9以下的canvas和响应式布局功能 -->
 <!--[if lt IE 9]>
-<script src="${path}r/plugins/excanvas.min.js"></script>
-<script src="${path}r/plugins/respond.min.js"></script>
+<script src="${PATH}r/plugins/excanvas.min.js"></script>
+<script src="${PATH}r/plugins/respond.min.js"></script>
 <![endif]-->
-<script src="${path}r/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<script src="${path}r/plugins/jquery.blockui.min.js"></script>
-<script src="${path}r/plugins/jquery.cookie.min.js"></script>
-<script src="${path}r/plugins/uniform/jquery.uniform.min.js" ></script>
-<script src="${path}r/js/app.js"></script>
+<script src="${PATH}r/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="${PATH}r/plugins/jquery.blockui.min.js"></script>
+<script src="${PATH}r/plugins/jquery.cookie.min.js"></script>
+<script src="${PATH}r/plugins/uniform/jquery.uniform.min.js" ></script>
+<script src="${PATH}r/js/app.js"></script>
 
 <!-- 菜单数据 -->
-<script src="${path}r/js/menuData.js"></script>
-<script src="${path}r/js/createMenu.js"></script>
+<script src="${PATH}r/js/menuData.js"></script>
+<script src="${PATH}r/js/createMenu.js"></script>
 
 <script>
 $(document).ready(function() {
