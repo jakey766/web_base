@@ -58,7 +58,7 @@
               { name:'YY', icon:'',url:'http://www.yy.com',children:[]}
           ]},
           { name:'系统管理', icon:'icon-bookmark-empty',url:'#',children:[
-              { name:'用户管理', icon:'',url:'ui_general.html',children:[]},
+              { name:'用户管理', icon:'',url:'admin/user/list.jspx',children:[]},
               { name:'角色管理', icon:'',url:'ui_button.html',children:[]},
               { name:'菜单管理', icon:'',url:'ui_tab.html',children:[]}
           ]}
