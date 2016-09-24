@@ -6,9 +6,11 @@ import java.io.Serializable;
  * 返回结果封装
  * Created by jiangkunpeng on 16/9/23.
  */
-public class Result<T> implements Serializable{
+public class Result implements Serializable{
 
-    public static final int CODE_SUCCESS = 0;
+	private static final long serialVersionUID = 4851156172103989596L;
+	
+	public static final int CODE_SUCCESS = 0;
     public static final int CODE_FAILURE = -1;
 
     public static final String MESSAGE_SUCCESS = "操作成功";
@@ -16,7 +18,7 @@ public class Result<T> implements Serializable{
 
     private int code;
     private String message;
-    private T object;
+    private Object object;
 
     public static Result instance(){
         return new Result();
@@ -45,10 +47,14 @@ public class Result<T> implements Serializable{
     public Result() {
     }
 
-    public Result(int code, String message, T object) {
+    public Result(int code, String message, Object object) {
         this.code = code;
         this.message = message;
         this.object = object;
+    }
+
+    public boolean isSuccess(){
+        return code == CODE_SUCCESS;
     }
 
     public int getCode() {
@@ -67,11 +73,11 @@ public class Result<T> implements Serializable{
         this.message = message;
     }
 
-    public T getObject() {
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(T object) {
+    public void setObject(Object object) {
         this.object = object;
     }
 }

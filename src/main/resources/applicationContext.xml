@@ -16,8 +16,7 @@
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 			http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-3.1.xsd
 			http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
-			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd"
-	default-lazy-init="true">
+			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -63,18 +62,19 @@
                <value>classpath:sql/*.xml</value>
             </list>
         </property>
-        <property name="typeAliasesPackage" value="com.pk.vo,com.pk.model" />
+        <property name="typeAliasesPackage" value="com.pk.model.admin,com.pk.vo.admin" />
 	</bean>
 	
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.duowan.pk.dao.admin"/>
+        <property name="basePackage" value="com.pk.dao.admin"/>
         <property name="markerInterface" value="com.pk.framework.mybatis.SqlMapper"/>
     </bean>
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
-	
+
+	<!--
 	<tx:advice id="deployTxAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
@@ -88,11 +88,10 @@
 		<aop:pointcut id="adminServiceOperation" expression="execution(* com.pk.service.admin..*.*(..))"/>
 		<aop:advisor advice-ref="deployTxAdvice" pointcut-ref="adminServiceOperation"/>
 	</aop:config>
-	
+	-->
+
 	<context:annotation-config/>
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
-	
-	<context:component-scan base-package="com.pk">
-    	<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />  
-    </context:component-scan>
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<context:component-scan base-package="com.pk.service"/>
 </beans>

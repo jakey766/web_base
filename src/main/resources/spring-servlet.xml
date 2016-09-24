@@ -14,8 +14,7 @@
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 			http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-3.1.xsd
-			http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd"
-	default-lazy-init="true">
+			http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
   	<!-- 启用注解支持，让DispatcherServlet使用AnnotationMethodHandlerAdapter对Controller方法进行调用和处理 --> 
 	
 	<!--配置视图解析器-->
@@ -79,12 +78,9 @@
              <ref bean="springAuthInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
-    
-    <context:component-scan base-package="com.pk.controller">
-    	<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />  
-    </context:component-scan>
-    
-    <mvc:annotation-driven/>
+
+	<mvc:annotation-driven/>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	<context:annotation-config/>
-    <aop:aspectj-autoproxy/>
+	<context:component-scan base-package="com.pk.controller" />
 </beans>

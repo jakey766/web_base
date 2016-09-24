@@ -1,9 +1,11 @@
-package com.pk.mode.admin;
+package com.pk.model.admin;
+
+import java.io.Serializable;
 
 /**
  * Created by jiangkunpeng on 16/9/22.
  */
-public class SysUser {
+public class SysUser implements Serializable{
     private int id;
     private String username;
     private String password;
