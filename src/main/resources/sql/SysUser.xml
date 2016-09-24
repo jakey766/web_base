@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pk.dao.admin.SysUserDao">
+	<select id="get" useCache="true" resultType="SysUser" parameterType="int">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_user WHERE id = #{id}
+	</select>
+
+	<select id="getByUsername" useCache="true" resultType="SysUser" parameterType="string">
+		SELECT
+		<include refid="QuerySelect" />
+		<![CDATA[
+		,password
+		FROM sys_user WHERE deleted = 0 AND username = #{username}
+		]]>
+	</select>
+
+	<insert id="insert" flushCache="true" parameterType="SysUser">
+		<![CDATA[
+			INSERT INTO sys_user(username, password, name, mobile, email, create_time, update_time, deleted, role_ids, role_names)
+			VALUES(#{username}, #{password}, #{name}, #{mobile}, #{email}, now(), now(), 0, #{role_ids}, #{role_names})
+		]]>
+	</insert>
+
+	<update id="update" flushCache="true" parameterType="SysUser">
+		<![CDATA[
+			UPDATE sys_user SET name = #{name}, mobile = #{mobile}, email = #{email}, role_ids = #{role_ids}, role_names = #{role_names}, update_time = now()
+			WHERE id = #{id}
+		]]>
+	</update>
+
+	<update id="updatePassword" flushCache="true" parameterType="SysUser">
+		<![CDATA[
+			UPDATE sys_user SET password = #{password} WHERE id = #{id}
+		]]>
+	</update>
+
+	<update id="delete" parameterType="int">
+		<![CDATA[
+			UPDATE sys_user SET deleted = 1, update_time = now() WHERE id = #{id}
+		]]>
+	</update>
+
+	<select id="search" resultType="SysUser" useCache="false" parameterType="SysUserSearchVO">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_user WHERE 1=1
+		<include refid="QueryWhere" />
+		ORDER BY id DESC
+		<if test="size > 0">
+			<![CDATA[
+				limit #{start}, #{size}
+			]]>
+		</if>
+	</select>
+
+	<select id="count" resultType="int" useCache="false" parameterType="SysUserSearchVO">
+		SELECT COUNT(id) FROM sys_user WHERE 1=1
+		<include refid="QueryWhere" />
+	</select>
+
+	<sql id="QuerySelect">
+		<![CDATA[
+			id, username, name, mobile, email, create_time, update_time, role_ids, role_names, deleted
+		]]>
+	</sql>
+
+	<sql id="QueryWhere">
+		<if test="mobile!=null and mobile!=''">
+			<![CDATA[
+				AND mobile = #{mobile}
+			]]>
+		</if>
+        <if test="email!=null and email!=''">
+            <![CDATA[
+				AND email = #{email}
+			]]>
+        </if>
+        <if test="deleted > -1">
+            <![CDATA[
+				AND deleted = #{deleted}
+			]]>
+        </if>
+		<if test="keywords!=null and keywords!=''">
+			<![CDATA[
+				AND (username LIKE concat('%',#{keywords},'%') OR name LIKE concat('%',#{keywords},'%'))
+			]]>
+		</if>
+	</sql>
+</mapper>
