@@ -27,6 +27,10 @@ public class SysRoleService {
     
     @Autowired
     private SysRoleMenuDao sysRoleMenuDao;
+
+	public List<SysRole> loadAll(){
+		return sysRoleDao.list(new PageSearchVO());
+	}
     
     public Result list(PageSearchVO svo){
     	PageResultVO page = new PageResultVO();

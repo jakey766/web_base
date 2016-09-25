@@ -21,6 +21,21 @@ public class SysRoleController {
 	public ModelAndView listJspx() {
 		return new ModelAndView("forward:/admin/role/list.jsp");
 	}
+
+	@RequestMapping(value = "/admin/role/loadAll.do")
+	@ResponseBody
+	public Result loadAllRole() {
+		Result result = new Result();
+		try{
+			result.setCode(Result.CODE_SUCCESS);
+			result.setObject(sysRoleService.loadAll());
+		}catch(Exception e){
+			e.printStackTrace();
+			result.setCode(Result.CODE_FAILURE);
+			result.setMessage("后台异常:" + e.getMessage());
+		}
+		return result;
+	}
 	
 	@RequestMapping(value = "/admin/role/list.do")
 	@ResponseBody

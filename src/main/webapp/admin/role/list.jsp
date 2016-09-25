@@ -95,7 +95,7 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label">权限：</label>
+							<label class="control-label"><span class="required">*</span> 菜单权限：</label>
 							<div class="controls">
 								<ul id="menuTree" class="ztree"></ul>
 							</div>

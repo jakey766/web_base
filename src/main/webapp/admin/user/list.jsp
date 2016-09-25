@@ -71,9 +71,9 @@
 								<tr>
 									<th>用户名</th>
 									<th>姓名</th>
+									<th>角色</th>
 									<th>手机</th>
 									<th>Email</th>
-									<th>角色</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -83,9 +83,9 @@
                 					<tr>
                     					<td>{{v.username}}</td>
                     					<td>{{v.name}}</td>
-                    					<td>{{v.mobile}}</td>
-                    					<td>{{v.email}}</td>
 										<td>{{formatTrim(v.roleNames)}}</td>
+										<td>{{v.mobile}}</td>
+										<td>{{v.email}}</td>
                     					<td>
                         					<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
                         					<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
@@ -221,7 +221,6 @@
 		$('#passDiv').show();
 		$('#password').attr('required', true);
 		$('#username').removeAttr('readonly');
-		/*
 		if (!roleInited) {
 			loadRoles(function() {
 				$.dialog({
@@ -243,18 +242,10 @@
 			editType = "add";
 			$('[name="roles"]').removeAttr('checked');
 		}
-		*/
-		$.dialog({
-			title : '新增用户',
-			content : $('#editDialog')[0],
-			padding : 0,
-			id : 'edit_dialog'
-		});
 		editType = "add";
 	}
 	
 	function toEdit(id) {
-		/*
 		$('[name="roles"]').removeAttr('checked');
 		if (!roleInited) {
 			loadRoles(function() {
@@ -263,7 +254,6 @@
 		} else {
 			toEditCall(id);
 		}
-		*/
 		toEditCall(id);
 	}
 	
@@ -289,8 +279,7 @@
 			$('#name').val(vo.name);
 			$('#mobile').val(vo.mobile);
 			$('#email').val(vo.email);
-			
-			/*
+
 			var role_ids = vo.roleIds;
 			if (!!!role_ids)
 				role_ids = '';
@@ -302,7 +291,6 @@
 				});
 			}
 			$.uniform.update("input");
-			*/
 			
 			$.dialog({
 				title : '编辑用户',
@@ -327,13 +315,11 @@
 	}
 	
 	function doAdd() {
-		/*
 		var roles = getCheckedRoles();
 		if (roles == null) {
 			$.alert('请选择角色!');
 			return;
 		}
-		*/
 		var username = $.trim($('#username').val());
 		var password = $('#password').val();
 		password = $.md5(password + '' + name);
@@ -343,10 +329,8 @@
 			name : $.trim($('#name').val()),
 			mobile : $.trim($('#mobile').val()),
 			email : $.trim($('#email').val())
-			/*
 			,roleIds : roles[0],
 			roleNames : roles[1]
-			*/
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
@@ -367,23 +351,19 @@
 	}
 	
 	function doUpdate() {
-		/*
 		var roles = getCheckedRoles();
 		if (roles == null) {
 			$.alert('请选择角色!');
 			return;
 		}
-		*/
 		var param = {
 			id : $('#id').val(),
 			username : $.trim($('#username').val()),
 			name : $.trim($("#name").val()),
 			mobile : $.trim($('#mobile').val()),
 			email : $.trim($('#email').val())
-			/*
 			,roleIds : roles[0],
 			roleNames : roles[1]
-			*/
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
@@ -424,7 +404,7 @@
 	}
 
 	function loadRoles(callback) {
-		$.post("${PATH}common/loadRoles.do", null, function(data) {
+		$.post("${PATH}admin/role/loadAll.do", null, function(data) {
 			if (data.success) {
 				var list = data.object;
 				if (list == null || list.length < 1) {
