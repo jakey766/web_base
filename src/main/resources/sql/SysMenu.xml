@@ -38,6 +38,11 @@
 		FROM sys_menu WHERE 1=1
 		<include refid="QueryWhere" />
 		ORDER BY pid, sort_index
+		<if test="size > 0">
+			<![CDATA[
+				limit #{start}, #{size}
+			]]>
+		</if>
 	</select>
 
 	<sql id="QuerySelect">

@@ -33,6 +33,21 @@ public class SysMenuController {
 		}
 	}
 	
+	@RequestMapping(value = "/admin/menu/loadAll.do")
+	@ResponseBody
+	public Result loadAll() {
+		Result result = new Result();
+		try{
+			result.setCode(Result.CODE_SUCCESS);
+			result.setObject(sysMenuService.loadAll());
+		}catch(Exception e){
+			e.printStackTrace();
+			result.setCode(Result.CODE_FAILURE);
+			result.setMessage("后台异常:"+e.getMessage());
+		}
+		return result;
+	}
+	
 	@RequestMapping(value = "/admin/menu/get.do")
 	@ResponseBody
 	public Result get(int id) {

@@ -62,7 +62,7 @@
                <value>classpath:sql/*.xml</value>
             </list>
         </property>
-        <property name="typeAliasesPackage" value="com.pk.model.admin,com.pk.vo.admin" />
+        <property name="typeAliasesPackage" value="com.pk.framework,vo,com.pk.model,com.pk.vo" />
 	</bean>
 	
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

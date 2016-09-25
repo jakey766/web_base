@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: byd_cm
 Target Host: localhost
 Target Database: byd_cm
-Date: 2016/9/25 14:35:38
+Date: 2016/9/25 18:43:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,7 +20,7 @@ CREATE TABLE `sys_menu` (
   `is_menu` int(1) NOT NULL COMMENT '是否做为菜单',
   `sort_index` int(11) DEFAULT NULL COMMENT '排序序号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='系统-菜单';
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -31,7 +31,7 @@ CREATE TABLE `sys_role` (
   `name` varchar(50) NOT NULL COMMENT '角色名',
   `desc` varchar(100) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统-角色';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统-角色';
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -46,7 +46,7 @@ CREATE TABLE `sys_role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `sys_role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE,
   CONSTRAINT `sys_role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -78,5 +78,16 @@ INSERT INTO `sys_menu` VALUES ('2', '0', '系统管理', '#', '1', '10');
 INSERT INTO `sys_menu` VALUES ('3', '2', '用户管理', 'admin/user/list.jspx', '1', '1');
 INSERT INTO `sys_menu` VALUES ('4', '2', '角色管理', 'admin/role/list.jspx', '1', '2');
 INSERT INTO `sys_menu` VALUES ('5', '2', '菜单权限管理', 'admin/menu/list.jspx', '1', '3');
+INSERT INTO `sys_menu` VALUES ('6', '0', '客户信息', '#', '1', '2');
+INSERT INTO `sys_role` VALUES ('2', '管理员', '管理系统');
+INSERT INTO `sys_role` VALUES ('3', '普通用户', '普通用户');
+INSERT INTO `sys_role_menu` VALUES ('8', '2', '1');
+INSERT INTO `sys_role_menu` VALUES ('9', '2', '6');
+INSERT INTO `sys_role_menu` VALUES ('10', '2', '2');
+INSERT INTO `sys_role_menu` VALUES ('11', '2', '3');
+INSERT INTO `sys_role_menu` VALUES ('12', '2', '4');
+INSERT INTO `sys_role_menu` VALUES ('13', '2', '5');
+INSERT INTO `sys_role_menu` VALUES ('15', '3', '1');
+INSERT INTO `sys_role_menu` VALUES ('16', '3', '6');
 INSERT INTO `sys_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '', '', '2016-09-25 11:14:13', '2016-09-25 11:14:13', '0', null, null);
 INSERT INTO `sys_user` VALUES ('2', 'dw_jiangkunpeng', 'e10adc3949ba59abbe56e057f20f883e', '姜昆鹏', '15899954940', 'jakey766@163.com', '2016-09-25 11:14:40', '2016-09-25 11:14:51', '0', null, null);

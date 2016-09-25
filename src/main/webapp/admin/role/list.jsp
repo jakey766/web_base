@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../../common/env.jsp"%>
 <jsp:include page="../../common/hd_frame.jsp"></jsp:include>
+<link href="${PATH}r/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
 
 <!-- BEGIN PAGE -->
 <div class="page-content">
@@ -10,11 +11,11 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<!-- BEGIN 页面标题和面包屑导航 -->
-				<h3 class="page-title">菜单权限管理</h3>
+				<h3 class="page-title">角色管理</h3>
 				<ul class="breadcrumb">
-					<li><i class="icon-home"></i> <a href="${PATH}">Home</a><i class="icon-angle-right"></i></li>
+					<li><i class="icon-home"></i> <a href="${PATH}">Home</a> <i class="icon-angle-right"></i></li>
 					<li>系统管理<i class="icon-angle-right"></i></li>
-					<li>菜单权限管理</li>
+					<li>角色管理</li>
 				</ul>
 				<!-- END 页面标题和面包屑导航 -->
 			</div>
@@ -28,7 +29,7 @@
 				<div class="portlet box default">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="icon-reorder"></i>菜单权限列表
+							<i class="icon-reorder"></i>角色列表
 						</div>
 						<div class="tools">
 							<button type="button" class="btn mini green" onclick="toAdd()" style="margin-top: -10px;">
@@ -41,12 +42,8 @@
 							class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>PID</th>
 									<th>名称</th>
-									<th>URI</th>
-									<th>是否为菜单</th>
-									<th>排序</th>
+									<th>描述</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -54,16 +51,12 @@
 								<script id="listTmpl" type="text/html">
                 				{{each list as v i}}
                 					<tr>
-                    					<td>{{v.id}}</td>
-										<td>{{v.pid}}</td>
-                    					<td>{{v.name}}</td>
-                    					<td>{{v.uri}}</td>
-                    					<td>{{v.isMenu==1?"是":"否"}}</td>
-										<td>{{v.sortIndex}}</td>
-                    					<td>
-                        					<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
-                        					<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
-                    					</td>
+                  						<td>{{v.name}}</td>
+                  						<td>{{v.desc}}</td>
+                  						<td>
+                    						<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
+                    						<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
+                  						</td>
                 					</tr>
                 				{{/each}}
               					</script>
@@ -79,7 +72,7 @@
 		<!-- END 右容器 main-->
 	</div>
 	<!-- END 右边容器-->
-	
+
 	<!-- BEGIN 弹窗 -->
 	<div class="row-fluid">
 		<!-- BEGIN 新增/编辑 弹窗 -->
@@ -90,34 +83,21 @@
 					<input type="hidden" id="id" name="id" />
 					<div class="row-fluid">
 						<div class="control-group">
-							<label class="control-label"><span class="required">*</span> PID：</label>
-							<div class="controls">
-								<input type="text" id="pid" name="pid" class="span8" required number="true" maxlength="11" />
-							</div>
-						</div>
-						<div class="control-group">
 							<label class="control-label"><span class="required">*</span> 名称：</label>
 							<div class="controls">
 								<input type="text" id="name" name="name" class="span8" required maxlength="50" />
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label"><span class="required">*</span> URI：</label>
+							<label class="control-label">描述：</label>
 							<div class="controls">
-								<input type="text" id="uri" name="uri" class="span8" required maxlength="100" />
+								<input type="text" id="desc" name="desc" class="span8" maxlength="100" />
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label"><span class="required">*</span> 是否为菜单：</label>
+							<label class="control-label">权限：</label>
 							<div class="controls">
-								<label class="radio_label"><input type="radio" name="isMenu" value="1" checked="checked" />是</label>
-								<label class="radio_label"><input type="radio" name="isMenu" value="0" />否</label>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label"><span class="required">*</span> 排序序号：</label>
-							<div class="controls">
-								<input type="text" id="sortIndex" name="sortIndex" class="span8" required number="true" maxlength="11" />
+								<ul id="menuTree" class="ztree"></ul>
 							</div>
 						</div>
 						<div class="form-actions">
@@ -136,20 +116,23 @@
 <!-- END PAGE -->
 
 <jsp:include page="../../common/ft_frame.jsp"></jsp:include>
+<script type="text/javascript" src="${PATH}r/plugins/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${PATH}r/plugins/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
+
 <script>
+	var initedMenu = false;
+	var treeObj;
 	$(document).ready(function() {
 		search();
 	});
-	
+
 	var curPage = 1;
 	var tableSort = $('#tb_list');
 	function search(page, size) {
 		var fn = arguments.callee;
 		var req = 'page=' + (page || 1) + '&size=' + (size = size || 15);
 		Loading.show();
-		$('#btnSearch').attr('disabled', true);
-		$.post('${PATH}admin/menu/list.do', req, function(json) {
-			$('#btnSearch').attr('disabled', false);
+		$.post('${PATH}admin/role/list.do', req, function(json) {
 			Loading.hide();
 			if (!json.success) {
 				$.alert(json.message);
@@ -169,53 +152,80 @@
 		});
 		curPage = page;
 	}
-	
+
 	function refresh() {
 		search(curPage);
 	}
-	
+
 	var editType = 'add';
 	function toAdd() {
-		$('#name').val('');
-		$('#pid').val('0');
-		$('#uri').val('#');
-		$('#sortIndex').val('1');
-		$('input[name="isMenu"]').removeAttr('checked');
-		$('input[name="isMenu"][value="1"]').attr('checked', 'checked');
-		$.uniform.update("input");
-		$.dialog({
-			title : '新增菜单',
-			content : $('#editDialog')[0],
-			padding : 0,
-			id : 'edit_dialog'
-		});
-		editType = "add";
+		$('#name, #desc').val('');
+		if (!initedMenu) {
+			initMenuTree(function() {
+				$.dialog({
+					title : '新增角色',
+					content : $('#editDialog')[0],
+					padding : 0,
+					id : 'edit_dialog'
+				});
+				editType = "add";
+			});
+		} else {
+			$.dialog({
+				title : '新增角色',
+				content : $('#editDialog')[0],
+				padding : 0,
+				id : 'edit_dialog'
+			});
+			editType = "add";
+			treeObj.checkAllNodes(false);
+		}
 	}
-	
+
 	function toEdit(id) {
+		if (!initedMenu) {
+			initMenuTree(function() {
+				toEditCall(id);
+			});
+		} else {
+			toEditCall(id);
+		}
+	}
+
+	function toEditCall(id) {
+		treeObj.checkAllNodes(false);
 		Loading.show();
-		$.post('${PATH}admin/menu/get.do', 'id=' + id, function(data) {
+		$.post('${PATH}admin/role/getWithMenuIds.do', 'id=' + id, function(data) {
 			Loading.hide();
 			if (!data.success) {
 				$.alert(data.message);
 				return;
 			}
-			var vo = data.object;
-			if (!!!vo) {
-				$.alert('该菜单不存在或已被删除!');
+			var map = data.object;
+			if (!!!map) {
+				$.alert('该角色不存在或已被删除!');
 				return;
 			}
-	
+
+			var vo = map.role;
+			var menuIds = map.menuIds;
+
 			$('#id').val(vo.id);
-			$('#pid').val(vo.pid);
 			$('#name').val(vo.name);
-			$('#uri').val(vo.uri);
-			$('#sortIndex').val(vo.sortIndex);
-			$('input[name="isMenu"]').removeAttr('checked');
-			$('input[name="isMenu"][value="'+vo.isMenu+'"]').attr('checked', 'checked');
-			
+			$('#desc').val(vo.desc);
+
+			if (!!menuIds && menuIds.length > 0) {
+				var _nodes = null;
+				$.each(menuIds, function(i, mid) {
+					_nodes = treeObj.getNodesByParam("id", mid, null);
+					if (!!_nodes && _nodes.length > 0) {
+						treeObj.checkNode(_nodes[0], true, true);
+					}
+				});
+			}
+
 			$.dialog({
-				title : '编辑菜单',
+				title : '编辑角色',
 				content : $('#editDialog')[0],
 				padding : 0,
 				id : 'edit_dialog'
@@ -223,7 +233,7 @@
 			editType = 'edit';
 		});
 	}
-	
+
 	function save() {
 		var editForm = $('#edit_form');
 		editForm.validate();
@@ -235,18 +245,21 @@
 			doUpdate();
 		}
 	}
-	
+
 	function doAdd() {
+		var menus = getCheckedMenus();
+		if (menus == '') {
+			$.alert('请勾选菜单权限');
+			return;
+		}
 		var param = {
-			pid: $.trim($('#pid').val()),
 			name : $.trim($('#name').val()),
-			uri : $.trim($('#uri').val()),
-			sortIndex : $.trim($('#sortIndex').val()),
-			isMenu : $('input[name="isMenu"]:checked').val()
+			desc : $.trim($('#desc').val()),
+			menus : menus
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
-		$.post('${PATH}admin/menu/add.do', param, function(data) {
+		$.post('${PATH}admin/role/add.do', param, function(data) {
 			Loading.hide();
 			$('#btnSave').attr('disabled', false);
 			if (data.success) {
@@ -261,19 +274,22 @@
 			}
 		});
 	}
-	
+
 	function doUpdate() {
+		var menus = getCheckedMenus();
+		if (menus == '') {
+			$.alert('请勾选菜单权限');
+			return;
+		}
 		var param = {
 			id : $('#id').val(),
-			pid: $.trim($('#pid').val()),
 			name : $.trim($('#name').val()),
-			uri : $.trim($('#uri').val()),
-			sortIndex : $.trim($('#sortIndex').val()),
-			isMenu : $('input[name="isMenu"]:checked').val()
+			desc : $.trim($('#desc').val()),
+			menus : menus
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
-		$.post('${PATH}admin/menu/update.do', param, function(data) {
+		$.post('${PATH}admin/role/update.do', param, function(data) {
 			Loading.hide();
 			$('#btnSave').attr('disabled', false);
 			if (data.success) {
@@ -288,11 +304,11 @@
 			}
 		});
 	}
-	
+
 	function toDelete(id, name) {
 		$.confirm('确认删除[' + name + ']?', function() {
 			Loading.show();
-			$.post("${PATH}admin/menu/delete.do", "id=" + id, function(data) {
+			$.post("${PATH}admin/role/delete.do", "id=" + id, function(data) {
 				Loading.hide();
 				if (data.success) {
 					refresh();
@@ -307,6 +323,69 @@
 		}, function() {
 			return;
 		});
+	}
+
+	function initMenuTree(callback) {
+		Loading.show();
+		$.post('${PATH}admin/menu/loadAll.do', null, function(data) {
+			Loading.hide();
+			if (data.success) {
+				var list = data.object;
+				if (!!!list || list.length < 1) {
+					$.alert('没有菜单数据,请先添加菜单!');
+					return;
+				}
+				var zNodes = [];
+				$.each(list, function(i, vo) {
+					zNodes.push({
+						id : vo.id,
+						pId : vo.pid,
+						name : vo.name,
+						open : true
+					});
+				});
+
+				var setting = {
+					check : {
+						enable : true,
+						chkboxType : {
+							"Y" : "ps",
+							"N" : "ps"
+						}
+					},
+					data : {
+						simpleData : {
+							enable : true
+						}
+					},
+					view : {
+						showLine : false
+					}
+				};
+
+				treeObj = $.fn.zTree.init($("#menuTree"), setting, zNodes);
+
+				initedMenu = true;
+
+				if (callback)
+					callback.call();
+			} else {
+				$.alert(data.message);
+			}
+		});
+	}
+
+	function getCheckedMenus() {
+		var mid = '';
+		var mids = [];
+		var nodes = treeObj.getCheckedNodes(true);
+		if (nodes.length > 0) {
+			$.each(nodes, function(i, node) {
+				mids.push(node.id);
+			});
+			mid = mids.join(',');
+		}
+		return mid;
 	}
 </script>
 </html>
