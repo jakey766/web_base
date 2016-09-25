@@ -7,38 +7,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pk.framework.vo.Result;
-import com.pk.model.admin.SysUser;
-import com.pk.service.admin.SysUserService;
-import com.pk.vo.admin.SysUserSearchVO;
+import com.pk.model.admin.SysMenu;
+import com.pk.service.admin.SysMenuService;
+import com.pk.vo.admin.SysMenuSearchVO;
 
 @Controller
-public class UserController {
+public class SysMenuController {
 	
 	@Autowired
-	private SysUserService sysUserService;
+	private SysMenuService sysMenuService;
 	
-	@RequestMapping(value = "/admin/user/list.jspx")
-	public ModelAndView index() {
-		return new ModelAndView("forward:/admin/user/list.jsp");
+	@RequestMapping(value = "/admin/menu/list.jspx")
+	public ModelAndView listJspx() {
+		return new ModelAndView("forward:/admin/menu/list.jsp");
 	}
 	
-	@RequestMapping(value = "/admin/user/list.do")
+	@RequestMapping(value = "/admin/menu/list.do")
 	@ResponseBody
-	public Result list(SysUserSearchVO svo) {
+	public Result list(SysMenuSearchVO svo) {
 		try{
-			return sysUserService.list(svo);
+			return sysMenuService.list(svo);
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
 		}
 	}
 	
-	@RequestMapping(value = "/admin/user/get.do")
+	@RequestMapping(value = "/admin/menu/get.do")
 	@ResponseBody
 	public Result get(int id) {
 		Result result = new Result();
 		try{
-			SysUser vo = sysUserService.get(id);
+			SysMenu vo = sysMenuService.get(id);
 			result.setCode(Result.CODE_SUCCESS);
 			result.setObject(vo);
 		}catch(Exception e){
@@ -49,33 +49,33 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/admin/user/add.do")
+	@RequestMapping(value = "/admin/menu/add.do")
 	@ResponseBody
-	public Result add(SysUser vo) {
+	public Result add(SysMenu vo) {
 		try{
-			return sysUserService.add(vo);
+			return sysMenuService.add(vo);
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
 		}
 	}
 
-	@RequestMapping(value = "/admin/user/update.do")
+	@RequestMapping(value = "/admin/menu/update.do")
 	@ResponseBody
-	public Result update(SysUser vo) {
+	public Result update(SysMenu vo) {
 		try{
-			return sysUserService.update(vo);
+			return sysMenuService.update(vo);
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
 		}
 	}
 
-	@RequestMapping(value = "/admin/user/delete.do")
+	@RequestMapping(value = "/admin/menu/delete.do")
 	@ResponseBody
 	public Result delete(int id) {
 		try{
-			return sysUserService.delete(id);
+			return sysMenuService.delete(id);
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());

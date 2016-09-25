@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pk.dao.admin.SysMenuDao">
+	<select id="get" useCache="true" resultType="SysMenu" parameterType="int">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_menu WHERE id = #{id}
+	</select>
+
+	<insert id="insert" flushCache="true" parameterType="SysMenu">
+		<![CDATA[
+			INSERT INTO sys_menu(pid, name, uri, is_menu, sort_index)
+			VALUES(#{pid}, #{name}, #{uri}, #{isMenu}, #{sortIndex})
+		]]>
+	</insert>
+
+	<update id="update" flushCache="true" parameterType="SysMenu">
+		<![CDATA[
+			UPDATE sys_menu SET name = #{name}, uri = #{uri}, is_menu = #{isMenu}, sort_index = #{sortIndex}
+			WHERE id = #{id}
+		]]>
+	</update>
+
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM sys_menu WHERE id = #{id}
+		]]>
+	</delete>
+	
+	<select id="count" resultType="int" useCache="false" parameterType="SysMenuSearchVO">
+		SELECT COUNT(id) FROM sys_menu WHERE 1=1
+		<include refid="QueryWhere" />
+	</select>
+
+	<select id="list" resultType="SysMenu" useCache="false" parameterType="SysMenuSearchVO">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_menu WHERE 1=1
+		<include refid="QueryWhere" />
+		ORDER BY pid, sort_index
+	</select>
+
+	<sql id="QuerySelect">
+		<![CDATA[
+			id, pid, name, uri, is_menu AS isMenu, sort_index AS sortIndex
+		]]>
+	</sql>
+	
+	<sql id="QueryWhere">
+		<if test="isMenu > -1">
+			<![CDATA[
+				AND is_menu = #{isMenu}
+			]]>
+		</if>
+	</sql>
+</mapper>

@@ -58,9 +58,9 @@
               { name:'YY', icon:'',url:'http://www.yy.com',children:[]}
           ]},
           { name:'系统管理', icon:'icon-bookmark-empty',url:'#',children:[
-              { name:'用户管理', icon:'',url:'admin/user/list.jspx',children:[]},
-              { name:'角色管理', icon:'',url:'ui_button.html',children:[]},
-              { name:'菜单管理', icon:'',url:'ui_tab.html',children:[]}
+              { name:'用户管理', icon:'',url: PATH + 'admin/user/list.jspx',children:[]},
+              { name:'角色管理', icon:'',url: PATH + 'admin/role/list.jspx',children:[]},
+              { name:'菜单权限管理', icon:'',url: PATH + 'admin/menu/list.jspx',children:[]}
           ]}
       ];
       MultiMenu.init('#menu-container', menuData);

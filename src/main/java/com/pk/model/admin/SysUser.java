@@ -3,10 +3,13 @@ package com.pk.model.admin;
 import java.io.Serializable;
 
 /**
+ * 系统用户
  * Created by jiangkunpeng on 16/9/22.
  */
 public class SysUser implements Serializable{
-    private int id;
+	private static final long serialVersionUID = -7329258332305479275L;
+	
+	private int id;
     private String username;
     private String password;
     private String name;
