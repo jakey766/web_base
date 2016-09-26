@@ -12,9 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="${PATH}r/img/ico.ico" />
 
-    <link href="${PATH}r/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="${PATH}r/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="${PATH}r/css/login.css" rel="stylesheet" />
+    <link href="${PATH}r/login/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${PATH}r/login/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="${PATH}r/login/login.css" rel="stylesheet" />
 </head>
 <body>
 <div class="top-content">
@@ -61,7 +61,7 @@
     </div>
 </div>
 <script src="${PATH}r/plugins/jquery-1.10.1.min.js"></script>
-<script src="${PATH}r/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="${PATH}r/login/bootstrap/js/bootstrap.min.js"></script>
 <script src="${PATH}r/plugins/jquery.backstretch.min.js"></script>
 <script>
     $(document).ready(function() {
