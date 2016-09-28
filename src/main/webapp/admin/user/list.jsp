@@ -322,7 +322,7 @@
 		}
 		var username = $.trim($('#username').val());
 		var password = $('#password').val();
-		password = $.md5(password + '' + name);
+		password = $.md5(password + '' + username);
 		var param = {
 			username : username,
 			password : password,
