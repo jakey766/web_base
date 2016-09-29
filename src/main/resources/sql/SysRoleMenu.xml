@@ -41,6 +41,9 @@
 				#{item}
 			</foreach>
 		</if>
+		<if test="isMenu > -1">
+			AND b.is_menu = #{isMenu}
+		</if>
 		ORDER BY b.pid, b.sort_index
 	</select>
 </mapper>

@@ -45,8 +45,8 @@
       //初始化前端框架交互
       App.init();
       //初始化菜单
-      //initMenu();
-      initMenuStatic();
+      initMenu();
+      //initMenuStatic();
   });
 
   function initMenuStatic(){
@@ -95,16 +95,16 @@
       var _url;
       for(var j = 0; j < menus.length; j++){
         _menu = menus[j];
-        _url = _menu.url;
+        _url = _menu.uri;
         if(!!_url&&_url.length>1&&!(_url.indexOf('http://')==0||_url.indexOf('https://')==0)){
           _url = '${PATH}' + _url;
         }
-        if(_menu.parentId==0){
+        if(_menu.pid==0){
           var menu = {};
           menu["name"] = _menu.name;
           menu["url"] = _url;
           menu["children"] = [];
-          menu["parentId"] = _menu.parentId;
+          menu["parentId"] = _menu.pid;
           menuFilter[_menu.id] = menu;
           data.push(menu);
         } else{
@@ -112,7 +112,7 @@
           menu["name"] = _menu.name;
           menu["url"] = _url;
           menu["children"] = null;
-          menu["parentId"] = _menu.parentId;
+          menu["parentId"] = _menu.pid;
           children = menuFilter[_menu.parentId].children;
           children.push(menu);
         }
