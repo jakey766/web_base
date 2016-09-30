@@ -1,3 +1,5 @@
+<%@page import="com.pk.framework.cfg.Constants"%>
+<%@page import="com.pk.framework.util.CookieUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String title = request.getParameter("title");
@@ -6,6 +8,10 @@
     }
     request.setAttribute("title", title);
     request.setAttribute("sysName", "XX系统");
+    
+    CookieUtil cookieUtil = new CookieUtil(request, response);
+    String username = cookieUtil.getString(Constants.KEY_USER_NAME);
+    request.setAttribute("curUserName", username);
 %>
 
 <!DOCTYPE html>
@@ -53,14 +59,17 @@
         <!-- BEGIN 用户信息 -->
         <li class="dropdown user">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-            <span class="username">欢迎您:张三</span>
+          	欢迎您：
+            <span class="username">${curUserName}</span>
             <i class="icon-angle-down"></i>
           </a>
           <ul class="dropdown-menu">
+            <!-- 
             <li><a href="#"><i class="icon-user"></i> 资料</a></li>
             <li><a href="#"><i class="icon-map-marker"></i> IP:127.0.0.1</a></li>
+             -->
             <li><a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> 全屏</a></li>
-            <li><a href="#"><i class="icon-key"></i> 退出</a></li>
+            <li><a href="javascript:;" onclick="logout()"><i class="icon-key"></i> 退出</a></li>
           </ul>
         </li>
         <!-- END 用户信息 -->

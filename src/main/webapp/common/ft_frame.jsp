@@ -111,10 +111,15 @@
           var menu = {}, children;
           menu["name"] = _menu.name;
           menu["url"] = _url;
-          menu["children"] = null;
+          menu["children"] = [];
           menu["parentId"] = _menu.pid;
-          children = menuFilter[_menu.parentId].children;
-          children.push(menu);
+          var _parent = menuFilter[_menu.pid];
+          if(!!_parent){
+	          children = _parent.children;
+	          children.push(menu);
+          }else{
+        	  data.push(menu);
+          }
         }
       }
       MultiMenu.init('#menu-container', data);
@@ -123,5 +128,17 @@
         sessionStorage['menuData'] = JSON.stringify(data);
       }
     });
+  }
+  
+  function logout(){
+	  $.confirm('确认退出登录?', function(){
+		  $.post('${PATH}logout.do', null, function(json) {
+			  if(window.sessionStorage){
+		        sessionStorage.removeItem('menuData');
+		      }
+		      window.location.href = '${PATH}login.jspx';
+		  });
+	  }, function(){
+	  });
   }
 </script>

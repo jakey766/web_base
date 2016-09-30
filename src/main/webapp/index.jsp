@@ -11,7 +11,7 @@
             <div class="span12">
                 <!-- BEGIN 页面标题和面包屑导航 -->
                 <h3 class="page-title">
-                    客户管理系统
+                   XX管理系统
                 </h3>
                 <!-- END 页面标题和面包屑导航 -->
             </div>

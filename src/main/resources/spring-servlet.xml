@@ -67,7 +67,9 @@
 		<property name="errorUrl" value="/hint/error.jsp"/>
 		<property name="excludeUrls">
 			<list>
-				<value>/status.do</value>
+				<value>/login.jspx</value>
+				<value>/login.do</value>
+				<value>/logout.do</value>
 			</list>
 		</property>
 	</bean>

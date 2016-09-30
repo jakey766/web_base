@@ -16,7 +16,7 @@
 
 	<update id="update" flushCache="true" parameterType="SysMenu">
 		<![CDATA[
-			UPDATE sys_menu SET name = #{name}, uri = #{uri}, is_menu = #{isMenu}, sort_index = #{sortIndex}
+			UPDATE sys_menu SET pid = ${pid}, name = #{name}, uri = #{uri}, is_menu = #{isMenu}, sort_index = #{sortIndex}
 			WHERE id = #{id}
 		]]>
 	</update>
