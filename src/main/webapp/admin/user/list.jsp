@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../../common/env.jsp"%>
 <jsp:include page="../../common/hd_frame.jsp"></jsp:include>
+<link href="${PATH}r/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
 
 <!-- BEGIN PAGE -->
 <div class="page-content">
@@ -138,6 +139,12 @@
 							<div class="controls" id="roleDiv"></div>
 						</div>
 						<div class="control-group">
+							<label class="control-label"><span class="required">*</span> 组织机构：</label>
+							<div class="controls">
+								<ul id="orgTree" class="ztree" style="width:99%;background-color:white;overflow: auto;"></ul>
+							</div>
+						</div>
+						<div class="control-group">
 							<label class="control-label">手机：</label>
 							<div class="controls">
 								<input type="text" id="mobile" name="mobile" class="span8" maxlength="20" />
@@ -166,6 +173,8 @@
 
 <jsp:include page="../../common/ft_frame.jsp"></jsp:include>
 <script src="${PATH}r/plugins/jquery.md5.js"></script>
+<script src="${PATH}r/plugins/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+<script src="${PATH}r/plugins/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
 <script>
 	var roleInited = false;
 	$(document).ready(function() {

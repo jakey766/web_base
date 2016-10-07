@@ -17,6 +17,11 @@ public class SysUser implements Serializable{
     private String email;
     private String roleIds;
     private String roleNames;
+    private int orgId;
+
+    public String getOrgStr(){
+        return null;
+    }
 
     public int getId() {
         return id;
@@ -80,5 +85,13 @@ public class SysUser implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
     }
 }

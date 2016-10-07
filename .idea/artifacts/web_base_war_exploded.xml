@@ -41,6 +41,7 @@
           <element id="library" level="project" name="Maven: xerces:xmlParserAPIs:2.6.2" />
           <element id="library" level="project" name="Maven: xalan:xalan:2.6.0" />
           <element id="library" level="project" name="Maven: com.googlecode.json-simple:json-simple:1.1" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.2.4" />
           <element id="library" level="project" name="Maven: com.ibm.icu:icu4j:49.1" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.4" />
         </element>

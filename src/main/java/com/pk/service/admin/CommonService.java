@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pk.framework.cfg.UserInfoContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,10 @@ public class CommonService extends BaseService{
         cookieUtil.buildDomainByRequest();
         cookieUtil.deleteCookie(Constants.KEY_USER_ID);
         cookieUtil.deleteCookie(Constants.KEY_USER_NAME);
+
+        int userId = UserInfoContext.getId();
+        String cacheKey = Constants.KEY_USER_MENU + "_" +userId;
+        removeCache(cacheKey);
         return Result.SUCCESS();
     }
     

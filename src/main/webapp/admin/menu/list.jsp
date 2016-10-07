@@ -38,35 +38,35 @@
 					</div>
 					<div class="portlet-body">
 						<table id="tb_list"
-							class="table table-bordered table-striped table-hover">
+							   class="table table-bordered table-striped table-hover">
 							<thead>
-								<tr>
-									<th>ID</th>
-									<th>PID</th>
-									<th>名称</th>
-									<th>URI</th>
-									<th>是否为菜单</th>
-									<th>排序</th>
-									<th>操作</th>
-								</tr>
+							<tr>
+								<th>ID</th>
+								<th>PID</th>
+								<th>名称</th>
+								<th>URI</th>
+								<th>是否为菜单</th>
+								<th>排序</th>
+								<th>操作</th>
+							</tr>
 							</thead>
 							<tbody id="tbody">
-								<script id="listTmpl" type="text/html">
-                				{{each list as v i}}
-                					<tr>
-                    					<td>{{v.id}}</td>
-										<td>{{v.pid}}</td>
-                    					<td>{{v.name}}</td>
-                    					<td>{{v.uri}}</td>
-                    					<td>{{v.isMenu==1?"是":"否"}}</td>
-										<td>{{v.sortIndex}}</td>
-                    					<td>
-                        					<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
-                        					<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
-                    					</td>
-                					</tr>
-                				{{/each}}
-              					</script>
+							<script id="listTmpl" type="text/html">
+								{{each list as v i}}
+								<tr>
+									<td>{{v.id}}</td>
+									<td>{{v.pid}}</td>
+									<td>{{v.name}}</td>
+									<td>{{v.uri}}</td>
+									<td>{{v.isMenu==1?"是":"否"}}</td>
+									<td>{{v.sortIndex}}</td>
+									<td>
+										<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
+										<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
+									</td>
+								</tr>
+								{{/each}}
+							</script>
 							</tbody>
 						</table>
 						<div id="common_page"></div>
@@ -79,14 +79,14 @@
 		<!-- END 右容器 main-->
 	</div>
 	<!-- END 右边容器-->
-	
+
 	<!-- BEGIN 弹窗 -->
 	<div class="row-fluid">
 		<!-- BEGIN 新增/编辑 弹窗 -->
 		<div id="editDialog" class="hide">
 			<div class="span8" style="margin-left: 0px;">
 				<form action="" id="edit_form"
-					class="form form-horizontal form-bordered form-row-stripped">
+					  class="form form-horizontal form-bordered form-row-stripped">
 					<input type="hidden" id="id" name="id" />
 					<div class="row-fluid">
 						<div class="control-group">
@@ -140,7 +140,7 @@
 	$(document).ready(function() {
 		search();
 	});
-	
+
 	var curPage = 1;
 	var tableSort = $('#tb_list');
 	function search(page, size) {
@@ -169,11 +169,11 @@
 		});
 		curPage = page;
 	}
-	
+
 	function refresh() {
 		search(curPage);
 	}
-	
+
 	var editType = 'add';
 	function toAdd() {
 		$('#name').val('');
@@ -191,7 +191,7 @@
 		});
 		editType = "add";
 	}
-	
+
 	function toEdit(id) {
 		Loading.show();
 		$.post('${PATH}admin/menu/get.do', 'id=' + id, function(data) {
@@ -205,7 +205,7 @@
 				$.alert('该菜单不存在或已被删除!');
 				return;
 			}
-	
+
 			$('#id').val(vo.id);
 			$('#pid').val(vo.pid);
 			$('#name').val(vo.name);
@@ -213,7 +213,7 @@
 			$('#sortIndex').val(vo.sortIndex);
 			$('input[name="isMenu"]').removeAttr('checked');
 			$('input[name="isMenu"][value="'+vo.isMenu+'"]').attr('checked', 'checked');
-			
+
 			$.dialog({
 				title : '编辑菜单',
 				content : $('#editDialog')[0],
@@ -223,7 +223,7 @@
 			editType = 'edit';
 		});
 	}
-	
+
 	function save() {
 		var editForm = $('#edit_form');
 		editForm.validate();
@@ -235,7 +235,7 @@
 			doUpdate();
 		}
 	}
-	
+
 	function doAdd() {
 		var param = {
 			pid: $.trim($('#pid').val()),
@@ -261,7 +261,7 @@
 			}
 		});
 	}
-	
+
 	function doUpdate() {
 		var param = {
 			id : $('#id').val(),
@@ -288,7 +288,7 @@
 			}
 		});
 	}
-	
+
 	function toDelete(id, name) {
 		$.confirm('确认删除[' + name + ']?', function() {
 			Loading.show();

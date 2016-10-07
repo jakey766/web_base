@@ -18,14 +18,14 @@
 
 	<insert id="insert" flushCache="true" parameterType="SysUser">
 		<![CDATA[
-			INSERT INTO sys_user(username, password, name, mobile, email, create_time, update_time, deleted, role_ids, role_names)
-			VALUES(#{username}, #{password}, #{name}, #{mobile}, #{email}, now(), now(), 0, #{roleIds}, #{roleNames})
+			INSERT INTO sys_user(username, password, name, mobile, email, create_time, update_time, deleted, role_ids, role_names, org_id)
+			VALUES(#{username}, #{password}, #{name}, #{mobile}, #{email}, now(), now(), 0, #{roleIds}, #{roleNames}, #{orgId})
 		]]>
 	</insert>
 
 	<update id="update" flushCache="true" parameterType="SysUser">
 		<![CDATA[
-			UPDATE sys_user SET name = #{name}, mobile = #{mobile}, email = #{email}, role_ids = #{roleIds}, role_names = #{roleNames}, update_time = now()
+			UPDATE sys_user SET name = #{name}, mobile = #{mobile}, email = #{email}, role_ids = #{roleIds}, role_names = #{roleNames}, org_id=#{orgId}, update_time = now()
 			WHERE id = #{id}
 		]]>
 	</update>
@@ -62,7 +62,7 @@
 
 	<sql id="QuerySelect">
 		<![CDATA[
-			id, username, name, mobile, email, role_ids AS roleIds, role_names AS roleNames, deleted
+			id, username, name, mobile, email, role_ids AS roleIds, role_names AS roleNames, org_id AS orgId, deleted
 		]]>
 	</sql>
 

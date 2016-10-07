@@ -47,11 +47,11 @@
                         <form role="form" action="" method="post" class="login-form">
                             <div class="form-group">
                                 <label class="sr-only" for="form-username">用户名</label>
-                                <input type="text" name="form-username" value="admin" placeholder="请输入用户名..." class="form-username form-control" id="form-username">
+                                <input type="text" name="form-username" value="admin" placeholder="请输入用户名..." class="form-username form-control" id="form-username" onkeydown="if(event.keyCode==13){search()}">
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="form-password">密码</label>
-                                <input type="password" name="form-password" value="admin" placeholder="请输入密码..." class="form-password form-control" id="form-password">
+                                <input type="password" name="form-password" value="admin" placeholder="请输入密码..." class="form-password form-control" id="form-password" onkeydown="if(event.keyCode==13){login()}">
                             </div>
                             <button type="button" class="btn" onclick="login()">登 录</button>
                         </form>

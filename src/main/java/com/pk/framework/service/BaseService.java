@@ -36,5 +36,16 @@ public class BaseService {
 		}
 		return obj;
 	}
+
+	/**
+	 * 删除缓存
+	 * @param key
+	 * @return
+	 */
+	public boolean removeCache(String key){
+		Cache.remove(key);
+		//以后可加远程缓存
+		return true;
+	}
 	
 }

@@ -75,7 +75,12 @@ input.laydate-icon{width:160px;}
 .form-horizontal.form-bordered .control-group .controls{padding:5px;}
 .form-horizontal .control-label{width:120px}
 .form-horizontal .controls{margin-left:130px}
+.form-horizontal .control-group {margin-bottom:10px;}
 .form .form-actions{padding:5px 20px 5px 130px !important; margin-bottom:0px !important;}
+
+.detail .form-horizontal .control-label{padding-top:0px;margin-top:0px;width:100px;}
+.detail .form-horizontal .controls{margin-left:110px;font-size: 14px;}
+.detail .form-horizontal .form-actions{padding: 5px 5px 5px 120px !important;;}
 
 .controls .hint{display:inline;line-height:32px;}
 
