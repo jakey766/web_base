@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2de1670-4696-49e0-919d-f641685f92dc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_2_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/pk/model/admin/SysOrg.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/sql/SysOrg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/pk/controller/admin/SysOrgController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/pk/dao/admin/SysOrgDao.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/pk/vo/admin/SysOrgSearchVO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/pk/service/admin/SysOrgService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/admin/org/list.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/pk/framework/service/BaseService.java" afterPath="$PROJECT_DIR$/src/main/java/com/pk/framework/service/BaseService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/pk/controller/cm/CmController.java" afterPath="$PROJECT_DIR$/src/main/java/com/pk/controller/cm/CmController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/pk/service/admin/CommonService.java" afterPath="$PROJECT_DIR$/src/main/java/com/pk/service/admin/CommonService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/pk/model/admin/SysUser.java" afterPath="$PROJECT_DIR$/src/main/java/com/pk/model/admin/SysUser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/sql/SysUser.xml" afterPath="$PROJECT_DIR$/src/main/resources/sql/SysUser.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/byd_cm.sql" afterPath="$PROJECT_DIR$/byd_cm.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/admin/menu/list.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/admin/menu/list.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/admin/user/list.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/admin/user/list.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/cm/list.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/cm/list.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/r/css/page.css" afterPath="$PROJECT_DIR$/src/main/webapp/r/css/page.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web_base.iml" afterPath="$PROJECT_DIR$/web_base.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/web_base_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/web_base_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="b2de1670-4696-49e0-919d-f641685f92dc" name="Default" comment="" />
     <list id="40225cfe-7417-4d4f-8776-17ced7c220b5" name="Failed commit: Default" comment="整理前端框架" />
     <ignored path="web_base.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -611,7 +588,7 @@
       <workItem from="1475068899487" duration="1640000" />
       <workItem from="1475587340085" duration="6884000" />
       <workItem from="1475641999281" duration="6697000" />
-      <workItem from="1475828837989" duration="7417000" />
+      <workItem from="1475828837989" duration="7452000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1471875159703</created>
@@ -673,11 +650,17 @@
       <option name="project" value="LOCAL" />
       <updated>1475072048765</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="组织机构管理">
+      <created>1475850891075</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1475850891075</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55202000" />
+    <option name="totallyTimeSpent" value="55237000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="131" y="23" width="1306" height="877" extended-state="0" />
@@ -723,7 +706,8 @@
     <MESSAGE value="跑通用户管理" />
     <MESSAGE value="用户-角色关系" />
     <MESSAGE value="登录页面" />
-    <option name="LAST_COMMIT_MESSAGE" value="登录页面" />
+    <MESSAGE value="组织机构管理" />
+    <option name="LAST_COMMIT_MESSAGE" value="组织机构管理" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -917,6 +901,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="e#451#452#0" expanded="false" />
+            <element signature="e#505#506#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
