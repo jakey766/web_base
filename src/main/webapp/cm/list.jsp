@@ -211,6 +211,9 @@
 							<button type="button" class="btn green" id="btnSearch" onclick="search()">
 								<i class="icon-search"></i> 查询
 							</button>
+							<button type="button" class="btn blue" id="btnExport" onclick="exportExcel()">
+								<i class="icon-download-alt"></i> 导出
+							</button>
 						</div>
 					</div>
 				</div>
@@ -279,7 +282,8 @@
 										<td>{{v.jxs}}</td>
 										<td>{{v.fkfs}}</td>
                     					<td>
-                        					<button class="btn mini blue" onclick="toEdit('{{v.id}}')">编辑</button>
+											<button class="btn mini green" onclick="toEdit('{{v.id}}')">编辑</button>
+                        					<button class="btn mini blue" onclick="toView('{{v.id}}')">详细</button>
                         					<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
                     					</td>
                 					</tr>
@@ -302,6 +306,7 @@
 <!-- END PAGE -->
 
 <jsp:include page="../common/ft_frame.jsp"></jsp:include>
+<script type="text/javascript" src="${PATH}r/plugins/layer-v2.3/layer.js"></script>
 <script>
 	$(document).ready(function() {
 		search();
@@ -388,8 +393,13 @@
 		search(curPage);
 	}
 	
+	function exportExcel(){
+		
+	}
+	
 	function toDelete(id, name) {
 		$.confirm('确认删除[' + name + ']?', function() {
+			/*
 			Loading.show();
 			$.post("${PATH}admin/menu/delete.do", "id=" + id, function(data) {
 				Loading.hide();
@@ -403,8 +413,46 @@
 					$.alert(data.message);
 				}
 			});
+			*/
+			refresh();
 		}, function() {
 			return;
+		});
+	}
+	
+	function toAdd(){
+		layer.open({
+			type: 2,
+			title: '新增',
+			shadeClose: false,
+			maxmin: true,
+			shade: 0.8,
+			area: ['90%', '90%'],
+			content: '${PATH}cm/add.jspx'
+		});
+	}
+	
+	function toEdit(id){
+		layer.open({
+			type: 2,
+			title: '编辑',
+			shadeClose: false,
+			maxmin: true,
+			shade: 0.8,
+			area: ['90%', '90%'],
+			content: '${PATH}cm/edit.jspx?id=' + id
+		});
+	}
+	
+	function toView(id){
+		layer.open({
+			type: 2,
+			title: '详细',
+			shadeClose: false,
+			maxmin: true,
+			shade: 0.8,
+			area: ['90%', '90%'],
+			content: '${PATH}cm/detail.jspx?id=' + id
 		});
 	}
 </script>

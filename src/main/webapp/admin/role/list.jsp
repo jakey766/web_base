@@ -97,7 +97,24 @@
 						<div class="control-group">
 							<label class="control-label"><span class="required">*</span> 菜单权限：</label>
 							<div class="controls">
-								<ul id="menuTree" class="ztree"></ul>
+								<ul id="menuTree" class="ztree" style="max-height: 300px;overflow: auto;"></ul>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label"><span class="required">*</span> 数据权限：</label>
+							<div class="controls" style="max-height: 300px;overflow: auto;">
+								<label><input type="checkbox" name="field" checked="checked" />大区</label>
+								<label><input type="checkbox" name="field" checked="checked" />营销经理</label>
+								<label><input type="checkbox" name="field" checked="checked" />还款状态</label>
+								<label><input type="checkbox" name="field" checked="checked" />当前状态</label>
+								<label><input type="checkbox" name="field" checked="checked" />合同编号</label>
+								<label><input type="checkbox" name="field" checked="checked" />合同激活日期</label>
+								<label><input type="checkbox" name="field" checked="checked" />申请提交日期</label>
+								<label><input type="checkbox" name="field" checked="checked" />月份</label>
+								<label><input type="checkbox" name="field" />贷款申请号码</label>
+								<label><input type="checkbox" name="field" />核准拒绝日期</label>
+								<label><input type="checkbox" name="field" />周次</label>
+								<label><input type="checkbox" name="field" />经销商名称</label>
 							</div>
 						</div>
 						<div class="form-actions">
@@ -219,7 +236,7 @@
 				$.each(menuIds, function(i, mid) {
 					_nodes = treeObj.getNodesByParam("id", mid, null);
 					if (!!_nodes && _nodes.length > 0) {
-						treeObj.checkNode(_nodes[0], true, true);
+						treeObj.checkNode(_nodes[0], true, false);
 					}
 				});
 			}
