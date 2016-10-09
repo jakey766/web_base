@@ -41,8 +41,7 @@
 .input-strong-input{padding: 2px;display: inline-block;font-weight:normal;}
 
 /* jiangkunpeng */
-.wd60{width:60px;}
-.wd80{width:80px;}
+.bg-white {background-color:#fff !important;}
 .red{color:red;}
 
 /* 系统版本信息 */

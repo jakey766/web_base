@@ -349,6 +349,7 @@
 		var size = 15;
 		for(var i=0;i<size;i++){
 			var vo = {
+				id:i,
 				xm:'张三'+i,
 				zjhm:'123456789012345678',
 				xb:i%2?'男':'女',
@@ -427,7 +428,7 @@
 			shadeClose: false,
 			maxmin: true,
 			shade: 0.8,
-			area: ['90%', '90%'],
+			area: ['80%', '90%'],
 			content: '${PATH}cm/add.jspx'
 		});
 	}
@@ -439,7 +440,7 @@
 			shadeClose: false,
 			maxmin: true,
 			shade: 0.8,
-			area: ['90%', '90%'],
+			area: ['80%', '90%'],
 			content: '${PATH}cm/edit.jspx?id=' + id
 		});
 	}
@@ -451,7 +452,7 @@
 			shadeClose: false,
 			maxmin: true,
 			shade: 0.8,
-			area: ['90%', '90%'],
+			area: ['80%', '90%'],
 			content: '${PATH}cm/detail.jspx?id=' + id
 		});
 	}

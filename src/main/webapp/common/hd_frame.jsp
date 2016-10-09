@@ -4,10 +4,10 @@
 <%
     String title = request.getParameter("title");
     if(title==null||title.length()<1){
-    	title="XX系统";
+    	title="客户管理系统";
     }
     request.setAttribute("title", title);
-    request.setAttribute("sysName", "XX系统");
+    request.setAttribute("sysName", "客户管理系统");
     
     CookieUtil cookieUtil = new CookieUtil(request, response);
     String username = cookieUtil.getString(Constants.KEY_USER_NAME);

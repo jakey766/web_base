@@ -7,7 +7,7 @@
 <!--[if !IE]><!--> <html> <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>XX系统</title>
+    <title>客户管理系统</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="${PATH}r/img/ico.ico" />
@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2 text">
-                    <h1><strong>XX系统</strong></h1>
+                    <h1><strong>客户管理系统</strong></h1>
                     <!--
                     <div class="description">
                         <p>说明</p>
@@ -94,7 +94,7 @@
                     content:data.message,
                     time: 1000
                 });
-                window.location.href='${PATH}index.jspx';
+                window.location.href='${PATH}cm/list.jspx';
             }else{
                 $.alert(data.message);
             }

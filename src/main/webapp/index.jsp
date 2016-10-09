@@ -11,7 +11,7 @@
             <div class="span12">
                 <!-- BEGIN 页面标题和面包屑导航 -->
                 <h3 class="page-title">
-                   XX管理系统
+                   客户管理系统
                 </h3>
                 <!-- END 页面标题和面包屑导航 -->
             </div>
@@ -19,9 +19,6 @@
         <!-- END 右容器头部-->
         <!-- BEGIN 右容器 main-->
         <div class="row-fluid">
-
-            欢迎欢迎,热烈欢迎!
-
         </div>
         <!-- END 右容器 main-->
     </div>

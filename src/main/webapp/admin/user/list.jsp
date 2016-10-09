@@ -142,8 +142,8 @@
 							<label class="control-label"><span class="required">*</span> 组织机构：</label>
 							<div class="controls">
 								<input type="hidden" id="orgId" name="orgId"/>
-								<input type="text" id="orgShow" name="orgShow" class="span8" placeholder="点击选择组织机构" style="cursor:auto;" readonly="readonly" onclick="openOrgTree();" />
-								<ul id="orgTree" class="ztree" style="display:none;width:250px;border:1px solid #ccc;position:absolute;background-color:white;z-index:3000;max-height: 300px;overflow: auto;"></ul>
+								<input type="text" id="orgShow" name="orgShow" class="span8" placeholder="点击选择组织机构" style="cursor:auto;position: relative;" readonly="readonly" onclick="openOrgTree();" />
+								<ul id="orgTree" class="ztree" style="display:none;width:250px;border:1px solid #ccc;position:absolute;background-color:white;z-index:3000;max-height: 300px;overflow: auto;left: 5px; top: 35px;"></ul>
 							</div>
 						</div>
 						<div class="control-group">
@@ -180,6 +180,7 @@
 <script>
 	var orgInited = false;
 	var roleInited = false;
+	var zNodes = [];
 	$(document).ready(function() {
 		initTemplateFunc();
 		search();
@@ -492,7 +493,6 @@
 	
 	//初始化组织机构树 BEGIN
 	function initOrgTree(callback){
-		var zNodes = [];
 		var setting = {
 			data: {
 				simpleData: {
@@ -535,12 +535,13 @@
 		});
 	}
 
-	function openBussTree(){
+	function openOrgTree(){
 		var iptObj = $("#orgShow");
 		var iptOffset = $("#orgShow").offset();
 		
-		$("#orgTree").css({left:iptOffset.left + "px", top:iptOffset.top + iptObj.outerHeight() + 2 + "px"}).slideDown("fast");
-		$('#orgTree').show();
+		//$("#orgTree").css({left:iptOffset.left + "px", top:iptOffset.top + iptObj.outerHeight() + 2 + "px"}).slideDown("fast");
+		$("#orgTree").slideDown("fast");
+		//$('#orgTree').show();
 		$("body").bind("mousedown", onBodyDown);
 	}
 
