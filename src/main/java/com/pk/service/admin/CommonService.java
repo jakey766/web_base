@@ -93,14 +93,16 @@ public class CommonService extends BaseService{
     	
     	String cacheKey = Constants.KEY_USER_MENU + "_" +userId;
 		//先从缓存拿
-		try{
-			Object obj = getFromCache(cacheKey);
-			if(obj!=null){
-				list = (List<SysMenu>)obj;
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+//		try{
+//			Object obj = getFromCache(cacheKey);
+//			if(obj!=null){
+//				list = (List<SysMenu>)obj;
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+		
+		list = getFromCache(cacheKey, List.class);
 		
     	if(list==null){
     		SysUser user = sysUserDao.get(userId);

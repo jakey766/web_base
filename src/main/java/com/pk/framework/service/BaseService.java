@@ -36,6 +36,21 @@ public class BaseService {
 		}
 		return obj;
 	}
+	
+	/**
+	 * 取缓存,并转换成指定类的实例
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getFromCache(String key, Class<T> clazz){
+		Object obj = Cache.get(key);
+		if(obj!=null){
+			return (T)obj;
+		}
+		return null;
+	}
 
 	/**
 	 * 删除缓存
