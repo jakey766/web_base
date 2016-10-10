@@ -150,9 +150,9 @@
 <script>
 	$(document).ready(function() {
 		/*
-		var index = parent.layer.getFrameIndex(window.name);
-		parent.layer.iframeAuto(index);
-		*/
+		 var index = parent.layer.getFrameIndex(window.name);
+		 parent.layer.iframeAuto(index);
+		 */
 	});
 	function save(){
 		var index = parent.layer.getFrameIndex(window.name);

@@ -19,7 +19,7 @@ public class CmController {
 	
 	@RequestMapping(value = "/cm/add.jspx")
 	public ModelAndView addJspx() {
-		return new ModelAndView("forward:/cm/edit.jsp");
+		return new ModelAndView("forward:/cm/add.jsp");
 	}
 	
 	@RequestMapping(value = "/cm/detail.jspx")

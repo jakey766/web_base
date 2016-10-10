@@ -422,6 +422,7 @@
 	}
 	
 	function toAdd(){
+		/*
 		layer.open({
 			type: 2,
 			title: '新增',
@@ -431,6 +432,8 @@
 			area: ['80%', '90%'],
 			content: '${PATH}cm/add.jspx'
 		});
+		*/
+		location.href = '${PATH}cm/add.jspx';
 	}
 	
 	function toEdit(id){

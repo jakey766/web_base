@@ -45,10 +45,6 @@ public class SysUserService {
 
     @Transactional
     public Result update(SysUser vo){
-//        SysUser tmp = sysUserDao.getByUsername(vo.getUsername());
-//        if(tmp!=null&&vo.getId()!=tmp.getId()){
-//            return Result.FAILURE("已存在相同用户名");
-//        }
         sysUserDao.update(vo);
         return Result.SUCCESS(vo);
     }
