@@ -41,25 +41,26 @@ public class BaseInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		CookieUtil cookieUtil = new CookieUtil(request, response);
+		int userId = cookieUtil.getInt(Constants.KEY_USER_ID);
+		UserInfoContext.clear();
+		UserInfoContext.setId(userId);
+		UserInfoContext.setName(cookieUtil.getString(Constants.KEY_USER_NAME));
+
 		Result result = new Result();
 		//这里检测权限
 		String uri = getURI(request);
 		System.out.println(uri);
-		if(exclude(uri))
+		if(exclude(uri)) {
 			return true;
-		
-		CookieUtil cookieUtil = new CookieUtil(request, response);
-		int userId = cookieUtil.getInt(Constants.KEY_USER_ID);
+		}
+
 		if(userId==-1){
 			result.setMessage("用户没有登录.");
 			dealHandle(request, response, result, true);
 			return false;
 		}
-		
-		UserInfoContext.clear();
-		UserInfoContext.setId(userId);
-		UserInfoContext.setName(cookieUtil.getString(Constants.KEY_USER_NAME));
-		
+
 		return true;
 	}
 

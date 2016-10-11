@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pk.dao.admin.SysDistDao">
+	<select id="get" useCache="true" resultType="SysDist" parameterType="int">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_dist WHERE id = #{id}
+	</select>
+
+	<insert id="insert" flushCache="true" parameterType="SysDist" useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+			INSERT INTO sys_dist(type, `key`, name, remark)
+			VALUES(#{type}, #{key}, #{name}, #{remark})
+		]]>
+	</insert>
+
+	<update id="update" flushCache="true" parameterType="SysDist">
+		<![CDATA[
+			UPDATE sys_dist SET name = #{name}, remark = #{remark}
+			WHERE id = #{id}
+		]]>
+	</update>
+
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			DELETE FROM sys_dist WHERE id = #{id}
+		]]>
+	</delete>
+
+	<select id="count" resultType="int" useCache="false" parameterType="SysDistSearchVO">
+		SELECT COUNT(id) FROM sys_dist WHERE 1=1
+		<include refid="QueryWhere" />
+	</select>
+
+	<select id="list" resultType="SysDist" useCache="false" parameterType="SysDistSearchVO">
+		SELECT
+		<include refid="QuerySelect" />
+		FROM sys_dist WHERE 1=1
+		<include refid="QueryWhere" />
+		ORDER BY id
+		<if test="size > 0">
+			<![CDATA[
+				limit #{start}, #{size}
+			]]>
+		</if>
+	</select>
+
+	<sql id="QuerySelect">
+		<![CDATA[
+			id, type, `key`, name, remark
+		]]>
+	</sql>
+	
+	<sql id="QueryWhere">
+		<if test="type!=null and type!=''">
+			<![CDATA[
+				AND type = #{type}
+			]]>
+		</if>
+		<if test="key!=null and key!=''">
+			<![CDATA[
+				AND `key` = #{key}
+			]]>
+		</if>
+	</sql>
+</mapper>
