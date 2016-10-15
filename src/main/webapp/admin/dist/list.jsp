@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.pk.framework.cfg.Constants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../../common/env.jsp"%>
@@ -15,11 +14,11 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<!-- BEGIN 页面标题和面包屑导航 -->
-				<h3 class="page-title">字典管理</h3>
+				<h3 class="page-title">普通字典管理</h3>
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="${PATH}">Home</a><i class="icon-angle-right"></i></li>
 					<li>系统管理<i class="icon-angle-right"></i></li>
-					<li>字典管理</li>
+					<li>普通字典管理</li>
 				</ul>
 				<!-- END 页面标题和面包屑导航 -->
 			</div>
@@ -36,7 +35,7 @@
 							<i class="icon-reorder"></i>字典列表
 						</div>
 						<div class="tools">
-							<select id="searchType" name="searchType" class="m-wrap medium" onchange="search()">
+							<select id="searchType" name="searchType" class="m-wrap medium" onchange="search()" style="margin-bottom:0px;">
 								<option value="">所有类型</option>
 								<c:forEach var="vo" items="${types}">
 									<option value="${vo.key}">${vo.value}</option>

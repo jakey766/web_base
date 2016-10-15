@@ -1,9 +1,9 @@
 package com.pk.service.admin;
 
-import com.pk.dao.admin.SysOrgDao;
+import com.pk.dao.admin.SysTreeDao;
 import com.pk.framework.vo.Result;
-import com.pk.model.admin.SysOrg;
-import com.pk.vo.admin.SysOrgSearchVO;
+import com.pk.model.admin.SysTree;
+import com.pk.vo.admin.SysTreeSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,22 +12,22 @@ import java.util.List;
 
 
 @Service()
-public class SysOrgService {
+public class SysTreeService {
 
     @Autowired
-    private SysOrgDao sysOrgDao;
+    private SysTreeDao sysTreeDao;
     
-    public Result list(SysOrgSearchVO svo){
-    	return Result.SUCCESS(sysOrgDao.list(svo));
+    public Result list(SysTreeSearchVO svo){
+    	return Result.SUCCESS(sysTreeDao.list(svo));
     }
 
-    private boolean exist(SysOrg vo){
-        SysOrgSearchVO svo = new SysOrgSearchVO();
+    private boolean exist(SysTree vo){
+        SysTreeSearchVO svo = new SysTreeSearchVO();
         svo.setPid(vo.getPid());
         svo.setName(vo.getName());
-        List<SysOrg> list = sysOrgDao.list(svo);
+        List<SysTree> list = sysTreeDao.list(svo);
         if(list!=null&&list.size()>0){
-            SysOrg exist = list.get(0);
+            SysTree exist = list.get(0);
             if(exist.getId()!=vo.getId())
                 return true;
         }
@@ -35,41 +35,41 @@ public class SysOrgService {
     }
 
     @Transactional
-    public Result add(SysOrg vo){
+    public Result add(SysTree vo){
         if(exist(vo)){
             return Result.FAILURE("已存在相同名称:" + vo.getName());
         }
-        sysOrgDao.insert(vo);
+        sysTreeDao.insert(vo);
         if(vo.getPid()>0){
-            SysOrg tmp = sysOrgDao.get(vo.getPid());
+            SysTree tmp = sysTreeDao.get(vo.getPid());
             vo.setCode(tmp.getCode() + vo.getId() + ",");
         }else{
             vo.setCode("," + vo.getId() + ",");
         }
-        sysOrgDao.updateCode(vo);
+        sysTreeDao.updateCode(vo);
         return Result.SUCCESS(vo);
     }
 
     @Transactional
-    public Result update(SysOrg vo){
+    public Result update(SysTree vo){
         if(exist(vo)){
             return Result.FAILURE("已存在相同名称:" + vo.getName());
         }
-        sysOrgDao.update(vo);
+        sysTreeDao.update(vo);
         return Result.SUCCESS(vo);
     }
 
     @Transactional
     public Result delete(int id){
-        SysOrg vo = sysOrgDao.get(id);
+        SysTree vo = sysTreeDao.get(id);
         if(vo!=null){
-            sysOrgDao.deleteByCode(vo.getCode());
+            sysTreeDao.deleteByCode(vo.getCode());
         }
     	return Result.SUCCESS();
     }
     
-    public SysOrg get(int id){
-    	return sysOrgDao.get(id);
+    public SysTree get(int id){
+    	return sysTreeDao.get(id);
     }
 
 }

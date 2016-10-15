@@ -13,8 +13,6 @@ public interface SysOrgDao extends SqlMapper {
 
     SysOrg get(int id);
 
-    int count(SysOrgSearchVO svo);
-
     List<SysOrg> list(SysOrgSearchVO svo);
 
     void insert(SysOrg vo);

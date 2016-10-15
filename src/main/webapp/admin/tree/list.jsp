@@ -1,6 +1,10 @@
+<%@ page import="com.pk.framework.cfg.Constants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../../common/env.jsp"%>
 <jsp:include page="../../common/hd_frame.jsp"></jsp:include>
+<%
+	request.setAttribute("types", Constants.getTreeTypeMap());
+%>
 <link href="${PATH}r/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
 
 <!-- BEGIN PAGE -->
@@ -11,11 +15,11 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<!-- BEGIN 页面标题和面包屑导航 -->
-				<h3 class="page-title">组织机构管理</h3>
+				<h3 class="page-title">树形字典管理</h3>
 				<ul class="breadcrumb">
 					<li><i class="icon-home"></i> <a href="${PATH}">Home</a><i class="icon-angle-right"></i></li>
 					<li>系统管理<i class="icon-angle-right"></i></li>
-					<li>组织机构管理</li>
+					<li>树形字典管理</li>
 				</ul>
 				<!-- END 页面标题和面包屑导航 -->
 			</div>
@@ -27,11 +31,16 @@
 				<div class="portlet box default">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="icon-reorder"></i>组织机构
+							<i class="icon-reorder"></i>
+							<select id="searchType" name="searchType" class="m-wrap small" onchange="typeChange()" style="margin-bottom:0px;">
+								<c:forEach var="vo" items="${types}">
+									<option value="${vo.key}">${vo.value}</option>
+								</c:forEach>
+							</select>
 						</div>
 						<div class="tools">
 							<button type="button" class="btn mini green" onclick="toAdd(0, 1)" style="margin-top: -10px;">
-								<i class="icon-plus"></i>新增营销部
+								<i class="icon-plus"></i>增加父项
 							</button>
 						</div>
 					</div>
@@ -44,10 +53,10 @@
 				<div class="portlet box default detail">
 					<div class="portlet-title">
 						<div class="caption">
-							<i class="icon-reorder"></i>组织机构信息
+							<i class="icon-reorder"></i>字典信息
 						</div>
 						<div class="tools">
-							<button type="button" id="btnAddChild" class="btn mini green hide" onclick="toAddChild()" style="margin-top: -10px;">增加大区</button>
+							<button type="button" id="btnAddChild" class="btn mini green hide" onclick="toAddChild()" style="margin-top: -10px;">增加子项</button>
 							<button type="button" id="btnEdit" class="btn mini blue hide" onclick="toEdit()" style="margin-top: -10px;">编辑</button>
 							<button type="button" id="btnDelete" class="btn mini red hide" onclick="toDelete()" style="margin-top: -10px;">删除</button>
 						</div>
@@ -56,10 +65,6 @@
 						<div class="control-group">
 							<label class="control-label">名称:</label>
 							<div class="controls" id="show_name"></div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">类型:</label>
-							<div class="controls" id="show_type"></div>
 						</div>
 					</div>
 				</div>
@@ -78,7 +83,7 @@
 					class="form form-horizontal form-bordered form-row-stripped">
 					<input type="hidden" id="id" name="id" />
 					<input type="hidden" id="pid" name="pid" />
-					<input type="hidden" id="type" name="type" />
+					<input type="hidden" id="level" name="level" />
 					<div class="row-fluid">
 						<div class="control-group">
 							<label class="control-label"><span class="required">*</span> 名称：</label>
@@ -107,7 +112,7 @@
 <script>
 	var orgList;
 	var curId;
-	var curType;
+	var curLevel;
 	var curName;
 	$(document).ready(function() {
 		search();
@@ -128,13 +133,11 @@
 		var vo = getOrg(id);
 		curId = vo.id;
 		curName = vo.name;
-		curType = vo.type;
+		curLevel = vo.level;
 		$('#show_name').text(vo.name);
-		$('#show_type').text(vo.type==1?"营销部":vo.type==2?"大区":"经销商");
 
-		if(vo.type<3){
+		if(vo.pid==0){
 			$('#btnAddChild').show();
-			$('#btnAddChild').text(vo.type==1?'增加大区':'增加经销商');
 		}else{
 			$('#btnAddChild').hide();
 		}
@@ -166,7 +169,7 @@
 	function search() {
 		zNodes = [];
 		Loading.show();
-		$.post('${PATH}admin/org/list.do', 'pid=-1', function(json) {
+		$.post('${PATH}admin/tree/list.do', 'pid=-1&type='+$('#searchType').val(), function(json) {
 			Loading.hide();
 			if (!json.success) {
 				$.alert(json.message);
@@ -175,20 +178,26 @@
 			var data = json.object;
 			if(!!data&&data.length>0){
 				$.each(data, function(i, vo){
-					zNodes.push({id: vo.id, pId:vo.pid, name:vo.name, type:vo.type, open: vo.type<2?true:false});
+					zNodes.push({id: vo.id, pId:vo.pid, name:vo.name, level:vo.level, open:true});
 				});
 			}
 			$.fn.zTree.init($("#orgTree"), setting, zNodes);
 			orgList = data;
 		});
 	}
+
+	function typeChange(){
+		search();
+		$('#show_name').text('');
+		$('#btnAddChild, #btnEdit, #btnDelete').hide();
+	}
 	
 	var editType = 'add';
-	function toAdd(pid, type) {
+	function toAdd(pid, level) {
 		$('#id').val('');
 		$('#pid').val(pid);
 		$('#name').val('');
-		$('#type').val(type);
+		$('#level').val(level);
 		$.dialog({
 			title : '新增',
 			content : $('#editDialog')[0],
@@ -199,13 +208,13 @@
 	}
 
 	function toAddChild(){
-		toAdd(curId, curType+1);
+		toAdd(curId, curLevel+1);
 	}
 	
 	function toEdit() {
 		var id = curId;
 		Loading.show();
-		$.post('${PATH}admin/org/get.do', 'id=' + id, function(data) {
+		$.post('${PATH}admin/tree/get.do', 'id=' + id, function(data) {
 			Loading.hide();
 			if (!data.success) {
 				$.alert(data.message);
@@ -220,7 +229,7 @@
 			$('#id').val(vo.id);
 			$('#pid').val(vo.pid);
 			$('#name').val(vo.name);
-			$('#type').val(vo.type);
+			$('#level').val(vo.level);
 			$.dialog({
 				title : '编辑',
 				content : $('#editDialog')[0],
@@ -247,11 +256,12 @@
 		var param = {
 			pid: $.trim($('#pid').val()),
 			name : $.trim($('#name').val()),
-			type : $.trim($('#type').val())
+			level : $.trim($('#level').val()),
+			type : $('#searchType').val()
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
-		$.post('${PATH}admin/org/add.do', param, function(data) {
+		$.post('${PATH}admin/tree/add.do', param, function(data) {
 			Loading.hide();
 			$('#btnSave').attr('disabled', false);
 			if (data.success) {
@@ -272,11 +282,12 @@
 			id : $('#id').val(),
 			pid: $.trim($('#pid').val()),
 			name : $.trim($('#name').val()),
-			type : $.trim($('#type').val())
+			level : $.trim($('#level').val()),
+			type : $('#searchType').val()
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
-		$.post('${PATH}admin/org/update.do', param, function(data) {
+		$.post('${PATH}admin/tree/update.do', param, function(data) {
 			Loading.hide();
 			$('#btnSave').attr('disabled', false);
 			if (data.success) {
@@ -298,7 +309,7 @@
 		var name = curName;
 		$.confirm('确认删除[' + name + ']?', function() {
 			Loading.show();
-			$.post("${PATH}admin/org/delete.do", "id=" + id, function(data) {
+			$.post("${PATH}admin/tree/delete.do", "id=" + id, function(data) {
 				Loading.hide();
 				if (data.success) {
 					search();
@@ -310,7 +321,6 @@
 					$.alert(data.message);
 				}
 				$('#show_name').text('');
-				$('#show_type').text('');
 				$('#btnAddChild, #btnEdit, #btnDelete').hide();
 			});
 		}, function() {
