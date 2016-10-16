@@ -75,16 +75,16 @@ CREATE TABLE `cm_info` (
   `jkr_cs` int(11) DEFAULT NULL COMMENT '借款人城市',
   `hkdz` varchar(200) DEFAULT NULL COMMENT '户口地址',
   `dzlx` varchar(50) DEFAULT NULL COMMENT '地址类型',
-  `fclx` int(11) DEFAULT NULL COMMENT '房产类型',
+  `fclx` varchar(50) DEFAULT NULL COMMENT '房产类型',
   `jznx` int(11) DEFAULT NULL COMMENT '居住年限',
   `gsmc` varchar(100) DEFAULT NULL COMMENT '公司名称',
-  `qyxz` int(11) DEFAULT NULL COMMENT '企业性质',
+  `qyxz` varchar(50) DEFAULT NULL COMMENT '企业性质',
   `zw` varchar(50) DEFAULT NULL COMMENT '职位',
   `gsdh` varchar(50) DEFAULT NULL COMMENT '公司电话',
   `dzy` varchar(200) DEFAULT NULL COMMENT '地址一',
   `gznx` int(11) DEFAULT NULL COMMENT '工作年限',
   `zcjg` double DEFAULT NULL COMMENT '资产价格',
-  `csys` int(11) DEFAULT NULL COMMENT '车上颜色',
+  `csys` varchar(50) DEFAULT NULL COMMENT '车身颜色',
   `cpz` varchar(50) DEFAULT NULL COMMENT '产品组',
   `cplx` varchar(50) DEFAULT NULL COMMENT '产品类型',
   `dkqs` varchar(50) DEFAULT NULL COMMENT '贷款期数',
@@ -102,6 +102,7 @@ CREATE TABLE `cm_info` (
   `yyxhsl` varchar(50) DEFAULT NULL COMMENT '拥有小孩数量',
   `dygxhnljd` varchar(50) DEFAULT NULL COMMENT '第一个小孩年龄阶段',
   `degxhnljd` varchar(50) DEFAULT NULL COMMENT '第二个小孩年龄阶段',
+  `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `sqr_zjhm` (`sqr_zjlx`),
   KEY `sjgcr_zjhm` (`sjgcr_zjhm`)
@@ -339,4 +340,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-15 23:12:28
+-- Dump completed on 2016-10-16 21:10:42
