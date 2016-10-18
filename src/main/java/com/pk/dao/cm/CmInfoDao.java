@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,11 +18,12 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import com.pk.framework.vo.PageResultVO;
 import com.pk.model.cm.CmInfo;
 import com.pk.vo.cm.CmInfoSearchVO;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by jiangkunpeng on 16/10/11.
  */
-@Resource
+@Repository
 public class CmInfoDao{
 	
 	private final static Logger logger = Logger.getLogger(CmInfoDao.class);
@@ -45,7 +44,7 @@ public class CmInfoDao{
         int count = jdbcTemplate.queryForInt(_sql, _params);
         int totalPage = svo.getSize() < 1 ? 1 : (count + svo.getSize() - 1) / svo.getSize();
         if(count > 0){
-            _sql = "SELECT * FROM cm_info WHERE 1=1" + sql.toString() + " LIMIT " + svo.getStart() + " " + svo.getSize();
+            _sql = "SELECT * FROM cm_info WHERE 1=1" + sql.toString() + " LIMIT " + svo.getStart() + "," + svo.getSize();
             List<CmInfo> list = jdbcTemplate.query(_sql, _params, CmInfoRowMapper);
             page.setList(list);
         }

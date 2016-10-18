@@ -249,9 +249,8 @@
 									<th>城市</th>
 									<th>车系</th>
 									<th>车型</th>
-									<th>车架号码</th>
-									<th>车辆颜色</th>
-									<th>是否交车上牌</th>
+									<th>车牌号码</th>
+									<th>车身颜色</th>
 									<th>所属营销部</th>
 									<th>所属大区</th>
 									<th>所属经销商</th>
@@ -263,23 +262,22 @@
 								<script id="listTmpl" type="text/html">
                 				{{each list as v i}}
                 					<tr>
-										<td>{{v.xm}}</td>
-                    					<td>{{v.zjhm}}</td>
-                    					<td>{{v.xb}}</td>
-										<td>{{v.sjhm}}</td>
+										<td>{{v.sqr_xm}}</td>
+                    					<td>{{v.sqr_zjhm}}</td>
+                    					<td>{{v.xb_show}}</td>
+										<td>{{v.sqr_dhhm}}</td>
 										<td>{{v.hyzk}}</td>
 										<td>{{v.jtrs}}</td>
 										<td>{{v.hylx}}</td>
-										<td>{{v.sf}}</td>
-										<td>{{v.cs}}</td>
+										<td>{{v.city_sf}}</td>
+										<td>{{v.city_cs}}</td>
 										<td>{{v.cxi}}</td>
 										<td>{{v.cxing}}</td>
-										<td>{{v.cjhm}}</td>
-										<td>{{v.clys}}</td>
-										<td>{{v.jcsp}}</td>
-										<td>{{v.yxb}}</td>
-										<td>{{v.dq}}</td>
-										<td>{{v.jxs}}</td>
+										<td>{{v.cphm}}</td>
+										<td>{{v.csys}}</td>
+										<td>{{v.org_yxb}}</td>
+										<td>{{v.org_dq}}</td>
+										<td>{{v.org_jxs}}</td>
 										<td>{{v.fkfs}}</td>
                     					<td>
 											<button class="btn mini green" onclick="toEdit('{{v.id}}')">编辑</button>
@@ -314,13 +312,12 @@
 	
 	var curPage = 1;
 	var tableSort = $('#tb_list');
-	/*
 	function search(page, size) {
 		var fn = arguments.callee;
 		var req = 'page=' + (page || 1) + '&size=' + (size = size || 15);
 		Loading.show();
 		$('#btnSearch').attr('disabled', true);
-		$.post('${PATH}admin/menu/list.do', req, function(json) {
+		$.post('${PATH}cm/list.do', req, function(json) {
 			$('#btnSearch').attr('disabled', false);
 			Loading.hide();
 			if (!json.success) {
@@ -341,8 +338,8 @@
 		});
 		curPage = page;
 	}
-	*/
 
+	/*
 	function search() {
 		var data = [];
 		var page = 1;
@@ -389,6 +386,7 @@
 		TmpTools.commonPage('#common_page', fn, size, count, p, pCount);
 		curPage = page;
 	}
+	*/
 	
 	function refresh() {
 		search(curPage);

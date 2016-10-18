@@ -1,5 +1,8 @@
 package com.pk.model.cm;
 
+import com.pk.framework.spring.SpringContextUtil;
+import com.pk.service.admin.SysDistService;
+
 import java.io.Serializable;
 
 /**
@@ -71,7 +74,7 @@ public class CmInfo implements Serializable {
     private String cpz;         //产品组
     private String cplx;        //产品类型
     private String dkqs;        //贷款期数
-    private double xsjq;        //销售价格
+    private double xsjg;        //销售价格
     private double sfkbl;       //首付款比例
     private double sfkje;       //首付款金额
     private double dkje;        //贷款金额
@@ -87,6 +90,11 @@ public class CmInfo implements Serializable {
     private String degxhnljd;   //第二个小孩年龄阶段
 
     private int deleted;
+
+    public String getXb_show(){
+        SysDistService sysDistService = SpringContextUtil.getBean(SysDistService.class);
+        return sysDistService.getDistName("XB", xb);
+    }
 
     public int getDeleted() {
         return deleted;
@@ -600,14 +608,6 @@ public class CmInfo implements Serializable {
         this.dkqs = dkqs;
     }
 
-    public double getXsjq() {
-        return xsjq;
-    }
-
-    public void setXsjq(double xsjq) {
-        this.xsjq = xsjq;
-    }
-
     public double getSfkbl() {
         return sfkbl;
     }
@@ -710,5 +710,13 @@ public class CmInfo implements Serializable {
 
     public void setDegxhnljd(String degxhnljd) {
         this.degxhnljd = degxhnljd;
+    }
+
+    public double getXsjg() {
+        return xsjg;
+    }
+
+    public void setXsjg(double xsjg) {
+        this.xsjg = xsjg;
     }
 }

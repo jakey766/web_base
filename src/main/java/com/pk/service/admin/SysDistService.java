@@ -112,6 +112,31 @@ public class SysDistService extends BaseService {
     }
 
     /**
+     * 获取字典显示值
+     * @param type
+     * @param key
+     * @return
+     */
+    public String getDistName(String type, String key){
+        SysDist vo = null;
+        String cacheKey = String.format(KEY_TYPE_KEY_GET, type, key);
+        vo = getFromCache(cacheKey, SysDist.class);
+        if(vo==null){
+            SysDistSearchVO svo = new SysDistSearchVO();
+            svo.setType(type);
+            svo.setKey(key);
+            List<SysDist> list = sysDistDao.list(svo);
+            if(list!=null&&list.size()>0){
+                vo = list.get(0);
+            }
+            putIntoCache(cacheKey, vo);
+        }
+        if(vo!=null)
+            return vo.getName();
+        return null;
+    }
+
+    /**
      * 删除缓存
      * @param vo
      * @param single

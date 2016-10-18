@@ -1,6 +1,7 @@
 package com.pk.service.admin;
 
 import com.pk.dao.admin.SysTreeDao;
+import com.pk.framework.service.BaseService;
 import com.pk.framework.vo.Result;
 import com.pk.model.admin.SysTree;
 import com.pk.vo.admin.SysTreeSearchVO;
@@ -12,7 +13,10 @@ import java.util.List;
 
 
 @Service()
-public class SysTreeService {
+public class SysTreeService extends BaseService {
+
+    private static final String KEY_TYPE_LIST = "SysTreeList:%s";
+    private static final String KEY_TYPE_KEY_GET = "SysTreeGet:%s";
 
     @Autowired
     private SysTreeDao sysTreeDao;
@@ -72,4 +76,48 @@ public class SysTreeService {
     	return sysTreeDao.get(id);
     }
 
+    /**
+     * 通过类型获取树字典
+     * @param type
+     * @return
+     */
+    public List<SysTree> loadByType(String type){
+        List<SysTree> list = null;
+        String cacheKey = String.format(KEY_TYPE_LIST, type);
+        list = getFromCache(cacheKey, List.class);
+        if(list==null){
+            SysTreeSearchVO svo = new SysTreeSearchVO();
+            svo.setType(type);
+            list = sysTreeDao.list(svo);
+            putIntoCache(cacheKey, list);
+        }
+        return list;
+    }
+
+    /**
+     * 使用缓存获取,如果有缓存的话
+     * @param id
+     * @return
+     */
+    public SysTree getWithCache(int id){
+        String cacheKey = String.format(KEY_TYPE_KEY_GET, id);
+        SysTree vo = getFromCache(cacheKey, SysTree.class);
+        if(vo==null){
+            vo = sysTreeDao.get(id);
+            putIntoCache(cacheKey, vo);
+        }
+        return vo;
+    }
+
+    /**
+     * 获取树显示名称
+     * @param id
+     * @return
+     */
+    public String getTreeName(int id){
+        SysTree vo = getWithCache(id);
+        if(vo!=null)
+            return vo.getName();
+        return null;
+    }
 }
