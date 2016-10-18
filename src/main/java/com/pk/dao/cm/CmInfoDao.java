@@ -1,13 +1,6 @@
 package com.pk.dao.cm;
 
-import com.pk.framework.vo.PageResultVO;
-import com.pk.model.cm.CmInfo;
-import com.pk.vo.cm.CmInfoSearchVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-
-import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -17,11 +10,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+import com.pk.framework.vo.PageResultVO;
+import com.pk.model.cm.CmInfo;
+import com.pk.vo.cm.CmInfoSearchVO;
+
 /**
  * Created by jiangkunpeng on 16/10/11.
  */
 @Resource
 public class CmInfoDao{
+	
+	private final static Logger logger = Logger.getLogger(CmInfoDao.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -46,16 +52,102 @@ public class CmInfoDao{
         page.setCount(count);
         page.setPage(svo.getPage());
         page.setPageCount(totalPage);
-
         return page;
     }
 
     public void insert(CmInfo vo){
-
+        List<Object> params = new ArrayList<Object>();
+        StringBuilder fieldNames = new StringBuilder(100);
+		StringBuilder fieldValues = new StringBuilder(100);
+		
+		String fieldName = null;
+		Method method = null;
+		Object val = null;
+		Method[] methods = CmInfo.class.getDeclaredMethods();
+		Field[] fields = CmInfo.class.getDeclaredFields();
+		int idx = 0;
+		for(int i=0,len=fields.length;i<len;i++){
+			fieldName = fields[i].getName();
+			if("id".equals(fieldName))
+				continue;
+			method = lookupMethod(methods, "get" + fieldName);
+			if(method==null)
+				continue;
+			try {
+				val = method.invoke(vo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Bean反射转换SQL异常,CLASS:"+(CmInfo.class.getSimpleName())+",FIELD:"+fieldName, e);
+			}
+			if(val==null)
+				continue;
+			if(idx>0){
+				fieldNames.append(",");
+				fieldValues.append(",");
+			}
+			fieldNames.append(fieldName);
+			fieldValues.append("?");
+			params.add(val);
+			idx++;
+		}
+		
+		StringBuilder sql = new StringBuilder(100);
+		sql.append("INSERT INTO cm_info (").append(fieldNames.toString()).append(") VALUES (").append(fieldValues).append(")");
+		
+		jdbcTemplate.update(sql.toString(), params.toArray());
+		
+		params = null;
+		fieldNames = null;
+		fieldValues = null;
+		methods = null;
+		fields = null;
+		sql = null;
     }
 
     public void update(CmInfo vo){
-
+    	List<Object> params = new ArrayList<Object>();
+        StringBuilder fieldNames = new StringBuilder(100);
+		
+		String fieldName = null;
+		Method method = null;
+		Object val = null;
+		Method[] methods = CmInfo.class.getDeclaredMethods();
+		Field[] fields = CmInfo.class.getDeclaredFields();
+		int idx = 0;
+		for(int i=0,len=fields.length;i<len;i++){
+			fieldName = fields[i].getName();
+			if("id".equals(fieldName))
+				continue;
+			method = lookupMethod(methods, "get" + fieldName);
+			if(method==null)
+				continue;
+			try {
+				val = method.invoke(vo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Bean反射转换SQL异常,CLASS:"+(CmInfo.class.getSimpleName())+",FIELD:"+fieldName, e);
+			}
+			if(val==null)
+				continue;
+			if(idx>0){
+				fieldNames.append(",");
+			}
+			fieldNames.append(fieldName).append("=?");
+			params.add(val);
+			idx++;
+		}
+		
+		StringBuilder sql = new StringBuilder(100);
+		sql.append("UPDATE INTO cm_info SET ").append(fieldNames).append(" WHERE id=?");
+		params.add(vo.getId());
+		
+		jdbcTemplate.update(sql.toString(), params.toArray());
+		
+		params = null;
+		fieldNames = null;
+		methods = null;
+		fields = null;
+		sql = null;
     }
 
     public void delete(int id){
@@ -72,6 +164,7 @@ public class CmInfoDao{
     }
 
     static ParameterizedRowMapper<CmInfo> CmInfoRowMapper = new ParameterizedRowMapper<CmInfo>(){
+    	
         @Override
         public CmInfo mapRow(ResultSet rs, int i) throws SQLException {
             Map<String, String> columnName = new HashMap<String, String>();
@@ -85,7 +178,47 @@ public class CmInfoDao{
             String val = null;
 
             CmInfo vo = new CmInfo();
-
+            for(int j=0,len=md.getColumnCount();j<len;j++){
+            	colName = columnName.get(String.valueOf(j));
+				Method method = lookupMethod(methods, "set" + colName);
+				if(method==null)
+					continue;
+				try{
+					String paraType = method.getParameterTypes()[0].getName();
+					if("int".equals(paraType)||"java.lang.Integer".equals(paraType)){
+						method.invoke(vo, rs.getInt(colName));
+					}else if("java.lang.String".equals(paraType)){
+						val = rs.getString(colName);
+						if(val!=null){
+							method.invoke(vo, val);
+						}
+					}else if("long".equals(paraType)||"java.lang.Long".equals(paraType)){
+						method.invoke(vo, rs.getLong(colName));
+					}else if("double".equals(paraType)||"java.lang.Double".equals(paraType)){
+						method.invoke(vo, rs.getDouble(colName));
+					}else if("float".equals(paraType)||"java.lang.Float".equals(paraType)){
+						method.invoke(vo, rs.getFloat(colName));
+					}else if("short".equals(paraType)||"java.lang.Short".equals(paraType)){
+						method.invoke(vo, rs.getShort(colName));
+					}else if("char".equals(paraType)||"java.lang.Character".equals(paraType)){
+						val = rs.getString(colName);
+						if(val!=null&&val.length()>0){
+							method.invoke(vo, val.charAt(0));
+						}else{
+							method.invoke(vo, ' ');
+						}
+					}else if("boolean".equals(paraType)||"java.lang.Boolean".equals(paraType)){
+						method.invoke(vo, rs.getBoolean(colName));
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+					logger.error("SQL结果反射封装Bean异常,CLASS:"+(CmInfo.class.getSimpleName())+",COL:"+colName, e);
+				}
+            }
+            
+            methods = null;
+            columnName = null;
+            md = null;
             return vo;
         }
     };
