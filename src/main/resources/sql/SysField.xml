@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pk.dao.admin.SysFieldDao">
+	<update id="update" flushCache="true" parameterType="SysField">
+		<![CDATA[
+			UPDATE sys_field SET list = #{list}, query = #{query}, sort_index = #{sortIndex}
+			WHERE fname = #{fname}
+		]]>
+	</update>
+
+	<select id="loadAll" resultType="SysField" useCache="false">
+		SELECT fname, sname, name, type, dist_type AS distType, dist_key AS distKey, list, query, layer_width AS layerWidth, sort_index AS sortIndex
+		FROM sys_field ORDER BY sort_index
+	</select>
+</mapper>
