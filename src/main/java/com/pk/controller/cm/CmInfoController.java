@@ -2,7 +2,11 @@ package com.pk.controller.cm;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.pk.model.admin.SysField;
 import com.pk.model.cm.CmInfo;
+import com.pk.service.admin.SysFieldService;
+import com.pk.service.admin.SysOrgService;
+import com.pk.service.admin.SysTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import com.pk.service.cm.CmInfoService;
 import com.pk.vo.cm.CmInfoSearchVO;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -21,25 +26,39 @@ public class CmInfoController {
 	
 	@Autowired
 	private CmInfoService cmInfoService;
+	@Autowired
+	private SysFieldService sysFieldService;
+	@Autowired
+	private SysOrgService sysOrgService;
+	@Autowired
+	private SysTreeService sysTreeService;
 	
 	@RequestMapping(value = "/cm/list.jspx")
 	public ModelAndView listJspx() {
-		return new ModelAndView("forward:/cm/list.jsp");
+		ModelAndView model = new ModelAndView("forward:/cm/list.jsp");
+		model.addObject("fields", getMyFields());
+		return model;
 	}
 
 	@RequestMapping(value = "/cm/edit.jspx")
 	public ModelAndView editJspx(int id) {
-		return new ModelAndView("forward:/cm/edit.jsp?id="+id);
+		ModelAndView model = new ModelAndView("forward:/cm/edit.jsp?id="+id);
+		model.addObject("fields", getMyFields());
+		return model;
 	}
 	
 	@RequestMapping(value = "/cm/add.jspx")
 	public ModelAndView addJspx() {
-		return new ModelAndView("forward:/cm/add.jsp");
+		ModelAndView model = new ModelAndView("forward:/cm/add.jsp");
+		model.addObject("fields", getMyFields());
+		return model;
 	}
 	
 	@RequestMapping(value = "/cm/detail.jspx")
 	public ModelAndView detailJspx(int id) {
-		return new ModelAndView("forward:/cm/detail.jsp?id="+id);
+		ModelAndView model = new ModelAndView("forward:/cm/detail.jsp?id="+id);
+		model.addObject("fields", getMyFields());
+		return model;
 	}
 	
 	@RequestMapping(value = "/cm/list.do")
@@ -48,6 +67,17 @@ public class CmInfoController {
 		try{
 			svo.setMap(getParameterMap(request));
 			return cmInfoService.list(svo);
+		}catch(Exception e){
+			e.printStackTrace();
+			return Result.FAILURE("后台异常:"+e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/cm/get.do")
+	@ResponseBody
+	public Result get(int id) {
+		try{
+			return Result.SUCCESS(cmInfoService.get(id));
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
@@ -65,14 +95,68 @@ public class CmInfoController {
 		}
 	}
 
+	@RequestMapping(value = "/cm/update.do")
+	@ResponseBody
+	public Result update(CmInfo vo) {
+		try{
+			return cmInfoService.update(vo);
+		}catch(Exception e){
+			e.printStackTrace();
+			return Result.FAILURE("后台异常:"+e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/cm/delete.do")
+	@ResponseBody
+	public Result delete(int id) {
+		try{
+			return cmInfoService.delete(id);
+		}catch(Exception e){
+			e.printStackTrace();
+			return Result.FAILURE("后台异常:"+e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/cm/loadOrgs.do")
+	@ResponseBody
+	public Result loadOrgs(int pid) {
+		try{
+			return Result.SUCCESS(sysOrgService.loadByPid(pid));
+		}catch(Exception e){
+			e.printStackTrace();
+			return Result.FAILURE("后台异常:"+e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/cm/loadTrees.do")
+	@ResponseBody
+	public Result loadTrees(int pid) {
+		try{
+			return Result.SUCCESS(sysTreeService.loadByPid(pid));
+		}catch(Exception e){
+			e.printStackTrace();
+			return Result.FAILURE("后台异常:"+e.getMessage());
+		}
+	}
+
+	/**
+	 * 获取我可见的字段
+	 * @return
+	 */
+	private List<SysField> getMyFields(){
+		return sysFieldService.loadAllWithCache();
+	}
+
 	private Map<String, String> getParameterMap(HttpServletRequest request){
 		Map<String, String[]> maps = request.getParameterMap();
 		Map<String, String> map = new HashMap<String, String>();
 		String[] val = null;
-		for(Map.Entry<String, String[]> entry : maps.entrySet()){
-			val = entry.getValue();
-			if(val!=null&&val.length>0)
-				map.put(entry.getKey(), val[0]);
+		if(maps!=null){
+			for(Map.Entry<String, String[]> entry : maps.entrySet()){
+				val = entry.getValue();
+				if(val!=null&&val.length>0)
+					map.put(entry.getKey(), val[0]);
+			}
 		}
 		return map;
 	}

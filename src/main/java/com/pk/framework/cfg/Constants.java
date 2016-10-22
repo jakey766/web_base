@@ -26,21 +26,17 @@ public final class Constants {
         DIST_TYPE_MAP.put("FCLX", "房产类型");
         DIST_TYPE_MAP.put("HYZK", "婚姻状况");
         DIST_TYPE_MAP.put("JTRS", "家庭人数");
-        //DIST_TYPE_MAP.put("HYLX", "行业类型");
         DIST_TYPE_MAP.put("CXI", "车系");
         DIST_TYPE_MAP.put("CXING", "车型");
-        //DIST_TYPE_MAP.put("SFJC", "是否交车");
-        //DIST_TYPE_MAP.put("SFSP", "是否上牌");
         DIST_TYPE_MAP.put("FKFS", "付款方式");
         DIST_TYPE_MAP.put("HKZT", "还款状态");
         DIST_TYPE_MAP.put("DQZT", "当前状态");
         DIST_TYPE_MAP.put("QYXZ", "企业性质");
-        DIST_TYPE_MAP.put("CXYS", "车型颜色");
+        DIST_TYPE_MAP.put("CXYS", "车身颜色");
         DIST_TYPE_MAP.put("DKQS", "贷款期数");
-        //DIST_TYPE_MAP.put("SCGC", "是否首次购车");
         DIST_TYPE_MAP.put("YYHZSL", "拥有孩子数量");
-        //DIST_TYPE_MAP.put("AZCDZ", "安装充电桩");
         DIST_TYPE_MAP.put("LZGX", "两者关系");
+        DIST_TYPE_MAP.put("ZYLX", "职业类型");
 
         TREE_TYPE_MAP.put("CITY", "省份/城市");
         TREE_TYPE_MAP.put("HYLX", "行业类型");

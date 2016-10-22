@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="cm" uri="http://www.cm.com/functions" %>
 <%@include file="../common/env.jsp"%>
 <jsp:include page="../common/hd_frame.jsp"></jsp:include>
+<style>
+@media (max-width: 979px) and (min-width: 768px){
+	.row-fluid [class*="span"]{margin-left:0px !important;}
+}
+@media (min-width: 1200px){
+	.row-fluid [class*="span"]{margin-left:0px !important;}
+}
+.row-fluid [class*="span"]{margin-left:0px !important;}
+</style>
 
 <!-- BEGIN PAGE -->
 <div class="page-content">
@@ -34,178 +44,73 @@
 						</div>
 					</div>
 					<div class="portlet-body form form-horizontal form-row-seperated">
+						<form id="queryForm" action="#">
 						<div class="row-fluid">
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 姓名：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="xm"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 证件号：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="zjhm"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 手机号：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="sjhm"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 婚姻状况：</label>
-									<div class="controls">
-										<select class="span10" name="hyzk">
-											<option value="">所有</option>
-											<option value="yh">已婚</option>
-											<option value="wh">未婚</option>
-										</select>
-									</div>
-								</div>
-							</div>
+							<c:forEach var="vo" items="${fields}">
+								<c:choose>
+									<c:when test="${vo.stype eq 'dist'}">
+										<div class="span4">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<select class="span10" id="${vo.fname}" name="Q^${vo.fname}^EQ">
+														<option value="">所有</option>
+														<c:forEach var="v" items="${cm:loadDist(vo.distType)}">
+															<option value="${v.key}">${v.name}</option>
+														</c:forEach>
+													</select>
+												</div>
+											</div>
+										</div>
+									</c:when>
+									<c:when test="${vo.stype eq 'org'}">
+										<div class="span4">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<select class="span10" id="${vo.fname}" name="Q^${vo.fname}^EQ" onchange="orgChange(this, '${vo.distKey}')">
+														<option value="">所有</option>
+														<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
+															<c:forEach var="v" items="${cm:loadOrg(vo.distType)}">
+																<option value="${v.id}">${v.name}</option>
+															</c:forEach>
+														</c:if>
+													</select>
+												</div>
+											</div>
+										</div>
+									</c:when>
+									<c:when test="${vo.stype eq 'tree'}">
+										<div class="span4">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<select class="span10" id="${vo.fname}" name="Q^${vo.fname}^EQ" onchange="treeChange(this, '${vo.distKey}')">
+														<option value="">所有</option>
+														<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
+															<c:forEach var="v" items="${cm:loadTree(vo.distType, '0')}">
+																<option value="${v.id}">${v.name}</option>
+															</c:forEach>
+														</c:if>
+													</select>
+												</div>
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="span4">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<input type="text" class="span10" id="${vo.fname}" name="Q^${vo.fname}^LK"/>
+												</div>
+											</div>
+										</div>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</div>
-						<div class="row-fluid">
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 家庭人数：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="jtrs"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 行业类型：</label>
-									<div class="controls">
-										<select class="span10" name="hylx">
-											<option value="">所有</option>
-											<option value="jry">金融业</option>
-											<option value="jzy">建筑业</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 省份：</label>
-									<div class="controls">
-										<select class="span10" name="sf">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 城市：</label>
-									<div class="controls">
-										<select class="span10" name="cs">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row-fluid">
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 车系：</label>
-									<div class="controls">
-										<select class="span10" name="cxi">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 车型：</label>
-									<div class="controls">
-										<select class="span10" name="cxing">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 车架号码：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="cjhm"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 车辆颜色：</label>
-									<div class="controls">
-										<select class="span10" name="clys">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row-fluid">
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 是否交车上牌：</label>
-									<div class="controls">
-										<select class="span10" name="jcsp">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 所属营销部：</label>
-									<div class="controls">
-										<select class="span10" name="yxb">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 所属大区：</label>
-									<div class="controls">
-										<input type="text" class="span10" name="dq"/>
-									</div>
-								</div>
-							</div>
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 所属经销商：</label>
-									<div class="controls">
-										<select class="span10" name="jxs">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row-fluid">
-							<div class="span3">
-								<div class="control-group">
-									<label class="control-label"> 付款方式：</label>
-									<div class="controls">
-										<select class="span10" name="fkfs">
-											<option value="">所有</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
+						</form>
 
 						<div class="form-actions">
 							<button type="button" class="btn green" id="btnSearch" onclick="search()">
@@ -234,27 +139,12 @@
 						</div>
 					</div>
 					<div class="portlet-body">
-						<table id="tb_list"
-							class="table table-bordered table-striped table-hover">
+						<table id="tb_list" class="table table-bordered table-striped table-hover">
 							<thead>
 								<tr>
-									<th>姓名</th>
-									<th>证件号</th>
-									<th>性别</th>
-									<th>手机号</th>
-									<th>婚姻状况</th>
-									<th>家庭人数</th>
-									<th>行业类型</th>
-									<th>省份</th>
-									<th>城市</th>
-									<th>车系</th>
-									<th>车型</th>
-									<th>车牌号码</th>
-									<th>车身颜色</th>
-									<th>所属营销部</th>
-									<th>所属大区</th>
-									<th>所属经销商</th>
-									<th>付款方式</th>
+									<c:forEach var="vo" items="${fields}">
+										<th>${vo.name}</th>
+									</c:forEach>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -262,27 +152,13 @@
 								<script id="listTmpl" type="text/html">
                 				{{each list as v i}}
                 					<tr>
-										<td>{{v.sqr_xm}}</td>
-                    					<td>{{v.sqr_zjhm}}</td>
-                    					<td>{{v.xb_show}}</td>
-										<td>{{v.sqr_dhhm}}</td>
-										<td>{{v.hyzk}}</td>
-										<td>{{v.jtrs}}</td>
-										<td>{{v.hylx}}</td>
-										<td>{{v.city_sf}}</td>
-										<td>{{v.city_cs}}</td>
-										<td>{{v.cxi}}</td>
-										<td>{{v.cxing}}</td>
-										<td>{{v.cphm}}</td>
-										<td>{{v.csys}}</td>
-										<td>{{v.org_yxb}}</td>
-										<td>{{v.org_dq}}</td>
-										<td>{{v.org_jxs}}</td>
-										<td>{{v.fkfs}}</td>
+										<c:forEach var="vo" items="${fields}">
+											<td>{{v.${vo.sname}}}</td>
+										</c:forEach>
                     					<td>
 											<button class="btn mini green" onclick="toEdit('{{v.id}}')">编辑</button>
                         					<button class="btn mini blue" onclick="toView('{{v.id}}')">详细</button>
-                        					<button class="btn mini red" onclick="toDelete('{{v.id}}', '{{v.name}}')">删除</button>
+                        					<button class="btn mini red" onclick="toDelete('{{v.id}}')">删除</button>
                     					</td>
                 					</tr>
                 				{{/each}}
@@ -309,12 +185,65 @@
 	$(document).ready(function() {
 		search();
 	});
+
+	function orgChange(target, cid){
+		if(!!!cid||cid=='')
+			return;
+		var val = $(target).val();
+		var h = '<option value="">所有</option>';
+		if(!!!val||val==''){
+			$('#'+cid).html(h).change();
+		}else{
+			$.post('${PATH}cm/loadOrgs.do', 'pid='+val, function(json) {
+				if (!json.success) {
+					$.alert(json.message);
+					return;
+				}
+				var data = json.object;
+				if(!!data&&data.length>0){
+					$.each(data, function(i, n){
+						h += '<option value="'+ n.id + '">' + n.name + '</option>';
+					});
+				}
+				$('#'+cid).html(h).change();
+			});
+		}
+	}
+
+	function treeChange(target, cid){
+		if(!!!cid||cid=='')
+			return;
+		var val = $(target).val();
+		var h = '<option value="">所有</option>';
+		if(!!!val||val==''){
+			$('#'+cid).html(h).change();
+		}else{
+			$.post('${PATH}cm/loadTrees.do', 'pid='+val, function(json) {
+				if (!json.success) {
+					$.alert(json.message);
+					return;
+				}
+				var data = json.object;
+				if(!!data&&data.length>0){
+					$.each(data, function(i, n){
+						h += '<option value="'+ n.id + '">' + n.name + '</option>';
+					});
+				}
+				$('#'+cid).html(h).change();
+			});
+		}
+	}
 	
 	var curPage = 1;
 	var tableSort = $('#tb_list');
 	function search(page, size) {
 		var fn = arguments.callee;
 		var req = 'page=' + (page || 1) + '&size=' + (size = size || 15);
+
+		var where = $("#queryForm").serialize();
+		if(!!where && where.length>0){
+			req += '&' + where;
+		}
 		Loading.show();
 		$('#btnSearch').attr('disabled', true);
 		$.post('${PATH}cm/list.do', req, function(json) {
@@ -338,55 +267,6 @@
 		});
 		curPage = page;
 	}
-
-	/*
-	function search() {
-		var data = [];
-		var page = 1;
-		var size = 15;
-		for(var i=0;i<size;i++){
-			var vo = {
-				id:i,
-				xm:'张三'+i,
-				zjhm:'123456789012345678',
-				xb:i%2?'男':'女',
-				sjhm:'13801380000',
-				hyzk:i%2?'已婚':'未婚',
-				jtrs:i%5 + 1,
-				hylx:'建筑业',
-				sf:'广东',
-				cs:'深圳',
-				cxi:'SUV',
-				cxing:'S6',
-				cjhm:'12345',
-				clys:'白',
-				jcsp:'是',
-				yxb:'深圳营销部',
-				dq:'福田大区',
-				jxs:'XX经销商',
-				fkfs:'刷卡'
-			};
-			data.push(vo);
-		}
-		var json = {
-			object:{
-				count:20,
-				page:1,
-				pageCount:2,
-				list:data
-			}
-		};
-		var fn = arguments.callee;
-		var count = json.object.count, list = json.object.list, p = json.object.page, pCount = json.object.pageCount;
-		var html = template('listTmpl', {
-			list : list
-		});
-		TmpTools.handleHTML($('#tbody'), html);
-		$('#common_page').show();
-		TmpTools.commonPage('#common_page', fn, size, count, p, pCount);
-		curPage = page;
-	}
-	*/
 	
 	function refresh() {
 		search(curPage);
@@ -396,11 +276,10 @@
 		
 	}
 	
-	function toDelete(id, name) {
-		$.confirm('确认删除[' + name + ']?', function() {
-			/*
+	function toDelete(id) {
+		$.confirm('确认删除该行?', function() {
 			Loading.show();
-			$.post("${PATH}admin/menu/delete.do", "id=" + id, function(data) {
+			$.post("${PATH}cm/delete.do", "id=" + id, function(data) {
 				Loading.hide();
 				if (data.success) {
 					refresh();
@@ -412,7 +291,6 @@
 					$.alert(data.message);
 				}
 			});
-			*/
 			refresh();
 		}, function() {
 			return;
@@ -420,17 +298,6 @@
 	}
 	
 	function toAdd(){
-		/*
-		layer.open({
-			type: 2,
-			title: '新增',
-			shadeClose: false,
-			maxmin: true,
-			shade: 0.8,
-			area: ['80%', '90%'],
-			content: '${PATH}cm/add.jspx'
-		});
-		*/
 		location.href = '${PATH}cm/add.jspx';
 	}
 	
@@ -441,7 +308,7 @@
 			shadeClose: false,
 			maxmin: true,
 			shade: 0.8,
-			area: ['80%', '90%'],
+			area: ['90%', '90%'],
 			content: '${PATH}cm/edit.jspx?id=' + id
 		});
 	}
@@ -453,7 +320,7 @@
 			shadeClose: false,
 			maxmin: true,
 			shade: 0.8,
-			area: ['80%', '90%'],
+			area: ['90%', '90%'],
 			content: '${PATH}cm/detail.jspx?id=' + id
 		});
 	}

@@ -106,7 +106,7 @@ CREATE TABLE `cm_info` (
   PRIMARY KEY (`id`),
   KEY `sqr_zjhm` (`sqr_zjlx`),
   KEY `sjgcr_zjhm` (`sjgcr_zjhm`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,6 +115,7 @@ CREATE TABLE `cm_info` (
 
 LOCK TABLES `cm_info` WRITE;
 /*!40000 ALTER TABLE `cm_info` DISABLE KEYS */;
+INSERT INTO `cm_info` VALUES (1,0,0,0,NULL,1,3,',1,3,','张三',NULL,'123456','13800138000',NULL,NULL,NULL,'PY',NULL,'1',0,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,'LC0CD4C37F1105125',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,0,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1),(2,1,3,13,NULL,1,4,NULL,'姜昆鹏','1','123456','13800138000','卓鸿博','654321','13900139000','PY',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,0,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `cm_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +135,7 @@ CREATE TABLE `sys_dist` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_type_key` (`type`,`key`),
   KEY `idx_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,8 +144,42 @@ CREATE TABLE `sys_dist` (
 
 LOCK TABLES `sys_dist` WRITE;
 /*!40000 ALTER TABLE `sys_dist` DISABLE KEYS */;
-INSERT INTO `sys_dist` VALUES (1,'ZJLX','1','身份证',''),(2,'ZJLX','2','护照',''),(3,'XB','1','男',''),(4,'XB','2','女',''),(5,'JYCD','7','博士',''),(6,'JYCD','6','硕士',''),(7,'JYCD','5','本科',''),(8,'JYCD','4','大专',''),(9,'JYCD','3','中专及高中',''),(10,'JYCD','2','初中',''),(11,'JYCD','1','小学',''),(13,'FCLX','1','全款自购商品房',''),(14,'FCLX','2','全款自购经适房',''),(15,'FCLX','3','按揭自购商品房',''),(16,'FCLX','4','按揭自购经适房',''),(17,'FCLX','5','公司房',''),(18,'FCLX','6','直系亲属房',''),(19,'FCLX','7','租赁房',''),(20,'FCLX','8','自建房',''),(21,'FCLX','9','宅基地',''),(22,'FCLX','10','公产房',''),(23,'FCLX','11','小产权房',''),(24,'HYZK','1','单身',''),(25,'HYZK','2','已婚',''),(26,'HYZK','3','离婚',''),(27,'HYZK','4','丧偶',''),(28,'JTRS','1','1',''),(29,'JTRS','2','2',''),(30,'JTRS','3','3',''),(31,'JTRS','4','4',''),(32,'JTRS','5','5',''),(33,'JTRS','6','6',''),(34,'JTRS','7','7',''),(35,'JTRS','8','8',''),(61,'FKFS','1','全款',''),(62,'FKFS','2','贷款',''),(63,'HKZT','1','已还款',''),(64,'HKZT','2','未还款',''),(65,'HKZT','3','还款中',''),(66,'DQZT','1','正常',''),(67,'DQZT','2','异常',''),(68,'QYXZ','1','国有',''),(69,'QYXZ','2','集体',''),(70,'QYXZ','3','联营',''),(71,'QYXZ','4','股份制',''),(72,'QYXZ','5','私营',''),(73,'QYXZ','6','个体',''),(74,'QYXZ','7','合伙',''),(75,'DKQS','12','12期',''),(76,'DKQS','24','24期',''),(77,'DKQS','36','36期',''),(80,'YYHZSL','1','1',''),(81,'YYHZSL','2','2',''),(82,'YYHZSL','3','3',''),(83,'YYHZSL','4','4',''),(84,'YYHZSL','5','5',''),(91,'CXING','QIN','秦',''),(92,'CXING','G5','G5',''),(93,'CXING','S7','S7',''),(94,'CXING','SURUI','速锐',''),(95,'CXYS','天山白','天山白',''),(96,'CXYS','皓月银','皓月银',''),(97,'CXYS','魔力橙','魔力橙',''),(98,'CXYS','德兰黑','德兰黑',''),(99,'CXYS','巧克力棕','巧克力棕',''),(102,'CXI','旗舰版','旗舰版',''),(103,'CXI','豪华版','豪华版',''),(104,'CXI','尊贵版','尊贵版',''),(105,'LZGX','FQ','夫妻',''),(106,'LZGX','FZN','父子/女','');
+INSERT INTO `sys_dist` VALUES (1,'ZJLX','1','身份证',''),(2,'ZJLX','2','护照',''),(3,'XB','1','男',''),(4,'XB','2','女',''),(5,'JYCD','7','博士',''),(6,'JYCD','6','硕士',''),(7,'JYCD','5','本科',''),(8,'JYCD','4','大专',''),(9,'JYCD','3','中专及高中',''),(10,'JYCD','2','初中',''),(11,'JYCD','1','小学',''),(13,'FCLX','1','全款自购商品房',''),(14,'FCLX','2','全款自购经适房',''),(15,'FCLX','3','按揭自购商品房',''),(16,'FCLX','4','按揭自购经适房',''),(17,'FCLX','5','公司房',''),(18,'FCLX','6','直系亲属房',''),(19,'FCLX','7','租赁房',''),(20,'FCLX','8','自建房',''),(21,'FCLX','9','宅基地',''),(22,'FCLX','10','公产房',''),(23,'FCLX','11','小产权房',''),(24,'HYZK','1','单身',''),(25,'HYZK','2','已婚',''),(26,'HYZK','3','离婚',''),(27,'HYZK','4','丧偶',''),(28,'JTRS','1','1',''),(29,'JTRS','2','2',''),(30,'JTRS','3','3',''),(31,'JTRS','4','4',''),(32,'JTRS','5','5',''),(33,'JTRS','6','6',''),(34,'JTRS','7','7',''),(35,'JTRS','8','8',''),(61,'FKFS','1','全款',''),(62,'FKFS','2','贷款',''),(63,'HKZT','1','已还款',''),(64,'HKZT','2','未还款',''),(65,'HKZT','3','还款中',''),(66,'DQZT','1','正常',''),(67,'DQZT','2','异常',''),(68,'QYXZ','1','国有',''),(69,'QYXZ','2','集体',''),(70,'QYXZ','3','联营',''),(71,'QYXZ','4','股份制',''),(72,'QYXZ','5','私营',''),(73,'QYXZ','6','个体',''),(74,'QYXZ','7','合伙',''),(75,'DKQS','12','12期',''),(76,'DKQS','24','24期',''),(77,'DKQS','36','36期',''),(80,'YYHZSL','1','1',''),(81,'YYHZSL','2','2',''),(82,'YYHZSL','3','3',''),(83,'YYHZSL','4','4',''),(84,'YYHZSL','5','5',''),(91,'CXING','QIN','秦',''),(92,'CXING','G5','G5',''),(93,'CXING','S7','S7',''),(94,'CXING','SURUI','速锐',''),(95,'CXYS','天山白','天山白',''),(96,'CXYS','皓月银','皓月银',''),(97,'CXYS','魔力橙','魔力橙',''),(98,'CXYS','德兰黑','德兰黑',''),(99,'CXYS','巧克力棕','巧克力棕',''),(102,'CXI','旗舰版','旗舰版',''),(103,'CXI','豪华版','豪华版',''),(104,'CXI','尊贵版','尊贵版',''),(105,'LZGX','FQ','夫妻',''),(106,'LZGX','FZN','父子/女',''),(107,'LZGX','PY','朋友','');
 /*!40000 ALTER TABLE `sys_dist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_field`
+--
+
+DROP TABLE IF EXISTS `sys_field`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_field` (
+  `fname` varchar(100) NOT NULL COMMENT '字段名',
+  `sname` varchar(100) NOT NULL COMMENT '显示字段名',
+  `name` varchar(100) NOT NULL COMMENT '显示名',
+  `stype` varchar(50) NOT NULL COMMENT '展现类型',
+  `ftype` varchar(50) NOT NULL COMMENT '数据类型',
+  `dist_type` varchar(50) DEFAULT NULL COMMENT '字典类型',
+  `dist_key` varchar(100) DEFAULT NULL COMMENT '字典值',
+  `tree_level` int(11) NOT NULL DEFAULT '0' COMMENT '树层次',
+  `list` int(1) NOT NULL DEFAULT '0' COMMENT '0:不放入列表,1:放入列表',
+  `query` int(1) NOT NULL DEFAULT '0' COMMENT '0:不做为查询条件,1:做为查询条件',
+  `layer_width` int(4) NOT NULL DEFAULT '1' COMMENT '占宽',
+  `sort_index` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
+  PRIMARY KEY (`fname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字段配置';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_field`
+--
+
+LOCK TABLES `sys_field` WRITE;
+/*!40000 ALTER TABLE `sys_field` DISABLE KEYS */;
+INSERT INTO `sys_field` VALUES ('city_cs','city_cs_show','城市','tree','int','CITY',NULL,2,1,1,1,5),('city_sf','city_sf_show','省份','tree','int','CITY','city_cs',1,1,1,1,4),('gsqrgx','gsqrgx_show','跟申请人关系','dist','int','LZGX',NULL,0,0,0,1,13),('org_dq','org_dq_show','大区','org','int','-1','org_jxs',2,1,1,1,2),('org_jxs','org_jxs_show','经销商','org','int','-1',NULL,3,1,1,1,3),('org_yxb','org_yxb_show','营销部','org','int','0','org_dq',1,1,1,1,1),('sjgcr_dhhm','sjgcr_dhhm','购车人电话号码','text','string',NULL,NULL,0,1,1,1,12),('sjgcr_xm','sjgcr_xm','购车人姓名','text','string',NULL,NULL,0,1,1,1,10),('sjgcr_zjhm','sjgcr_zjhm','购车人证件号码','text','string',NULL,NULL,0,1,1,1,11),('sqr_dhhm','sqr_dhhm','申请人电话号码','text','string',NULL,NULL,0,1,1,1,9),('sqr_xm','sqr_xm','申请人姓名','text','string',NULL,NULL,0,1,1,1,6),('sqr_zjhm','sqr_zjhm','申请人证件号码','text','string',NULL,NULL,0,1,1,1,8),('sqr_zjlx','sqr_zjlx_show','申请人证件类型','dist','int','ZJLX',NULL,0,0,0,1,7);
+/*!40000 ALTER TABLE `sys_field` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -162,7 +197,7 @@ CREATE TABLE `sys_menu` (
   `is_menu` int(1) NOT NULL COMMENT '是否做为菜单',
   `sort_index` int(11) DEFAULT NULL COMMENT '排序序号',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='系统-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='系统-菜单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +206,7 @@ CREATE TABLE `sys_menu` (
 
 LOCK TABLES `sys_menu` WRITE;
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
-INSERT INTO `sys_menu` VALUES (1,0,'客户信息','index.jspx',1,1),(2,0,'系统管理','#',1,10),(3,2,'用户管理','admin/user/list.jspx',1,1),(4,2,'角色管理','admin/role/list.jspx',1,2),(5,2,'菜单权限管理','admin/menu/list.jspx',1,3),(6,1,'客户信息查询','cm/list.jspx',1,2),(7,2,'组织机构管理','admin/org/list.jspx',1,4),(8,1,'新增客户信息','cm/add.jspx',1,3),(9,6,'修改客户信息','cm/edit.jspx',0,1),(10,6,'删除客户信息','cm/delete.do',0,2),(11,2,'普通字典管理','admin/dist/list.jspx',1,5),(12,2,'树形字典管理','admin/tree/list.jspx',1,5);
+INSERT INTO `sys_menu` VALUES (1,0,'客户信息','index.jspx',1,1),(2,0,'系统管理','#',1,10),(3,2,'用户管理','admin/user/list.jspx',1,1),(4,2,'角色管理','admin/role/list.jspx',1,2),(5,2,'菜单权限管理','admin/menu/list.jspx',1,3),(6,1,'客户信息查询','cm/list.jspx',1,2),(7,2,'组织机构管理','admin/org/list.jspx',1,4),(8,1,'新增客户信息','cm/add.jspx',1,3),(9,6,'修改客户信息','cm/edit.jspx',0,1),(10,6,'删除客户信息','cm/delete.do',0,2),(11,2,'普通字典管理','admin/dist/list.jspx',1,5),(12,2,'树形字典管理','admin/tree/list.jspx',1,6),(13,2,'字段配置','admin/field/list.jspx',1,7);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +279,7 @@ CREATE TABLE `sys_role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `sys_role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE,
   CONSTRAINT `sys_role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +288,7 @@ CREATE TABLE `sys_role_menu` (
 
 LOCK TABLES `sys_role_menu` WRITE;
 /*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
-INSERT INTO `sys_role_menu` VALUES (74,3,1),(75,3,6),(76,3,8),(92,2,1),(93,2,6),(94,2,9),(95,2,10),(96,2,8),(97,2,2),(98,2,3),(99,2,4),(100,2,5),(101,2,7),(102,2,12),(103,2,11);
+INSERT INTO `sys_role_menu` VALUES (74,3,1),(75,3,6),(76,3,8),(107,2,1),(108,2,6),(109,2,9),(110,2,10),(111,2,8),(112,2,2),(113,2,3),(114,2,4),(115,2,5),(116,2,7),(117,2,11),(118,2,12),(119,2,13);
 /*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,4 +375,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-16 21:10:42
+-- Dump completed on 2016-10-22 22:52:28

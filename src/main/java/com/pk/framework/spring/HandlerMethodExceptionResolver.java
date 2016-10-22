@@ -107,6 +107,8 @@ public class HandlerMethodExceptionResolver extends
 	private ModelAndView handleResponseBody(ModelAndView returnValue,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		if(returnValue==null)
+			return null;
 		Map value = returnValue.getModelMap();
 		HttpInputMessage inputMessage = new ServletServerHttpRequest(request);
 		List<MediaType> acceptedMediaTypes = inputMessage.getHeaders().getAccept();
@@ -120,10 +122,8 @@ public class HandlerMethodExceptionResolver extends
 		if (messageConverters != null) {
 			for (MediaType acceptedMediaType : acceptedMediaTypes) {
 				for (HttpMessageConverter messageConverter : messageConverters) {
-					if (messageConverter.canWrite(returnValueType,
-							acceptedMediaType)) {
-						messageConverter.write(value, acceptedMediaType,
-								outputMessage);
+					if (messageConverter.canWrite(returnValueType, acceptedMediaType)) {
+						messageConverter.write(value, acceptedMediaType, outputMessage);
 						return new ModelAndView();
 					}
 				}

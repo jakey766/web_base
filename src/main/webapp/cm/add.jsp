@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="cm" uri="http://www.cm.com/functions" %>
 <%@include file="../common/env.jsp"%>
 <jsp:include page="../common/hd_frame.jsp"></jsp:include>
+<style>
+	@media (max-width: 979px) and (min-width: 768px){
+		.row-fluid [class*="span"]{margin-left:0px !important;}
+	}
+	@media (min-width: 1200px){
+		.row-fluid [class*="span"]{margin-left:0px !important;}
+	}
+	.row-fluid [class*="span"]{margin-left:0px !important;}
+	.portlet.box .form-horizontal.form-bordered .control-group:first-child {margin-top:0px !important;}
+</style>
 
 <!-- BEGIN PAGE -->
 <div class="page-content">
@@ -34,44 +45,76 @@
 						</div>
 					</div>
 					<div class="portlet-body">
-							<form id="edit_form" class="form form-horizontal form-bordered form-row-stripped">
-								<div class="control-group">
-									<label class="control-label"><span class="required">*</span> 姓名：</label>
-									<div class="controls">
-										<input type="text" class="m-wrap large" name="sqr_xm" value="张三"/>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label"><span class="required">*</span> 证件号：</label>
-									<div class="controls">
-										<input type="text" class="m-wrap large" name="sqr_zjhm" value="123456" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label"><span class="required">*</span> 电话号码：</label>
-									<div class="controls">
-										<input type="text" class="m-wrap large" name="sqr_dhhm" value="13800138000" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">性别：</label>
-									<div class="controls">
-										<select name="xb" class="m-wrap large">
-											<option value="1">男</option>
-											<option value="2">女</option>
-										</select>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">VIN号：</label>
-									<div class="controls">
-										<input type="text" class="m-wrap large" name="vin" value="LC0CD4C37F1105125" />
-									</div>
-								</div>
-								<div class="form-actions">
-									<button type="button" class="btn green" id="btnSave" onclick="save()"><i class="icon-ok"></i> 保存</button>
-								</div>
-							</form>
+						<form id="edit_form" class="form form-horizontal form-bordered form-row-stripped">
+							<div class="row-fluid">
+								<c:forEach var="vo" items="${fields}">
+									<c:choose>
+										<c:when test="${vo.stype eq 'dist'}">
+											<div class="span4">
+												<div class="control-group">
+													<label class="control-label"> ${vo.name}：</label>
+													<div class="controls">
+														<select class="span10" id="${vo.fname}" name="${vo.fname}">
+															<option value="">请选择</option>
+															<c:forEach var="v" items="${cm:loadDist(vo.distType)}">
+																<option value="${v.key}">${v.name}</option>
+															</c:forEach>
+														</select>
+													</div>
+												</div>
+											</div>
+										</c:when>
+										<c:when test="${vo.stype eq 'org'}">
+											<div class="span4">
+												<div class="control-group">
+													<label class="control-label"> ${vo.name}：</label>
+													<div class="controls">
+														<select class="span10" id="${vo.fname}" name="${vo.fname}" onchange="orgChange(this, '${vo.distKey}')">
+															<option value="">请选择</option>
+															<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
+																<c:forEach var="v" items="${cm:loadOrg(vo.distType)}">
+																	<option value="${v.id}">${v.name}</option>
+																</c:forEach>
+															</c:if>
+														</select>
+													</div>
+												</div>
+											</div>
+										</c:when>
+										<c:when test="${vo.stype eq 'tree'}">
+											<div class="span4">
+												<div class="control-group">
+													<label class="control-label"> ${vo.name}：</label>
+													<div class="controls">
+														<select class="span10" id="${vo.fname}" name="${vo.fname}" onchange="treeChange(this, '${vo.distKey}')">
+															<option value="">请选择</option>
+															<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
+																<c:forEach var="v" items="${cm:loadTree(vo.distType, '0')}">
+																	<option value="${v.id}">${v.name}</option>
+																</c:forEach>
+															</c:if>
+														</select>
+													</div>
+												</div>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="span4">
+												<div class="control-group">
+													<label class="control-label"> ${vo.name}：</label>
+													<div class="controls">
+														<input type="text" class="span10" id="${vo.fname}" name="${vo.fname}"/>
+													</div>
+												</div>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</div>
+							<div class="form-actions">
+								<button type="button" class="btn green" id="btnSave" onclick="save()"><i class="icon-ok"></i> 保存</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -85,6 +128,54 @@
 
 <jsp:include page="../common/ft_frame.jsp"></jsp:include>
 <script>
+	function orgChange(target, cid){
+		if(!!!cid||cid=='')
+			return;
+		var val = $(target).val();
+		var h = '<option value="">所有</option>';
+		if(!!!val||val==''){
+			$('#'+cid).html(h).change();
+		}else{
+			$.post('${PATH}cm/loadOrgs.do', 'pid='+val, function(json) {
+				if (!json.success) {
+					$.alert(json.message);
+					return;
+				}
+				var data = json.object;
+				if(!!data&&data.length>0){
+					$.each(data, function(i, n){
+						h += '<option value="'+ n.id + '">' + n.name + '</option>';
+					});
+				}
+				$('#'+cid).html(h).change();
+			});
+		}
+	}
+
+	function treeChange(target, cid){
+		if(!!!cid||cid=='')
+			return;
+		var val = $(target).val();
+		var h = '<option value="">所有</option>';
+		if(!!!val||val==''){
+			$('#'+cid).html(h).change();
+		}else{
+			$.post('${PATH}cm/loadTrees.do', 'pid='+val, function(json) {
+				if (!json.success) {
+					$.alert(json.message);
+					return;
+				}
+				var data = json.object;
+				if(!!data&&data.length>0){
+					$.each(data, function(i, n){
+						h += '<option value="'+ n.id + '">' + n.name + '</option>';
+					});
+				}
+				$('#'+cid).html(h).change();
+			});
+		}
+	}
+
 	function save(){
 		var formData = $("#edit_form").serialize();
 		$('#btnSave').attr('disabled', true);

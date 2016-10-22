@@ -2,6 +2,8 @@ package com.pk.model.cm;
 
 import com.pk.framework.spring.SpringContextUtil;
 import com.pk.service.admin.SysDistService;
+import com.pk.service.admin.SysOrgService;
+import com.pk.service.admin.SysTreeService;
 
 import java.io.Serializable;
 
@@ -31,7 +33,7 @@ public class CmInfo implements Serializable {
     private String xb;          //性别
     private int nl;             //年龄
     private String csrq;        //出生日期
-    private String hyzk;        //婚姻状态
+    private String hyzk;        //婚姻状况
     private String dqzt;        //当前状态
     private String htbh;        //合同编号
     private String htjhrq;      //合同激活日期
@@ -91,9 +93,139 @@ public class CmInfo implements Serializable {
 
     private int deleted;
 
+    private static SysDistService sysDistService = null;
+    private static SysTreeService sysTreeService = null;
+    private static SysOrgService sysOrgService = null;
+
+    private String getDistName(String type, String key){
+        if(sysDistService==null){
+            sysDistService = SpringContextUtil.getBean(SysDistService.class);
+        }
+        if(sysDistService!=null)
+            return sysDistService.getDistName(type, key);
+        return null;
+    }
+
+    private String getTreeName(int treeId){
+        if(sysTreeService==null){
+            sysTreeService = SpringContextUtil.getBean(SysTreeService.class);
+        }
+        if(sysTreeService!=null)
+            return sysTreeService.getTreeName(treeId);
+        return null;
+    }
+
+    private String getOrgName(int orgId){
+        if(sysOrgService==null){
+            sysOrgService = SpringContextUtil.getBean(SysOrgService.class);
+        }
+        if(sysOrgService!=null)
+            return sysOrgService.getOrgName(orgId);
+        return null;
+    }
+
+    public String getOrg_yxb_show(){
+        return getOrgName(org_yxb);
+    }
+
+    public String getOrg_dq_show(){
+        return getOrgName(org_dq);
+    }
+
+    public String getOrg_jxs_show(){
+        return getOrgName(org_jxs);
+    }
+
+    public String getCity_sf_show(){
+        return getTreeName(city_sf);
+    }
+
+    public String getCity_cs_show(){
+        return getTreeName(city_cs);
+    }
+
+    public String getSqr_zjlx_show(){
+        return getDistName("ZJLX", sqr_zjlx);
+    }
+
     public String getXb_show(){
-        SysDistService sysDistService = SpringContextUtil.getBean(SysDistService.class);
-        return sysDistService.getDistName("XB", xb);
+        return getDistName("XB", xb);
+    }
+
+    public String getGsqrgx_show(){
+        return getDistName("LZGX", gsqrgx);
+    }
+
+    public String getHkzt_show(){
+        return getDistName("HKZT", hkzt);
+    }
+
+    public String getHyzk_show(){
+        return getDistName("HYZK", hyzk);
+    }
+
+    public String getDqzt_show(){
+        return getDistName("DQZT", dqzt);
+    }
+
+    public String getCxi_show(){
+        return getDistName("CXI", cxi);
+    }
+
+    public String getCxing_show(){
+        return getDistName("CXING", cxing);
+    }
+
+    public String getFkfs_show(){
+        return getDistName("FKFS", fkfs);
+    }
+
+    public String getJtrs_show(){
+        return getDistName("JTRS", jtrs);
+    }
+
+    public String getJycd_show(){
+        return getDistName("JYCD", jycd);
+    }
+
+    public String getHyxl_show(){
+        return getTreeName(hylx);
+    }
+
+    public String getHyzlx_show(){
+        return getTreeName(hyzlx);
+    }
+
+    public String getZylx_show(){
+        return getDistName("ZYLX", zylx);
+    }
+
+    public String getJkr_sf_show(){
+        return getTreeName(jkr_sf);
+    }
+
+    public String getJkr_cs_show(){
+        return getTreeName(jkr_cs);
+    }
+
+    public String getFclx_show(){
+        return getDistName("FCLX", fclx);
+    }
+
+    public String getQyxz_show(){
+        return getDistName("QYXZ", qyxz);
+    }
+
+    public String getCsys_show(){
+        return getDistName("CXYS", csys);
+    }
+
+    public String getDkqs_show(){
+        return getDistName("DKQS", dkqs);
+    }
+
+    public String getYyxhsl_show(){
+        return getDistName("YYHZSL", yyxhsl);
     }
 
     public int getDeleted() {

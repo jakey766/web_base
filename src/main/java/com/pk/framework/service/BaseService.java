@@ -19,7 +19,8 @@ public class BaseService {
 	 * @return
 	 */
 	public boolean putIntoCache(String key, Object value){
-		Cache.put(key, value);
+		if(value!=null)
+			Cache.put(key, value);
 		//以后可加远程缓存
 		return true;
 	}

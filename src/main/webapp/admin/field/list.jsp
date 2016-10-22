@@ -65,7 +65,9 @@
 							</script>
 							</tbody>
 						</table>
-						<div id="common_page"></div>
+						<div class="row-fluid">
+							<button type="button" id="btnSave" class="btn green" onclick="save();"><i class="icon-ok"></i> 保存</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -103,27 +105,26 @@
 	}
 
 	function save() {
-		var editForm = $('#edit_form');
-		editForm.validate();
-		if (!editForm.valid())
-			return;
-		if (editType == 'add') {
-			doAdd();
-		} else {
-			doUpdate();
-		}
-	}
-
-	function doAdd() {
-		var param = {
-			type: $.trim($('#type').val()),
-			name : $.trim($('#name').val()),
-			key : $.trim($('#key').val()),
-			remark : $.trim($('#remark').val())
+		var rows = $('#tbody').children('tr');
+		var arr = [];
+		$.each(rows, function(i, n){
+			var rowObj = $(n);
+			var fname = rowObj.attr('fname');
+			var list = rowObj.find('input[name="list"]').is(':checked')?1:0;
+			var query = rowObj.find('input[name="query"]').is(':checked')?1:0;
+			arr.push({
+				fname: fname,
+				list: list,
+				query: query,
+				sortIndex: i+1
+			});
+		});
+		var params = {
+			json: JSON.stringify(arr)
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
-		$.post('${PATH}admin/dist/add.do', param, function(data) {
+		$.post('${PATH}admin/field/update.do', params, function(data) {
 			Loading.hide();
 			$('#btnSave').attr('disabled', false);
 			if (data.success) {
@@ -131,7 +132,6 @@
 					content : data.message,
 					time : 1000
 				});
-				$.dialog.get('edit_dialog').close();
 				search();
 			} else {
 				$.alert(data.message);
@@ -139,50 +139,25 @@
 		});
 	}
 
-	function doUpdate() {
-		var param = {
-			id : $('#id').val(),
-			type: $.trim($('#type').val()),
-			name : $.trim($('#name').val()),
-			key : $.trim($('#key').val()),
-			remark : $.trim($('#remark').val())
-		};
-		$('#btnSave').attr('disabled', true);
-		Loading.show();
-		$.post('${PATH}admin/dist/update.do', param, function(data) {
-			Loading.hide();
-			$('#btnSave').attr('disabled', false);
-			if (data.success) {
-				$.dialog({
-					content : data.message,
-					time : 1000
-				});
-				$.dialog.get('edit_dialog').close();
-				refresh();
-			} else {
-				$.alert(data.message);
-			}
-		});
+	function upRow(target){
+		var tr = $(target).parent().parent(),
+				tb = tr.parent(),
+				trs = tb.children("tr"),
+				idx = trs.index(tr);
+		if(idx>0){
+			trs.eq(idx-1).before(tr);
+		}
 	}
 
-	function toDelete(id, typeName, name) {
-		$.confirm('确认删除[' + typeName + ':' + name + ']?', function() {
-			Loading.show();
-			$.post("${PATH}admin/dist/delete.do", "id=" + id, function(data) {
-				Loading.hide();
-				if (data.success) {
-					refresh();
-					$.dialog({
-						content : data.message,
-						time : 1000
-					});
-				} else {
-					$.alert(data.message);
-				}
-			});
-		}, function() {
-			return;
-		});
+	function downRow(target){
+		var tr = $(target).parent().parent(),
+				tb = tr.parent(),
+				trs = tb.children("tr"),
+				idx = trs.index(tr);
+		if(idx<trs.length-1){
+			trs.eq(idx+1).after(tr);
+		}
 	}
+
 </script>
 </html>

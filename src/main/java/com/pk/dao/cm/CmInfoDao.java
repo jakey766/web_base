@@ -32,12 +32,22 @@ public class CmInfoDao{
     private JdbcTemplate jdbcTemplate;
 
     public CmInfo get(int id){
+		String sql = "SELECT * FROM cm_info WHERE id=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		List<CmInfo> list = jdbcTemplate.query(sql, params.toArray(), CmInfoRowMapper);
+		if(list!=null&&list.size()>0)
+			return list.get(0);
         return null;
     }
 
     public PageResultVO list(CmInfoSearchVO svo){
         StringBuilder sql = new StringBuilder(200);
         List<Object> params = new ArrayList<Object>();
+
+		sql.append(" AND deleted=?");
+		params.add(0);
+
         PageResultVO page = new PageResultVO();
         Object[] _params = params.toArray();
         String _sql = "SELECT COUNT(id) FROM cm_info WHERE 1=1 " + sql.toString();
@@ -137,7 +147,7 @@ public class CmInfoDao{
 		}
 		
 		StringBuilder sql = new StringBuilder(100);
-		sql.append("UPDATE INTO cm_info SET ").append(fieldNames).append(" WHERE id=?");
+		sql.append("UPDATE cm_info SET ").append(fieldNames).append(" WHERE id=?");
 		params.add(vo.getId());
 		
 		jdbcTemplate.update(sql.toString(), params.toArray());
@@ -150,7 +160,7 @@ public class CmInfoDao{
     }
 
     public void delete(int id){
-        String _sql = "UPDATE cm_info SET updated=1 WHERE id=?";
+        String _sql = "UPDATE cm_info SET deleted=1 WHERE id=?";
         jdbcTemplate.update(_sql, id);
     }
 
@@ -166,59 +176,59 @@ public class CmInfoDao{
     	
         @Override
         public CmInfo mapRow(ResultSet rs, int i) throws SQLException {
-            Map<String, String> columnName = new HashMap<String, String>();
-            ResultSetMetaData md = rs.getMetaData();
-            for (int j = 0; j < md.getColumnCount(); j++) {
-                columnName.put(String.valueOf(j), md.getColumnName(j + 1));
-            }
+		Map<String, String> columnName = new HashMap<String, String>();
+		ResultSetMetaData md = rs.getMetaData();
+		for (int j = 0; j < md.getColumnCount(); j++) {
+			columnName.put(String.valueOf(j), md.getColumnName(j + 1));
+		}
 
-            Method[] methods = CmInfo.class.getDeclaredMethods();
-            String colName = null;
-            String val = null;
+		Method[] methods = CmInfo.class.getDeclaredMethods();
+		String colName = null;
+		String val = null;
 
-            CmInfo vo = new CmInfo();
-            for(int j=0,len=md.getColumnCount();j<len;j++){
-            	colName = columnName.get(String.valueOf(j));
-				Method method = lookupMethod(methods, "set" + colName);
-				if(method==null)
-					continue;
-				try{
-					String paraType = method.getParameterTypes()[0].getName();
-					if("int".equals(paraType)||"java.lang.Integer".equals(paraType)){
-						method.invoke(vo, rs.getInt(colName));
-					}else if("java.lang.String".equals(paraType)){
-						val = rs.getString(colName);
-						if(val!=null){
-							method.invoke(vo, val);
-						}
-					}else if("long".equals(paraType)||"java.lang.Long".equals(paraType)){
-						method.invoke(vo, rs.getLong(colName));
-					}else if("double".equals(paraType)||"java.lang.Double".equals(paraType)){
-						method.invoke(vo, rs.getDouble(colName));
-					}else if("float".equals(paraType)||"java.lang.Float".equals(paraType)){
-						method.invoke(vo, rs.getFloat(colName));
-					}else if("short".equals(paraType)||"java.lang.Short".equals(paraType)){
-						method.invoke(vo, rs.getShort(colName));
-					}else if("char".equals(paraType)||"java.lang.Character".equals(paraType)){
-						val = rs.getString(colName);
-						if(val!=null&&val.length()>0){
-							method.invoke(vo, val.charAt(0));
-						}else{
-							method.invoke(vo, ' ');
-						}
-					}else if("boolean".equals(paraType)||"java.lang.Boolean".equals(paraType)){
-						method.invoke(vo, rs.getBoolean(colName));
+		CmInfo vo = new CmInfo();
+		for(int j=0,len=md.getColumnCount();j<len;j++){
+			colName = columnName.get(String.valueOf(j));
+			Method method = lookupMethod(methods, "set" + colName);
+			if(method==null)
+				continue;
+			try{
+				String paraType = method.getParameterTypes()[0].getName();
+				if("int".equals(paraType)||"java.lang.Integer".equals(paraType)){
+					method.invoke(vo, rs.getInt(colName));
+				}else if("java.lang.String".equals(paraType)){
+					val = rs.getString(colName);
+					if(val!=null){
+						method.invoke(vo, val);
 					}
-				}catch(Exception e){
-					e.printStackTrace();
-					logger.error("SQL结果反射封装Bean异常,CLASS:"+(CmInfo.class.getSimpleName())+",COL:"+colName, e);
+				}else if("long".equals(paraType)||"java.lang.Long".equals(paraType)){
+					method.invoke(vo, rs.getLong(colName));
+				}else if("double".equals(paraType)||"java.lang.Double".equals(paraType)){
+					method.invoke(vo, rs.getDouble(colName));
+				}else if("float".equals(paraType)||"java.lang.Float".equals(paraType)){
+					method.invoke(vo, rs.getFloat(colName));
+				}else if("short".equals(paraType)||"java.lang.Short".equals(paraType)){
+					method.invoke(vo, rs.getShort(colName));
+				}else if("char".equals(paraType)||"java.lang.Character".equals(paraType)){
+					val = rs.getString(colName);
+					if(val!=null&&val.length()>0){
+						method.invoke(vo, val.charAt(0));
+					}else{
+						method.invoke(vo, ' ');
+					}
+				}else if("boolean".equals(paraType)||"java.lang.Boolean".equals(paraType)){
+					method.invoke(vo, rs.getBoolean(colName));
 				}
-            }
-            
-            methods = null;
-            columnName = null;
-            md = null;
-            return vo;
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.error("SQL结果反射封装Bean异常,CLASS:"+(CmInfo.class.getSimpleName())+",COL:"+colName, e);
+			}
+		}
+
+		methods = null;
+		columnName = null;
+		md = null;
+		return vo;
         }
     };
 }

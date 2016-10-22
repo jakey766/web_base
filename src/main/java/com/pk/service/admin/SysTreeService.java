@@ -15,8 +15,9 @@ import java.util.List;
 @Service()
 public class SysTreeService extends BaseService {
 
-    private static final String KEY_TYPE_LIST = "SysTreeList:%s";
-    private static final String KEY_TYPE_KEY_GET = "SysTreeGet:%s";
+    private static final String KEY_TYPE_PID_LIST = "SysTreeTypePidList:%s:%s";
+    private static final String KEY_PID_LIST = "SysTreePidList:%s";
+    private static final String KEY_TYPE_GET = "SysTreeGet:%s";
 
     @Autowired
     private SysTreeDao sysTreeDao;
@@ -51,6 +52,7 @@ public class SysTreeService extends BaseService {
             vo.setCode("," + vo.getId() + ",");
         }
         sysTreeDao.updateCode(vo);
+        removeCache(vo, false, true);
         return Result.SUCCESS(vo);
     }
 
@@ -60,6 +62,7 @@ public class SysTreeService extends BaseService {
             return Result.FAILURE("已存在相同名称:" + vo.getName());
         }
         sysTreeDao.update(vo);
+        removeCache(vo, true, true);
         return Result.SUCCESS(vo);
     }
 
@@ -67,7 +70,16 @@ public class SysTreeService extends BaseService {
     public Result delete(int id){
         SysTree vo = sysTreeDao.get(id);
         if(vo!=null){
+            SysTreeSearchVO svo = new SysTreeSearchVO();
+            svo.setCodePrefix(vo.getCode());
+            List<SysTree> list = sysTreeDao.list(svo);
             sysTreeDao.deleteByCode(vo.getCode());
+            removeCache(vo, true, true);
+            if(list!=null){
+                for(SysTree _vo:list){
+                    removeCache(_vo, true, true);
+                }
+            }
         }
     	return Result.SUCCESS();
     }
@@ -77,17 +89,37 @@ public class SysTreeService extends BaseService {
     }
 
     /**
-     * 通过类型获取树字典
+     * 通过类型+PID获取树字典
      * @param type
+     * @param pid
      * @return
      */
-    public List<SysTree> loadByType(String type){
+    public List<SysTree> loadByTypeAndPid(String type, int pid){
         List<SysTree> list = null;
-        String cacheKey = String.format(KEY_TYPE_LIST, type);
+        String cacheKey = String.format(KEY_TYPE_PID_LIST, type, pid);
         list = getFromCache(cacheKey, List.class);
         if(list==null){
             SysTreeSearchVO svo = new SysTreeSearchVO();
             svo.setType(type);
+            svo.setPid(pid);
+            list = sysTreeDao.list(svo);
+            putIntoCache(cacheKey, list);
+        }
+        return list;
+    }
+
+    /**
+     * 通过PID获取树字典
+     * @param pid
+     * @return
+     */
+    public List<SysTree> loadByPid(int pid){
+        List<SysTree> list = null;
+        String cacheKey = String.format(KEY_PID_LIST, pid);
+        list = getFromCache(cacheKey, List.class);
+        if(list==null){
+            SysTreeSearchVO svo = new SysTreeSearchVO();
+            svo.setPid(pid);
             list = sysTreeDao.list(svo);
             putIntoCache(cacheKey, list);
         }
@@ -100,7 +132,7 @@ public class SysTreeService extends BaseService {
      * @return
      */
     public SysTree getWithCache(int id){
-        String cacheKey = String.format(KEY_TYPE_KEY_GET, id);
+        String cacheKey = String.format(KEY_TYPE_GET, id);
         SysTree vo = getFromCache(cacheKey, SysTree.class);
         if(vo==null){
             vo = sysTreeDao.get(id);
@@ -119,5 +151,22 @@ public class SysTreeService extends BaseService {
         if(vo!=null)
             return vo.getName();
         return null;
+    }
+
+    /**
+     * 删除缓存
+     * @param vo
+     * @param single
+     * @param list
+     */
+    private void removeCache(SysTree vo, boolean single, boolean list){
+        if(single){
+            String cacheKey = String.format(KEY_TYPE_GET, vo.getId());
+            removeCache(cacheKey);
+        }
+        if(list){
+            String cacheKey = String.format(KEY_TYPE_PID_LIST, vo.getType(), vo.getPid());
+            removeCache(cacheKey);
+        }
     }
 }

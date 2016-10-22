@@ -20,7 +20,7 @@ public class SysFieldController {
 		return new ModelAndView("forward:/admin/field/list.jsp");
 	}
 	
-	@RequestMapping(value = "/admin/field/list.do")
+	@RequestMapping(value = "/admin/field/loadAll.do")
 	@ResponseBody
 	public Result list() {
 		try{
