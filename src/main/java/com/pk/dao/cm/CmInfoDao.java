@@ -79,8 +79,21 @@ public class CmInfoDao{
 				if("LK".equals(op)){
 					sql.append(" LIKE ?");
 					params.add("%" + val + "%");
-				}else if("".equals(op)){
-					
+				}else if("GE".equals(op)){
+					sql.append(" >= ?");
+					params.add(val);
+				}else if("LE".equals(op)){
+					sql.append(" <= ?");
+					params.add(val);
+				}else if("GT".equals(op)){
+					sql.append(" > ?");
+					params.add(val);
+				}else if("LT".equals(op)){
+					sql.append(" < ?");
+					params.add(val);
+				}else{
+					sql.append(" = ?");
+					params.add(val);
 				}
 			}
 		}

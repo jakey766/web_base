@@ -177,7 +177,7 @@
 	}
 
 	function save(){
-		var formData = $("#edit_form").serialize();
+		var formData = $("#edit_form").serializeJson();
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
 		$.post('${PATH}cm/add.do', formData, function(json) {

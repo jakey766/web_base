@@ -428,3 +428,28 @@ var MultiMenu = function(){
 		init:createMenu
 	}
 }();
+
+//扩展Jquery
+(function($) {
+	$.extend($.fn, {
+		//将表单对象序列化成JSON
+		serializeJson: function(){
+			var serializeObj={};
+			var array=this.serializeArray();
+			$(array).each(function(){
+				if(this.value!=null&&this.value!=''){
+					if(serializeObj[this.name]){
+						if($.isArray(serializeObj[this.name])){
+							serializeObj[this.name].push(this.value);
+						}else{
+							serializeObj[this.name]=[serializeObj[this.name],this.value];
+						}
+					}else{
+						serializeObj[this.name]=this.value;
+					}
+				}
+			});
+			return serializeObj;
+		}
+	});
+})(jQuery);

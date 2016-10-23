@@ -69,5 +69,6 @@
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.4" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.icu:icu4j:49.1" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:1.0.4" level="project" />
   </component>
 </module>

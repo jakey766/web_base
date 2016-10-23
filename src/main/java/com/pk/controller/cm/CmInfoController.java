@@ -10,7 +10,9 @@ import com.pk.service.admin.SysTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pk.framework.vo.Result;
@@ -52,6 +54,11 @@ public class CmInfoController {
 		ModelAndView model = new ModelAndView("forward:/cm/add.jsp");
 		model.addObject("fields", getMyFields());
 		return model;
+	}
+
+	@RequestMapping(value = "/cm/imp.jspx")
+	public ModelAndView impJspx() {
+		return new ModelAndView("forward:/cm/imp.jsp");
 	}
 	
 	@RequestMapping(value = "/cm/detail.jspx")
@@ -115,6 +122,15 @@ public class CmInfoController {
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
 		}
+	}
+
+	@RequestMapping(value = "/cm/imp.do")
+	@ResponseBody
+	public ModelAndView imp(@RequestParam("file") MultipartFile multipartFile, int type) {
+		Result result = cmInfoService.imp(multipartFile, type);
+		ModelAndView model = new ModelAndView("forward:/cm/impResult.jsp");
+		model.addObject("result", result);
+		return model;
 	}
 
 	@RequestMapping(value = "/cm/loadOrgs.do")

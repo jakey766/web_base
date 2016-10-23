@@ -116,9 +116,6 @@
 							<button type="button" class="btn green" id="btnSearch" onclick="search()">
 								<i class="icon-search"></i> 查询
 							</button>
-							<button type="button" class="btn blue" id="btnExport" onclick="exportExcel()">
-								<i class="icon-download-alt"></i> 导出
-							</button>
 						</div>
 					</div>
 				</div>
@@ -136,6 +133,10 @@
 							<button type="button" class="btn mini green" onclick="toAdd()" style="margin-top: -10px;">
 								<i class="icon-plus"></i>新增
 							</button>
+							<button type="button" class="btn mini blue" id="btnExport" onclick="exportExcel()" style="margin-top: -10px;">
+								<i class="icon-download-alt"></i> 导出
+							</button>
+							<a href="${PATH}cm/imp.jspx" class="btn mini blue" style="margin-top: -10px;"><i class="icon-upload-alt"></i> 导入</a>
 						</div>
 					</div>
 					<div class="portlet-body">
@@ -238,15 +239,13 @@
 	var tableSort = $('#tb_list');
 	function search(page, size) {
 		var fn = arguments.callee;
-		var req = 'page=' + (page || 1) + '&size=' + (size = size || 15);
+		var formData = $("#queryForm").serializeJson();
+		formData['page'] = page||1;
+		formData['size'] = (size = size || 15);
 
-		var where = $("#queryForm").serialize();
-		if(!!where && where.length>0){
-			req += '&' + where;
-		}
 		Loading.show();
 		$('#btnSearch').attr('disabled', true);
-		$.post('${PATH}cm/list.do', req, function(json) {
+		$.post('${PATH}cm/list.do', formData, function(json) {
 			$('#btnSearch').attr('disabled', false);
 			Loading.hide();
 			if (!json.success) {
