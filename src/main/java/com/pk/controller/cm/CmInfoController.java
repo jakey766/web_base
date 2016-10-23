@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.pk.model.admin.SysField;
 import com.pk.model.cm.CmInfo;
-import com.pk.service.admin.SysFieldService;
 import com.pk.service.admin.SysOrgService;
 import com.pk.service.admin.SysTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,6 @@ public class CmInfoController {
 	
 	@Autowired
 	private CmInfoService cmInfoService;
-	@Autowired
-	private SysFieldService sysFieldService;
 	@Autowired
 	private SysOrgService sysOrgService;
 	@Autowired
@@ -160,7 +157,7 @@ public class CmInfoController {
 	 * @return
 	 */
 	private List<SysField> getMyFields(){
-		return sysFieldService.loadAllWithCache();
+		return cmInfoService.getMyFields();
 	}
 
 	private Map<String, String> getParameterMap(HttpServletRequest request){
