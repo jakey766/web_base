@@ -103,18 +103,9 @@
 						<div class="control-group">
 							<label class="control-label"><span class="required">*</span> 数据权限：</label>
 							<div class="controls" style="max-height: 300px;overflow: auto;">
-								<label><input type="checkbox" name="field" checked="checked" />大区</label>
-								<label><input type="checkbox" name="field" checked="checked" />营销经理</label>
-								<label><input type="checkbox" name="field" checked="checked" />还款状态</label>
-								<label><input type="checkbox" name="field" checked="checked" />当前状态</label>
-								<label><input type="checkbox" name="field" checked="checked" />合同编号</label>
-								<label><input type="checkbox" name="field" checked="checked" />合同激活日期</label>
-								<label><input type="checkbox" name="field" checked="checked" />申请提交日期</label>
-								<label><input type="checkbox" name="field" checked="checked" />月份</label>
-								<label><input type="checkbox" name="field" />贷款申请号码</label>
-								<label><input type="checkbox" name="field" />核准拒绝日期</label>
-								<label><input type="checkbox" name="field" />周次</label>
-								<label><input type="checkbox" name="field" />经销商名称</label>
+								<c:forEach var="vo" items="${fields}">
+									<label><input type="checkbox" name="field" value="${vo.fname}"/>${vo.name}</label>
+								</c:forEach>
 							</div>
 						</div>
 						<div class="form-actions">
@@ -177,6 +168,8 @@
 	var editType = 'add';
 	function toAdd() {
 		$('#name, #desc').val('');
+		$('input[name="field"]').removeAttr('checked');
+		$.uniform.update("input");
 		if (!initedMenu) {
 			initMenuTree(function() {
 				$.dialog({
@@ -211,6 +204,7 @@
 
 	function toEditCall(id) {
 		treeObj.checkAllNodes(false);
+		$('input[name="field"]').removeAttr('checked');
 		Loading.show();
 		$.post('${PATH}admin/role/getWithMenuIds.do', 'id=' + id, function(data) {
 			Loading.hide();
@@ -240,6 +234,15 @@
 					}
 				});
 			}
+			
+			var fields = vo.fields;
+			if(!!fields&&fields.length>0){
+				var splits = fields.split(',');
+				$.each(splits, function(i, n){
+					$('input[name="field"][value="'+n+'"]').attr('checked', 'checked');
+				});
+			}
+			$.uniform.update("input");
 
 			$.dialog({
 				title : '编辑角色',
@@ -269,10 +272,16 @@
 			$.alert('请勾选菜单权限');
 			return;
 		}
+		var fields = getFields();
+		if(!!!fields||fields.length<1){
+			$.alert('请勾选数据权限');
+			return;
+		}
 		var param = {
 			name : $.trim($('#name').val()),
 			desc : $.trim($('#desc').val()),
-			menus : menus
+			menus : menus,
+			fields: fields
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
@@ -298,11 +307,17 @@
 			$.alert('请勾选菜单权限');
 			return;
 		}
+		var fields = getFields();
+		if(!!!fields||fields.length<1){
+			$.alert('请勾选数据权限');
+			return;
+		}
 		var param = {
 			id : $('#id').val(),
 			name : $.trim($('#name').val()),
 			desc : $.trim($('#desc').val()),
-			menus : menus
+			menus : menus,
+			fields : fields
 		};
 		$('#btnSave').attr('disabled', true);
 		Loading.show();
@@ -403,6 +418,17 @@
 			mid = mids.join(',');
 		}
 		return mid;
+	}
+	
+	function getFields(){
+		var fs = $('input[name="field"]:checked');
+		var arr = [];
+		if(fs.length>0){
+			fs.each(function(){
+				arr.push(this.value);
+			});
+		}
+		return arr.join(',');
 	}
 </script>
 </html>

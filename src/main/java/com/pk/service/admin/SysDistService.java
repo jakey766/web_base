@@ -118,6 +118,8 @@ public class SysDistService extends BaseService {
      * @return
      */
     public String getDistName(String type, String key){
+    	if(type==null||type.length()<1||key==null||key.length()<1)
+    		return null;
         SysDist vo = null;
         String cacheKey = String.format(KEY_TYPE_KEY_GET, type, key);
         vo = getFromCache(cacheKey, SysDist.class);

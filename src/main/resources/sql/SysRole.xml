@@ -9,14 +9,14 @@
 
 	<insert id="insert" flushCache="true" parameterType="SysRole" useGeneratedKeys="true" keyProperty="id">
 		<![CDATA[
-			INSERT INTO sys_role(name, `desc`)
-			VALUES(#{name}, #{desc})
+			INSERT INTO sys_role(name, `desc`, fields)
+			VALUES(#{name}, #{desc}, #{fields})
 		]]>
 	</insert>
 
 	<update id="update" flushCache="true" parameterType="SysRole">
 		<![CDATA[
-			UPDATE sys_role SET name = #{name}, `desc` = #{desc}
+			UPDATE sys_role SET name = #{name}, `desc` = #{desc}, fields = #{fields}
 			WHERE id = #{id}
 		]]>
 	</update>
@@ -45,7 +45,7 @@
 
 	<sql id="QuerySelect">
 		<![CDATA[
-			id, name, `desc`
+			id, name, `desc`, fields
 		]]>
 	</sql>
 </mapper>

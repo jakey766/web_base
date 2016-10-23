@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pk.framework.vo.PageSearchVO;
 import com.pk.framework.vo.Result;
 import com.pk.model.admin.SysRole;
+import com.pk.service.admin.SysFieldService;
 import com.pk.service.admin.SysRoleService;
 
 @Controller
@@ -17,9 +18,14 @@ public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService;
 	
+	@Autowired
+	private SysFieldService sysFieldService;
+	
 	@RequestMapping(value = "/admin/role/list.jspx")
 	public ModelAndView listJspx() {
-		return new ModelAndView("forward:/admin/role/list.jsp");
+		ModelAndView model = new ModelAndView("forward:/admin/role/list.jsp");
+		model.addObject("fields", sysFieldService.loadAllWithCache());
+		return model;
 	}
 
 	@RequestMapping(value = "/admin/role/loadAll.do")

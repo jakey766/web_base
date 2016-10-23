@@ -14,6 +14,7 @@ public class SysRole implements Serializable{
 	private int id;
 	private String name;
 	private String desc;
+	private String fields;
 	
 	public int getId() {
 		return id;
@@ -32,5 +33,11 @@ public class SysRole implements Serializable{
 	}
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+	public String getFields() {
+		return fields;
+	}
+	public void setFields(String fields) {
+		this.fields = fields;
 	}
 }

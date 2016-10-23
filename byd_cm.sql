@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: byd_cm
 Target Host: localhost
 Target Database: byd_cm
-Date: 2016/10/23 17:07:06
+Date: 2016/10/23 18:20:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -109,7 +109,7 @@ CREATE TABLE `sys_dist` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_type_key` (`type`,`key`),
   KEY `idx_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for sys_field
@@ -170,6 +170,7 @@ CREATE TABLE `sys_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL COMMENT '角色名',
   `desc` varchar(100) DEFAULT NULL COMMENT '描述',
+  `fields` text COMMENT '可见字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统-角色';
 
@@ -186,7 +187,7 @@ CREATE TABLE `sys_role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `sys_role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE,
   CONSTRAINT `sys_role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8 COMMENT='系统-角色-菜单';
 
 -- ----------------------------
 -- Table structure for sys_tree
@@ -230,7 +231,7 @@ CREATE TABLE `sys_user` (
 -- Records 
 -- ----------------------------
 INSERT INTO `cm_info` VALUES ('1', '0', '0', '0', null, '1', '3', ',1,3,', '张三', null, '123456', '13800138000', null, null, null, 'PY', null, '1', '0', null, null, null, null, null, null, '0', null, '0', null, null, null, 'LC0CD4C37F1105125', null, null, null, null, null, null, null, null, '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '1');
-INSERT INTO `cm_info` VALUES ('2', '1', '3', '13', null, '1', '4', null, '姜昆鹏', '1', '123456', '13800138000', '卓鸿博', '654321', '13900139000', 'PY', null, null, '0', null, null, null, null, null, null, '0', null, '0', null, null, null, null, null, null, null, null, null, null, null, null, '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '0');
+INSERT INTO `cm_info` VALUES ('2', '1', '3', '13', null, '1', '4', null, '姜昆鹏', '1', '123456', '13800138000', '卓鸿博', '654321', '13900139000', 'PY', '3', '1', '27', null, '2', '1', '123456', '2016-10-23', '2016-10-24', '10', '2016-10-25', '24', '旗舰版', 'QIN', '12345', '1111', '2016-10-20', '2016-10-26', '1', '3333', '2016-10-31', '5', '5', '1234', '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '0');
 INSERT INTO `cm_info` VALUES ('3', '0', '0', '0', null, '0', '0', null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, '0', null, '0', null, null, null, null, null, null, null, null, null, null, null, null, '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '1');
 INSERT INTO `cm_info` VALUES ('4', '0', '0', '0', null, '0', '0', null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, '0', null, '0', null, null, null, null, null, null, null, null, null, null, null, null, '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '1');
 INSERT INTO `cm_info` VALUES ('5', '9', '10', '0', null, '2', '6', null, '张三', '1', '123456', '13800138000', '张三', '123456', '13800138000', 'FQ', null, null, '0', null, null, null, null, null, null, '0', null, '0', null, null, null, null, null, null, null, null, null, null, null, null, '0', '0', null, null, null, '0', '0', '0', null, null, null, '0', null, null, null, null, null, '0', '0', null, null, null, null, '0', '0', '0', '0', '0', '0', '0', null, null, null, null, null, null, null, '0');
@@ -305,6 +306,8 @@ INSERT INTO `sys_dist` VALUES ('104', 'CXI', '尊贵版', '尊贵版', '');
 INSERT INTO `sys_dist` VALUES ('105', 'LZGX', 'FQ', '夫妻', '');
 INSERT INTO `sys_dist` VALUES ('106', 'LZGX', 'FZN', '父子/女', '');
 INSERT INTO `sys_dist` VALUES ('107', 'LZGX', 'PY', '朋友', '');
+INSERT INTO `sys_dist` VALUES ('108', 'ZYLX', '1', '公务员', '');
+INSERT INTO `sys_dist` VALUES ('109', 'ZYLX', '100', '其他', '');
 INSERT INTO `sys_field` VALUES ('city_cs', 'city_cs_show', '城市', 'tree', 'int', 'CITY', null, '2', '1', '1', '1', '5', null, null, null);
 INSERT INTO `sys_field` VALUES ('city_sf', 'city_sf_show', '省份', 'tree', 'int', 'CITY', 'city_cs', '1', '1', '1', '1', '4', null, null, null);
 INSERT INTO `sys_field` VALUES ('cphm', 'cphm', '车牌号码', 'text', 'string', null, null, '0', '0', '0', '1', '27', null, null, null);
@@ -334,9 +337,9 @@ INSERT INTO `sys_field` VALUES ('hkszd', 'hkszd', '户口所在地', 'text', 'st
 INSERT INTO `sys_field` VALUES ('hkzt', 'hkzt_show', '还款状态', 'dist', 'int', 'HKZT', null, '0', '0', '0', '1', '14', null, null, null);
 INSERT INTO `sys_field` VALUES ('htbh', 'htbh', '合同编号', 'text', 'string', null, null, '0', '0', '0', '1', '19', null, null, null);
 INSERT INTO `sys_field` VALUES ('htjhrq', 'htjhrq', '合同激活日期', 'date', 'date', null, null, '0', '0', '0', '1', '20', null, null, null);
-INSERT INTO `sys_field` VALUES ('hylx', 'hylx_show', '行业类型', 'dist', 'int', 'HYLX', null, '0', '0', '0', '1', '37', null, null, null);
+INSERT INTO `sys_field` VALUES ('hylx', 'hylx_show', '行业类型', 'tree', 'int', 'HYLX', 'hyzlx', '1', '0', '0', '1', '37', null, null, null);
 INSERT INTO `sys_field` VALUES ('hyzk', 'hyzk_show', '婚姻状况', 'dist', 'int', 'HYZK', null, '0', '0', '0', '1', '17', null, null, null);
-INSERT INTO `sys_field` VALUES ('hyzlx', 'hyzlx_show', '行业子类型', 'dist', 'int', 'HYZLX', null, '0', '0', '0', '1', '38', null, null, null);
+INSERT INTO `sys_field` VALUES ('hyzlx', 'hyzlx_show', '行业子类型', 'tree', 'int', 'HYLX', null, '2', '0', '0', '1', '38', null, null, null);
 INSERT INTO `sys_field` VALUES ('hzjjrq', 'hzjjrq', '核准拒绝日期', 'date', 'date', null, null, '0', '0', '0', '1', '23', null, null, null);
 INSERT INTO `sys_field` VALUES ('jcrq', 'jcrq', '交车日期', 'date', 'date', null, null, '0', '0', '0', '1', '30', null, null, null);
 INSERT INTO `sys_field` VALUES ('jkr_cs', 'jkr_cs_show', '借款人城市', 'tree', 'int', 'CITY', null, '2', '0', '0', '1', '43', null, null, null);
@@ -407,25 +410,27 @@ INSERT INTO `sys_org` VALUES ('16', '3', '4', '深圳市粤迪汽车贸易有限
 INSERT INTO `sys_org` VALUES ('17', '3', '4', '深圳市盛世开元汽车销售有限公司福田城市展厅分公司', ',1,4,17,');
 INSERT INTO `sys_org` VALUES ('18', '3', '5', '深圳市湛宝实业发展有限公司', ',1,5,18,');
 INSERT INTO `sys_org` VALUES ('19', '3', '5', '深圳市泽然浩商贸有限公司', ',1,5,19,');
-INSERT INTO `sys_role` VALUES ('2', '管理员', '管理系统');
-INSERT INTO `sys_role` VALUES ('3', '普通用户', '普通用户');
-INSERT INTO `sys_role_menu` VALUES ('74', '3', '1');
-INSERT INTO `sys_role_menu` VALUES ('75', '3', '6');
-INSERT INTO `sys_role_menu` VALUES ('76', '3', '8');
-INSERT INTO `sys_role_menu` VALUES ('122', '2', '1');
-INSERT INTO `sys_role_menu` VALUES ('123', '2', '6');
-INSERT INTO `sys_role_menu` VALUES ('124', '2', '9');
-INSERT INTO `sys_role_menu` VALUES ('125', '2', '10');
-INSERT INTO `sys_role_menu` VALUES ('126', '2', '8');
-INSERT INTO `sys_role_menu` VALUES ('127', '2', '14');
-INSERT INTO `sys_role_menu` VALUES ('128', '2', '2');
-INSERT INTO `sys_role_menu` VALUES ('129', '2', '3');
-INSERT INTO `sys_role_menu` VALUES ('130', '2', '4');
-INSERT INTO `sys_role_menu` VALUES ('131', '2', '5');
-INSERT INTO `sys_role_menu` VALUES ('132', '2', '7');
-INSERT INTO `sys_role_menu` VALUES ('133', '2', '11');
-INSERT INTO `sys_role_menu` VALUES ('134', '2', '12');
-INSERT INTO `sys_role_menu` VALUES ('135', '2', '13');
+INSERT INTO `sys_role` VALUES ('2', '管理员', '管理系统', 'org_yxb,org_dq,org_jxs,city_sf,city_cs,sqr_xm,sqr_zjlx,sqr_zjhm,sqr_dhhm,sjgcr_xm,sjgcr_zjhm,sjgcr_dhhm,gsqrgx,hkzt,xb,nl,hyzk,dqzt,htbh,htjhrq,sqtjrq,yf,hzjjrq,zc,cxi,cxing,cphm,vin,gcrq,jcrq,fkfs,jszbh,jzdqr,jtrs,jycd,dksqhm,hylx,hyzlx,zylx,hkszd,ysr,jkr_sf,jkr_cs,hkdz,dzlx,fclx,jznx,gsmc,qyxz,zw,gsdh,dzy,gznx,zcjg,csys,cpz,cplx,dkqs,xsjg,sfkbl,sfkje,dkje,khll,lxze,gcyhke,khsqbm,jsr_xm,jsr_lxdh,xqah,yyxhsl,dygxhnljd,degxhnljd');
+INSERT INTO `sys_role` VALUES ('3', '普通用户', '普通用户', 'org_yxb,org_dq,org_jxs,city_sf,city_cs,sqr_xm,sqr_zjlx,sqr_zjhm,sqr_dhhm,sjgcr_xm,sjgcr_zjhm,sjgcr_dhhm,gsqrgx,hkzt,xb,nl,hyzk,dqzt,htbh,htjhrq,sqtjrq,yf,hzjjrq,zc,cxi,cxing,cphm,vin,gcrq,jcrq,fkfs,jszbh,jzdqr,dksqhm,jkr_sf,jkr_cs,csys,cpz,cplx,dkqs,khsqbm,jsr_xm,jsr_lxdh');
+INSERT INTO `sys_role_menu` VALUES ('167', '2', '1');
+INSERT INTO `sys_role_menu` VALUES ('168', '2', '6');
+INSERT INTO `sys_role_menu` VALUES ('169', '2', '9');
+INSERT INTO `sys_role_menu` VALUES ('170', '2', '10');
+INSERT INTO `sys_role_menu` VALUES ('171', '2', '8');
+INSERT INTO `sys_role_menu` VALUES ('172', '2', '14');
+INSERT INTO `sys_role_menu` VALUES ('173', '2', '2');
+INSERT INTO `sys_role_menu` VALUES ('174', '2', '3');
+INSERT INTO `sys_role_menu` VALUES ('175', '2', '4');
+INSERT INTO `sys_role_menu` VALUES ('176', '2', '5');
+INSERT INTO `sys_role_menu` VALUES ('177', '2', '7');
+INSERT INTO `sys_role_menu` VALUES ('178', '2', '11');
+INSERT INTO `sys_role_menu` VALUES ('179', '2', '12');
+INSERT INTO `sys_role_menu` VALUES ('180', '2', '13');
+INSERT INTO `sys_role_menu` VALUES ('182', '3', '1');
+INSERT INTO `sys_role_menu` VALUES ('183', '3', '6');
+INSERT INTO `sys_role_menu` VALUES ('184', '3', '9');
+INSERT INTO `sys_role_menu` VALUES ('185', '3', '8');
+INSERT INTO `sys_role_menu` VALUES ('186', '3', '14');
 INSERT INTO `sys_tree` VALUES ('1', 'CITY', '1', '0', '广东', ',1,');
 INSERT INTO `sys_tree` VALUES ('2', 'CITY', '1', '0', '湖南', ',2,');
 INSERT INTO `sys_tree` VALUES ('3', 'CITY', '2', '1', '广州', ',1,3,');
@@ -461,4 +466,4 @@ INSERT INTO `sys_tree` VALUES ('34', 'HYLX', '2', '13', '房屋和土木工程�
 INSERT INTO `sys_tree` VALUES ('35', 'HYLX', '2', '18', '批发业 Wholesale Trade', ',18,35,');
 INSERT INTO `sys_tree` VALUES ('36', 'HYLX', '2', '24', '其他服务业 Other Services', ',24,36,');
 INSERT INTO `sys_user` VALUES ('1', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '管理员', '', '', '2016-09-25 11:14:13', '2016-10-10 23:15:36', '0', ',2,', ',管理员,', ',1,9,');
-INSERT INTO `sys_user` VALUES ('2', 'dw_jiangkunpeng', '99800032b7d26893553ce81530e0f821', '姜昆鹏', '15899954940', 'jakey766@163.com', '2016-09-25 11:14:40', '2016-10-10 23:15:59', '0', ',3,2,', ',普通用户,管理员,', ',3,');
+INSERT INTO `sys_user` VALUES ('2', 'dw_jiangkunpeng', '99800032b7d26893553ce81530e0f821', '姜昆鹏', '15899954940', 'jakey766@163.com', '2016-09-25 11:14:40', '2016-10-23 18:16:13', '0', ',3,', ',普通用户,', ',1,');

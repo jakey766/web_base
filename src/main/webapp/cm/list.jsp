@@ -47,6 +47,7 @@
 						<form id="queryForm" action="#">
 						<div class="row-fluid">
 							<c:forEach var="vo" items="${fields}">
+								<c:if test="${vo.query==1}">
 								<c:choose>
 									<c:when test="${vo.stype eq 'dist'}">
 										<div class="span4">
@@ -108,6 +109,7 @@
 										</div>
 									</c:otherwise>
 								</c:choose>
+								</c:if>
 							</c:forEach>
 						</div>
 						</form>
@@ -136,7 +138,7 @@
 							<button type="button" class="btn mini blue" id="btnExport" onclick="exportExcel()" style="margin-top: -10px;">
 								<i class="icon-download-alt"></i> 导出
 							</button>
-							<a href="${PATH}cm/imp.jspx" class="btn mini blue" style="margin-top: -10px;"><i class="icon-upload-alt"></i> 导入</a>
+							<a href="${PATH}cm/imp.jspx" class="btn mini blue" style="margin-top: -10px;margin-left:0px;"><i class="icon-upload-alt"></i> 导入</a>
 						</div>
 					</div>
 					<div class="portlet-body">
@@ -144,7 +146,9 @@
 							<thead>
 								<tr>
 									<c:forEach var="vo" items="${fields}">
-										<th>${vo.name}</th>
+										<c:if test="${vo.list==1}">
+											<th>${vo.name}</th>
+										</c:if>
 									</c:forEach>
 									<th>操作</th>
 								</tr>
@@ -154,7 +158,9 @@
                 				{{each list as v i}}
                 					<tr>
 										<c:forEach var="vo" items="${fields}">
-											<td>{{v.${vo.sname}}}</td>
+											<c:if test="${vo.list==1}">
+												<td>{{v.${vo.sname}}}</td>
+											</c:if>
 										</c:forEach>
                     					<td>
 											<button class="btn mini green" onclick="toEdit('{{v.id}}')">编辑</button>
