@@ -22,6 +22,9 @@ public class SysField implements Serializable {
     private int query;			//是否做为查询条件
     private int layerWidth;		//布局宽度
     private int sortIndex;		//排序序号
+	private String jrgsName;	//金融公司表格名
+	private String bbName;		//八部系统表格名
+	private String xfxtName;	//销服系统表格名
     
 	public String getFname() {
 		return fname;
@@ -96,5 +99,29 @@ public class SysField implements Serializable {
 
 	public void setTreeLevel(int treeLevel) {
 		this.treeLevel = treeLevel;
+	}
+
+	public String getJrgsName() {
+		return jrgsName;
+	}
+
+	public void setJrgsName(String jrgsName) {
+		this.jrgsName = jrgsName;
+	}
+
+	public String getBbName() {
+		return bbName;
+	}
+
+	public void setBbName(String bbName) {
+		this.bbName = bbName;
+	}
+
+	public String getXfxtName() {
+		return xfxtName;
+	}
+
+	public void setXfxtName(String xfxtName) {
+		this.xfxtName = xfxtName;
 	}
 }

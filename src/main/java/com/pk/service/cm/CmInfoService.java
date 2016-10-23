@@ -57,6 +57,7 @@ public class CmInfoService extends BaseService {
             long size = multipartFile.getSize();
             String fileName = multipartFile.getOriginalFilename();
 
+
             System.out.println(fileName);
             System.out.println(size);
             System.out.println(contentType);
