@@ -7,9 +7,13 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +22,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import com.pk.framework.vo.PageResultVO;
 import com.pk.model.cm.CmInfo;
 import com.pk.vo.cm.CmInfoSearchVO;
+
 import org.springframework.stereotype.Repository;
 
 /**
@@ -47,6 +52,38 @@ public class CmInfoDao{
 
 		sql.append(" AND deleted=?");
 		params.add(0);
+		Map<String, String> map = svo.getMap();
+		if(map!=null&&!map.isEmpty()){
+			String key = null;
+			String val = null;
+			String fname = null;
+			String op = null;
+			String[] splits = null;
+			for(Entry<String, String> entry:map.entrySet()){
+				key = entry.getKey();
+				val = entry.getValue();
+				if(val==null||val.length()<1)
+					continue;
+				if(!key.startsWith("Q^"))
+					continue;
+				splits = StringUtils.split(key, "^");
+				int slen = splits.length;
+				if(slen<2)
+					continue;
+				fname = splits[1];
+				if(slen>2)
+					op = splits[2].toUpperCase();
+				else
+					op = "EQ";
+				sql.append(" AND ").append(fname);
+				if("LK".equals(op)){
+					sql.append(" LIKE ?");
+					params.add("%" + val + "%");
+				}else if("".equals(op)){
+					
+				}
+			}
+		}
 
         PageResultVO page = new PageResultVO();
         Object[] _params = params.toArray();
@@ -112,6 +149,12 @@ public class CmInfoDao{
 		fields = null;
 		sql = null;
     }
+    
+    private static Set<String> UpdateIgnores = new HashSet<>();
+    static{
+    	UpdateIgnores.add("id");
+    	UpdateIgnores.add("deleted");
+    }
 
     public void update(CmInfo vo){
     	List<Object> params = new ArrayList<Object>();
@@ -125,7 +168,7 @@ public class CmInfoDao{
 		int idx = 0;
 		for(int i=0,len=fields.length;i<len;i++){
 			fieldName = fields[i].getName();
-			if("id".equals(fieldName))
+			if(UpdateIgnores.contains(fieldName))
 				continue;
 			method = lookupMethod(methods, "get" + fieldName);
 			if(method==null)

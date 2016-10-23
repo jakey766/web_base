@@ -42,6 +42,7 @@ public class BaseInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		CookieUtil cookieUtil = new CookieUtil(request, response);
+		cookieUtil.buildDomainByRequest();
 		int userId = cookieUtil.getInt(Constants.KEY_USER_ID);
 		UserInfoContext.clear();
 		UserInfoContext.setId(userId);

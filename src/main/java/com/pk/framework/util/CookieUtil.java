@@ -111,7 +111,7 @@ public class CookieUtil {
 
             response.addCookie(cookie);
         } catch (Exception e) {
-
+        	e.printStackTrace();
         }
     }
 
