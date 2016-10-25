@@ -163,7 +163,7 @@ public class CmInfoDao{
 		sql = null;
     }
     
-    private static Set<String> UpdateIgnores = new HashSet<>();
+    public static Set<String> UpdateIgnores = new HashSet<>();
     static{
     	UpdateIgnores.add("id");
     	UpdateIgnores.add("deleted");

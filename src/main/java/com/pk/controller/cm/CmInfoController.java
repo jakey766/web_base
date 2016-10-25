@@ -124,7 +124,13 @@ public class CmInfoController {
 	@RequestMapping(value = "/cm/imp.do")
 	@ResponseBody
 	public ModelAndView imp(@RequestParam("file") MultipartFile multipartFile, int type) {
-		Result result = cmInfoService.imp(multipartFile, type);
+		Result result = null;
+		try{
+			result = cmInfoService.imp(multipartFile, type);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = Result.FAILURE("后台异常");
+		}
 		ModelAndView model = new ModelAndView("forward:/cm/impResult.jsp");
 		model.addObject("result", result);
 		return model;

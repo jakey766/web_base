@@ -31,7 +31,21 @@
 						</div>
 					</div>
 					<div class="portlet-body">
-						${result.message}
+						<div class="row-fluid">
+						<c:choose>
+							<c:when test="${result.success}">
+								导入成功,其中新增${result.object.addCount}条,更新${result.object.updateCount}条.
+							</c:when>
+							<c:otherwise>
+								${result.message}
+							</c:otherwise>
+						</c:choose>
+						</div>
+
+						<div class="row-fluid">
+							<a href="${PATH}cm/list.jspx" class="btn green">信息查询</a>
+							<a href="${PATH}cm/imp.jspx" class="btn blue">继续导入</a>
+						</div>
 					</div>
 				</div>
 			</div>

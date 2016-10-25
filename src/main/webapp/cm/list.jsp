@@ -135,9 +135,11 @@
 							<button type="button" class="btn mini green" onclick="toAdd()" style="margin-top: -10px;">
 								<i class="icon-plus"></i>新增
 							</button>
+							<!--
 							<button type="button" class="btn mini blue" id="btnExport" onclick="exportExcel()" style="margin-top: -10px;">
 								<i class="icon-download-alt"></i> 导出
 							</button>
+							-->
 							<a href="${PATH}cm/imp.jspx" class="btn mini blue" style="margin-top: -10px;margin-left:0px;"><i class="icon-upload-alt"></i> 导入</a>
 						</div>
 					</div>

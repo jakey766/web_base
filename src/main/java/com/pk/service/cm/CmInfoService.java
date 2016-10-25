@@ -1,15 +1,13 @@
 package com.pk.service.cm;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.pk.dao.admin.*;
+import com.pk.framework.vo.PageResultVO;
 import com.pk.model.admin.*;
-import com.pk.service.admin.SysDistService;
 import com.pk.service.admin.SysOrgService;
 import com.pk.service.admin.SysTreeService;
 import com.pk.vo.admin.SysDistSearchVO;
@@ -77,8 +75,32 @@ public class CmInfoService extends BaseService {
 
     @Transactional
     public Result add(CmInfo vo){
-        cmInfoDao.insert(vo);
-        return Result.SUCCESS(vo);
+        CmInfo exist = null;
+        PageResultVO exists = null;
+        CmInfoSearchVO svo = new CmInfoSearchVO();
+        svo.setSize(10);
+        svo.setMap(new HashMap<String, String>());
+        if(vo.getSqr_zjhm().length()>0)
+            svo.getMap().put("Q^sqr_zjhm^EQ", vo.getSqr_zjhm());
+        if(vo.getSjgcr_zjhm().length()>0)
+            svo.getMap().put("Q^sjgcr_zjhm^EQ", vo.getSjgcr_zjhm());
+        exists = cmInfoDao.list(svo);
+        if(exists!=null&&exists.getCount()>0){
+            for(int i=0;i<exists.getCount();i++){
+                CmInfo _vo = (CmInfo)exists.getList().get(i);
+                if(vo.getSqr_zjhm().equals(_vo.getSqr_zjhm())&&vo.getSjgcr_zjhm().equals(_vo.getSjgcr_zjhm())){
+                    exist = _vo;
+                }
+            }
+        }
+        if(exist==null){
+            cmInfoDao.insert(vo);
+            return Result.SUCCESS(vo);
+        }else{
+            copyWithOutNone(exist, vo, sysFieldService.loadAllWithCache(), CmInfo.class.getMethods());
+            cmInfoDao.update(exist);
+            return Result.instance(Result.CODE_SUCCESS, "存在相同记录,已进行更新", exist);
+        }
     }
 
     @Transactional
@@ -167,7 +189,7 @@ public class CmInfoService extends BaseService {
             int rows = sheet.getPhysicalNumberOfRows();
             String val = null;
 
-
+            int dhhmCount = 0;
             boolean first = true;
             for(int i=firstRow;i<rows;i++){
                 row = sheet.getRow(i);
@@ -181,6 +203,12 @@ public class CmInfoService extends BaseService {
                     val = getCellVal(cell);
                     
                     if(first){
+                        //金融公司的表格中有两个电话
+                        if(type==1&&"电话".equals(val)){
+                            dhhmCount++;
+                            if(dhhmCount>1)
+                                val = "公司电话";
+                        }
                     	heads.add(val);
                     }else{
                     	data.add(val);
@@ -238,6 +266,22 @@ public class CmInfoService extends BaseService {
             boolean matchOne = false;
             CmInfo vo = new CmInfo();
             String val = null;
+
+            for(Map.Entry<String, SysField> entry:fieldMap.entrySet()){
+                if(!heads.contains(entry.getKey()))
+                    continue;
+                String head = entry.getKey();
+                field = entry.getValue();
+                int idx = indexMap.get(head);
+                val = data.get(idx);
+                if(val==null||val.length()<1)
+                    continue;
+                boolean flag = setFieldVal(vo, field, val, methods, fieldRefs, true);
+                if(flag)
+                    matchOne = true;
+            }
+
+            /*
             for(String head:heads){
                 field = fieldMap.get(head);
                 if(field==null)
@@ -250,14 +294,98 @@ public class CmInfoService extends BaseService {
                 if(flag)
                     matchOne = true;
             }
+            */
             if(matchOne)
                 list.add(vo);
         }
 
+        int insertCount = 0;
+        int updateCount = 0;
+        CmInfo exist = null;
+        PageResultVO exists = null;
+        CmInfoSearchVO svo = new CmInfoSearchVO();
+        svo.setSize(10);
+        svo.setMap(new HashMap<String, String>());
         for(CmInfo vo:list){
-            cmInfoDao.insert(vo);
+            if(vo.getSqr_zjhm().length()<0 && vo.getSjgcr_zjhm().length()<0){
+                cmInfoDao.insert(vo);
+                insertCount ++ ;
+                continue;
+            }
+            exist = null;
+            svo.getMap().clear();
+            if(vo.getSqr_zjhm().length()>0)
+                svo.getMap().put("Q^sqr_zjhm^EQ", vo.getSqr_zjhm());
+            if(vo.getSjgcr_zjhm().length()>0)
+                svo.getMap().put("Q^sjgcr_zjhm^EQ", vo.getSjgcr_zjhm());
+            exists = cmInfoDao.list(svo);
+            if(exists!=null&&exists.getCount()>0){
+                for(int i=0;i<exists.getCount();i++){
+                    CmInfo _vo = (CmInfo)exists.getList().get(i);
+                    if(vo.getSqr_zjhm().equals(_vo.getSqr_zjhm())&&vo.getSjgcr_zjhm().equals(_vo.getSjgcr_zjhm())){
+                        exist = _vo;
+                    }
+                }
+            }
+            if(exist==null){
+                cmInfoDao.insert(vo);
+                insertCount ++;
+            }else{
+                copyWithOutNone(exist, vo, fields, methods);
+                cmInfoDao.update(exist);
+                updateCount ++;
+            }
         }
-        return Result.SUCCESS("导入成功,数量:" + list.size());
+
+        Map<String, Object> rs = new HashMap<>();
+        rs.put("addCount", insertCount);
+        rs.put("updateCount", updateCount);
+        return Result.SUCCESS(rs);
+    }
+
+    private void copyWithOutNone(CmInfo vo1, CmInfo vo2,List<SysField> fields, Method[] methods){
+        Method method = null;
+        Object val2 = null;
+        boolean notNone = false;
+        for(SysField field:fields){
+            if(CmInfoDao.UpdateIgnores.contains(field.getFname()))
+                continue;
+            method = lookupMethod(methods, "get" + field.getFname());
+            if(method==null)
+                continue;
+            try{
+                val2 = method.invoke(vo2);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            if(val2==null)
+                continue;
+            notNone = false;
+            if("string".equals(field.getFtype())){
+                if(val2.toString().length()>0){
+                    notNone = true;
+                }
+            }else if("int".equals(field.getFtype())){
+                if((int)val2>0)
+                    notNone = true;
+            }else if("double".equals(field.getFtype())){
+                if((double)val2>0)
+                    notNone = true;
+            }else{
+                if(val2!=null)
+                    notNone = true;
+            }
+            if(notNone){
+                method = lookupMethod(methods, "set" + field.getFname());
+                if(method!=null){
+                    try{
+                        method.invoke(vo1, val2);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     private boolean setFieldVal(CmInfo vo, SysField field, String val, Method[] methods, Map<String, SysField> fieldRefs, boolean newIfNotExist){

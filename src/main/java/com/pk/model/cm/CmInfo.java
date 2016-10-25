@@ -14,19 +14,19 @@ import java.io.Serializable;
 public class CmInfo implements Serializable {
 
     private int id;
-    private int org_yxb;        //营销部
-    private int org_dq;         //大区
-    private int org_jxs;        //经销商
+    private int org_yxb = -1;        //营销部
+    private int org_dq = -1;         //大区
+    private int org_jxs = -1;        //经销商
     private String org_code;    //经销商编码
-    private int city_sf;        //省份
-    private int city_cs;        //城市
+    private int city_sf = -1;        //省份
+    private int city_cs = -1;        //城市
     private String city_code;   //城市编码
     private String sqr_xm;      //申请人姓名
     private String sqr_zjlx;    //申请人证件类型
-    private String sqr_zjhm;    //申请人证件号码
+    private String sqr_zjhm = "";    //申请人证件号码
     private String sqr_dhhm;    //申请人电话号码
     private String sjgcr_xm;    //实际购车人姓名
-    private String sjgcr_zjhm;  //实际购车人证件号码
+    private String sjgcr_zjhm = "";  //实际购车人证件号码
     private String sjgcr_dhhm;  //实际购车人电话号码
     private String gsqrgx;      //跟申请人关系
     private String hkzt;        //还款状态
@@ -53,14 +53,14 @@ public class CmInfo implements Serializable {
     private String jtrs;        //家庭人数
     private String jycd;        //教育程度
     private String dksqhm;      //贷款申请号码
-    private int hylx;           //行业类型
-    private int hyzlx;          //行业子类型
+    private int hylx = -1;           //行业类型
+    private int hyzlx = -1;          //行业子类型
     private String hyzlx_code;  //行业子类型编码
     private String zylx;        //职业类型
     private String hkszd;       //户口所在地
     private int ysr;            //月收入
-    private int jkr_sf;         //借款人省份
-    private int jkr_cs;         //借款人城市
+    private int jkr_sf = -1;         //借款人省份
+    private int jkr_cs = -1;         //借款人城市
     private String hkdz;        //户口地址
     private String dzlx;        //地址类型
     private String fclx;        //房产类型
