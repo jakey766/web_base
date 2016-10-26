@@ -1,11 +1,13 @@
 package com.pk.controller.cm;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.pk.model.admin.SysField;
 import com.pk.model.cm.CmInfo;
 import com.pk.service.admin.SysOrgService;
 import com.pk.service.admin.SysTreeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -134,6 +136,20 @@ public class CmInfoController {
 		ModelAndView model = new ModelAndView("forward:/cm/impResult.jsp");
 		model.addObject("result", result);
 		return model;
+	}
+	
+	@RequestMapping(value = "/cm/exp.do")
+	@ResponseBody
+	public Result exp(CmInfoSearchVO svo, HttpServletRequest request,HttpServletResponse response) {
+		Result result = null;
+		try{
+			svo.setMap(getParameterMap(request));
+			result = cmInfoService.exp(svo, request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+			result = Result.FAILURE("后台异常");
+		}
+		return result;
 	}
 
 	@RequestMapping(value = "/cm/loadOrgs.do")

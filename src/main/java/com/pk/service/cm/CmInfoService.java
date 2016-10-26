@@ -3,20 +3,24 @@ package com.pk.service.cm;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.pk.dao.admin.*;
-import com.pk.framework.vo.PageResultVO;
-import com.pk.model.admin.*;
-import com.pk.service.admin.SysOrgService;
-import com.pk.service.admin.SysTreeService;
-import com.pk.vo.admin.SysDistSearchVO;
-import com.pk.vo.admin.SysOrgSearchVO;
-import com.pk.vo.admin.SysTreeSearchVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,12 +29,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pk.dao.admin.SysDistDao;
+import com.pk.dao.admin.SysOrgDao;
+import com.pk.dao.admin.SysRoleDao;
+import com.pk.dao.admin.SysTreeDao;
+import com.pk.dao.admin.SysUserDao;
 import com.pk.dao.cm.CmInfoDao;
 import com.pk.framework.cfg.UserInfoContext;
 import com.pk.framework.service.BaseService;
+import com.pk.framework.vo.PageResultVO;
 import com.pk.framework.vo.Result;
+import com.pk.model.admin.SysDist;
+import com.pk.model.admin.SysField;
+import com.pk.model.admin.SysOrg;
+import com.pk.model.admin.SysRole;
+import com.pk.model.admin.SysTree;
+import com.pk.model.admin.SysUser;
 import com.pk.model.cm.CmInfo;
 import com.pk.service.admin.SysFieldService;
+import com.pk.service.admin.SysOrgService;
+import com.pk.service.admin.SysTreeService;
+import com.pk.vo.admin.SysDistSearchVO;
+import com.pk.vo.admin.SysOrgSearchVO;
+import com.pk.vo.admin.SysTreeSearchVO;
 import com.pk.vo.cm.CmInfoSearchVO;
 
 @Service()
@@ -94,10 +115,12 @@ public class CmInfoService extends BaseService {
             }
         }
         if(exist==null){
+        	buildOtherField(vo);
             cmInfoDao.insert(vo);
             return Result.SUCCESS(vo);
         }else{
             copyWithOutNone(exist, vo, sysFieldService.loadAllWithCache(), CmInfo.class.getMethods());
+            buildOtherField(exist);
             cmInfoDao.update(exist);
             return Result.instance(Result.CODE_SUCCESS, "存在相同记录,已进行更新", exist);
         }
@@ -105,6 +128,7 @@ public class CmInfoService extends BaseService {
 
     @Transactional
     public Result update(CmInfo vo){
+    	buildOtherField(vo);
         cmInfoDao.update(vo);
         return Result.SUCCESS(vo);
     }
@@ -170,6 +194,101 @@ public class CmInfoService extends BaseService {
             putIntoCache(cacheKey, list);
         }
         return list;
+    }
+    
+    public Result exp(CmInfoSearchVO svo, HttpServletRequest request,HttpServletResponse response){
+    	svo.setSize(5000);
+    	try{
+    		XSSFWorkbook workbook = new XSSFWorkbook();
+    		XSSFSheet sheet = workbook.createSheet();
+    		
+    		PageResultVO page = cmInfoDao.list(svo);
+    		List<CmInfo> list = page.getList();
+    		List<SysField> fields = getMyFields();
+    		
+    		int flen = fields.size();
+    		XSSFRow row = sheet.createRow(0);
+    		SysField field = null;
+    		for(int i=0;i<flen;i++){
+    			field = fields.get(i);
+    			XSSFCell cell = row.createCell(i);
+    			cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+    			cell.setCellValue(field.getName());
+    		}
+    		
+    		int dlen = 0;
+    		if(list!=null&&(dlen=list.size())>0){
+    			XSSFCellStyle dateStyle = workbook.createCellStyle();  
+				dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("yy/m/d"));
+				
+    			Method[] methods = CmInfo.class.getDeclaredMethods();
+    			Method method = null;
+    			CmInfo vo = null;
+    			String stype = null;
+    			String ftype = null;
+    			Object val = null;
+    			for(int i=0;i<dlen;i++){
+    				row = sheet.createRow(i+1);
+    				vo = list.get(i);
+    				for(int j=0;j<flen;j++){
+    	    			field = fields.get(j);
+    	    			stype = field.getStype();
+    	    			ftype = field.getFtype();
+    	    			XSSFCell cell = row.createCell(j);
+    	    			
+    	    			method = lookupMethod(methods, "get" + field.getSname());
+    	    			if(method==null)
+    	    				continue;
+    	    			try{
+    	    				val = method.invoke(vo);
+    	    			}catch(Exception e){
+    	    				e.printStackTrace();
+    	    				logger.error("导出客户信息时反射异常,FIELD:" + field.getSname(), e);
+    	    			}
+    	    			if(val==null)
+    	    				continue;
+    	    			try{
+    	    				if("tree".equals(stype)||"org".equals(stype)||"org".equals(stype)){
+    	    					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+    	    					cell.setCellValue(val.toString());
+    	    				}else if("text".equals(stype)){
+    	    					if("int".equals(ftype)){
+    	    						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+    	    						cell.setCellValue(val.toString());
+    	    					}else if("double".equals(ftype)){
+    	    						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+    	    						cell.setCellValue(new BigDecimal(val.toString()).setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros().toPlainString());
+    	    					}else{
+    	    						cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+    	    						cell.setCellValue(val.toString());
+    	    					}
+    	    				}else if("date".equals(stype)){
+    	    					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+    	    					cell.setCellStyle(dateStyle);
+    	    					cell.setCellValue(DATE_FORMAT.parse(val.toString()));
+    	    				}
+    	    			}catch(Exception e){
+    	    				e.printStackTrace();
+    	    				logger.error("导出客户信息设值异常", e);
+    	    			}
+    	    		}
+    				
+    			}
+    		}
+    		
+    		request.setCharacterEncoding("UTF-8");
+	    	//response.setContentType("application/x-xls");
+    		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+	        response.setHeader("Content-disposition", "attachment; filename=export.xlsx"); 
+//	        response.setHeader("Content-Length", String.valueOf(100));
+	        
+	        workbook.write(response.getOutputStream());
+	        workbook.close();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return Result.FAILURE("后台异常");
+    	}
+    	return null;
     }
 
     public Result imp(MultipartFile multipartFile, int type){
@@ -280,21 +399,6 @@ public class CmInfoService extends BaseService {
                 if(flag)
                     matchOne = true;
             }
-
-            /*
-            for(String head:heads){
-                field = fieldMap.get(head);
-                if(field==null)
-                    continue;
-                int idx = indexMap.get(head);
-                val = data.get(idx);
-                if(val==null||val.length()<1)
-                    continue;
-                boolean flag = setFieldVal(vo, field, val, methods, fieldRefs, true);
-                if(flag)
-                    matchOne = true;
-            }
-            */
             if(matchOne)
                 list.add(vo);
         }
@@ -328,10 +432,12 @@ public class CmInfoService extends BaseService {
                 }
             }
             if(exist==null){
+            	buildOtherField(vo);
                 cmInfoDao.insert(vo);
                 insertCount ++;
             }else{
                 copyWithOutNone(exist, vo, fields, methods);
+                buildOtherField(exist);
                 cmInfoDao.update(exist);
                 updateCount ++;
             }
@@ -595,6 +701,47 @@ public class CmInfoService extends BaseService {
                 return method;
         }
         return null;
+    }
+    
+    private void buildOtherField(CmInfo vo){
+    	if(vo.getCity_code()==null||vo.getCity_code().length()<1){
+    		SysTree tree = null;
+    		if(vo.getCity_cs()>0){
+    			tree = sysTreeService.getWithCache(vo.getCity_cs());
+    		}
+    		if(tree==null){
+    			if(vo.getCity_sf()>0){
+    				tree = sysTreeService.getWithCache(vo.getCity_sf());
+    			}
+    		}
+    		if(tree!=null)
+    			vo.setCity_code(tree.getCode());
+    	}
+    	if(vo.getOrg_code()==null||vo.getOrg_code().length()<1){
+    		SysOrg org = null;
+    		if(vo.getOrg_jxs()>0){
+    			org = sysOrgService.getWithCache(vo.getOrg_jxs());
+    		}
+    		if(org==null){
+    			if(vo.getOrg_dq()>0){
+    				org = sysOrgService.getWithCache(vo.getOrg_dq());
+    			}
+    			if(org==null){
+    				if(vo.getOrg_yxb()>0){
+    					org = sysOrgService.getWithCache(vo.getOrg_yxb());
+    				}
+    			}
+    		}
+    		if(org!=null){
+    			vo.setOrg_code(org.getCode());
+    		}
+    	}
+    	if((vo.getCsrq()==null||vo.getCsrq().length()<1)&&vo.getNl()>0){
+    		Calendar c = Calendar.getInstance();
+    		c.add(Calendar.YEAR, -vo.getNl());
+    		c.set(Calendar.DAY_OF_YEAR, 1);
+    		vo.setCsrq(DATE_FORMAT.format(c.getTime()));
+    	}
     }
 
 }
