@@ -235,53 +235,61 @@ public class CmInfoService extends BaseService {
     	    			stype = field.getStype();
     	    			ftype = field.getFtype();
     	    			XSSFCell cell = row.createCell(j);
-    	    			
+
+                        val = null;
     	    			method = lookupMethod(methods, "get" + field.getSname());
-    	    			if(method==null)
-    	    				continue;
-    	    			try{
-    	    				val = method.invoke(vo);
-    	    			}catch(Exception e){
-    	    				e.printStackTrace();
-    	    				logger.error("导出客户信息时反射异常,FIELD:" + field.getSname(), e);
-    	    			}
-    	    			if(val==null)
-    	    				continue;
-    	    			try{
-    	    				if("tree".equals(stype)||"org".equals(stype)||"org".equals(stype)){
-    	    					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-    	    					cell.setCellValue(val.toString());
-    	    				}else if("text".equals(stype)){
-    	    					if("int".equals(ftype)){
-    	    						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-    	    						cell.setCellValue(val.toString());
-    	    					}else if("double".equals(ftype)){
-    	    						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-    	    						cell.setCellValue(new BigDecimal(val.toString()).setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros().toPlainString());
-    	    					}else{
-    	    						cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-    	    						cell.setCellValue(val.toString());
-    	    					}
-    	    				}else if("date".equals(stype)){
-    	    					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-    	    					cell.setCellStyle(dateStyle);
-    	    					cell.setCellValue(DATE_FORMAT.parse(val.toString()));
-    	    				}
-    	    			}catch(Exception e){
-    	    				e.printStackTrace();
-    	    				logger.error("导出客户信息设值异常", e);
-    	    			}
+    	    			if(method!=null){
+                            try{
+                                val = method.invoke(vo);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                logger.error("导出客户信息时反射异常,FIELD:" + field.getSname(), e);
+                            }
+                        }
+    	    			if(val!=null){
+                            try{
+                                if("tree".equals(stype)||"org".equals(stype)||"org".equals(stype)){
+                                    cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+                                    cell.setCellValue(val.toString());
+                                }else if("text".equals(stype)){
+                                    if("int".equals(ftype)){
+                                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                                        cell.setCellValue(val.toString());
+                                    }else if("double".equals(ftype)){
+                                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                                        cell.setCellValue(new BigDecimal(val.toString()).setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros().toPlainString());
+                                    }else{
+                                        cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+                                        cell.setCellValue(val.toString());
+                                    }
+                                }else if("date".equals(stype)){
+//        	    					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+//        	    					cell.setCellStyle(dateStyle);
+//        	    					cell.setCellValue(DATE_FORMAT.parse(val.toString()));
+
+                                    cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+                                    cell.setCellValue(val.toString());
+                                }else{
+                                    cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+                                    cell.setCellValue(val.toString());
+                                }
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                logger.error("导出客户信息设值异常", e);
+                            }
+                        }else{
+                            cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+                            cell.setCellValue("");
+                        }
     	    		}
     				
     			}
     		}
     		
     		request.setCharacterEncoding("UTF-8");
-	    	//response.setContentType("application/x-xls");
     		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
 	        response.setHeader("Content-disposition", "attachment; filename=export.xlsx"); 
-//	        response.setHeader("Content-Length", String.valueOf(100));
-	        
+
 	        workbook.write(response.getOutputStream());
 	        workbook.close();
     	}catch(Exception e){
