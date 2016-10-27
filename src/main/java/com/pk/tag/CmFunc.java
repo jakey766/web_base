@@ -1,5 +1,6 @@
 package com.pk.tag;
 
+import com.pk.framework.cfg.UserInfoContext;
 import com.pk.framework.spring.SpringContextUtil;
 import com.pk.model.admin.SysDist;
 import com.pk.model.admin.SysOrg;
@@ -38,9 +39,12 @@ final public class CmFunc {
         int _pid = Integer.parseInt(pid);
         if(_pid==-1)
             return null;
+        int userId = UserInfoContext.getId();
+        if(userId<1)
+        	return null;
         SysOrgService sysOrgService = SpringContextUtil.getBean(SysOrgService.class);
         if(sysOrgService!=null)
-            list = sysOrgService.loadByPid(_pid);
+            list = sysOrgService.loadByPidAndUserId(_pid, userId);
         return list;
     }
 

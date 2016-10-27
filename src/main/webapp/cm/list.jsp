@@ -98,6 +98,18 @@
 											</div>
 										</div>
 									</c:when>
+									<c:when test="${vo.stype eq 'date'}">
+										<div class="span8">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<input type="text" class="span10 laydate-icon" id="${vo.fname}_GE" name="Q^${vo.fname}^GE"/>
+													&nbsp;至&nbsp;
+													<input type="text" class="span10 laydate-icon" id="${vo.fname}_LE" name="Q^${vo.fname}^LE"/>
+												</div>
+											</div>
+										</div>
+									</c:when>
 									<c:otherwise>
 										<div class="span4">
 											<div class="control-group">
@@ -190,8 +202,24 @@
 <script type="text/javascript" src="${PATH}r/plugins/layer-v2.3/layer.js"></script>
 <script>
 	$(document).ready(function() {
+		initDate();
 		search();
 	});
+	
+	function initDate(){
+		var ds = $('.laydate-icon');
+		if(ds.length>0){
+			ds.each(function(){
+				laydate({
+					elem:'#' + this.id,
+					istime:false,
+					isclear:true,
+					issure:true,
+					format: 'YYYY-MM-DD',
+				});
+			});
+		}
+	}
 
 	function orgChange(target, cid){
 		if(!!!cid||cid=='')

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,6 +92,24 @@ public class CmInfoService extends BaseService {
     private SysTreeDao sysTreeDao;
     
     public Result list(CmInfoSearchVO svo){
+    	Map<String, String> map = svo.getMap();
+    	boolean hasOrg = false;
+    	if(map!=null){
+    		for(Entry<String, String> entry:map.entrySet()){
+    			if(entry.getValue()==null||entry.getValue().length()<1)
+    				continue;
+    			if(entry.getKey().startsWith("Q^org_")){
+    				hasOrg = true;
+    				break;
+    			}
+    		}
+    	}
+    	if(!hasOrg){
+    		int userId = UserInfoContext.getId();
+    		if(userId<1)
+    			return Result.FAILURE("没有登录信息");
+    		svo.setOrgCodes(sysOrgService.getUserOrgCodes(userId));
+    	}
         return Result.SUCCESS(cmInfoDao.list(svo));
     }
 

@@ -1,5 +1,7 @@
 package com.pk.vo.admin;
 
+import java.util.List;
+
 /**
  * Created by jiangkunpeng on 16/10/5.
  */
@@ -10,6 +12,8 @@ public class SysOrgSearchVO {
     private String code;
     private String name;
     private String codePrefix;
+    
+    private List<String> codes;
 
     public int getType() {
         return type;
@@ -50,4 +54,12 @@ public class SysOrgSearchVO {
     public void setName(String name) {
         this.name = name;
     }
+
+	public List<String> getCodes() {
+		return codes;
+	}
+
+	public void setCodes(List<String> codes) {
+		this.codes = codes;
+	}
 }

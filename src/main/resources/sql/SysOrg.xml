@@ -80,5 +80,11 @@
 				AND code LIKE concat(#{codePrefix},'%')
 			]]>
 		</if>
+		<if test="codes != null">
+			AND 
+			<foreach collection="codes" item="item" index="index" open="(" separator=" OR " close=")">
+				code LIKE concat(#{item},'%')
+			</foreach>
+		</if>
 	</sql>
 </mapper>

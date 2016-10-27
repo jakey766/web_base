@@ -98,6 +98,16 @@
 												</div>
 											</div>
 										</c:when>
+										<c:when test="${vo.stype eq 'date'}">
+											<div class="span4">
+												<div class="control-group">
+													<label class="control-label"> ${vo.name}：</label>
+													<div class="controls">
+														<input type="text" class="span10 laydate-icon" id="${vo.fname}" name="${vo.fname}"/>
+													</div>
+												</div>
+											</div>
+										</c:when>
 										<c:otherwise>
 											<div class="span4">
 												<div class="control-group">
@@ -128,6 +138,25 @@
 
 <jsp:include page="../common/ft_frame.jsp"></jsp:include>
 <script>
+	$(document).ready(function() {
+		initDate();
+	});
+	
+	function initDate(){
+		var ds = $('.laydate-icon');
+		if(ds.length>0){
+			ds.each(function(){
+				laydate({
+					elem:'#' + this.id,
+					istime:false,
+					isclear:true,
+					issure:true,
+					format: 'YYYY-MM-DD',
+				});
+			});
+		}
+	}
+	
 	function orgChange(target, cid){
 		if(!!!cid||cid=='')
 			return;
