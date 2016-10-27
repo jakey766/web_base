@@ -99,13 +99,13 @@
 										</div>
 									</c:when>
 									<c:when test="${vo.stype eq 'date'}">
-										<div class="span8">
+										<div class="span6">
 											<div class="control-group">
 												<label class="control-label"> ${vo.name}：</label>
 												<div class="controls">
-													<input type="text" class="span10 laydate-icon" id="${vo.fname}_GE" name="Q^${vo.fname}^GE"/>
+													<input type="text" class="laydate-icon" id="${vo.fname}_GE" name="Q^${vo.fname}^GE" style="width:120px;"/>
 													&nbsp;至&nbsp;
-													<input type="text" class="span10 laydate-icon" id="${vo.fname}_LE" name="Q^${vo.fname}^LE"/>
+													<input type="text" class="laydate-icon" id="${vo.fname}_LE" name="Q^${vo.fname}^LE" style="width:120px;"/>
 												</div>
 											</div>
 										</div>

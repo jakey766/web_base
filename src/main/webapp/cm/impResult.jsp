@@ -42,7 +42,7 @@
 						</c:choose>
 						</div>
 
-						<div class="row-fluid">
+						<div class="row-fluid" style="margin-top:10px;">
 							<a href="${PATH}cm/list.jspx" class="btn green">信息查询</a>
 							<a href="${PATH}cm/imp.jspx" class="btn blue">继续导入</a>
 						</div>

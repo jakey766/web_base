@@ -25,7 +25,7 @@ public class SysOrgService extends BaseService {
     private static final String KEY_PID_LIST = "SysOrgPidList:%s";
     private static final String KEY_PID_LIST_UID = "SysOrgPidUidList:%s:%s";
     private static final String KEY_GET = "SysOrgGet:%s";
-    private static final String KEY_GET_UID = "SysOrgUidGet:%s:%s";
+    private static final String KEY_GET_UID = "SysOrgUidGet:%s";
 
     @Autowired
     private SysOrgDao sysOrgDao;
@@ -147,7 +147,7 @@ public class SysOrgService extends BaseService {
     public List<SysOrg> loadByPidAndUserId(int pid, int userId){
         List<SysOrg> list = null;
         String cacheKey = String.format(KEY_PID_LIST_UID, pid, userId);
-        list = getFromCache(cacheKey, List.class);
+//        list = getFromCache(cacheKey, List.class);
         if(list==null){
             SysOrgSearchVO svo = new SysOrgSearchVO();
             svo.setPid(pid);
@@ -165,8 +165,8 @@ public class SysOrgService extends BaseService {
      */
     public List<String> getUserOrgCodes(int userId){
     	List<String> list = null;
-    	String cacheKey = String.format(KEY_PID_LIST_UID, userId);
-    	list = getFromCache(cacheKey, List.class);
+    	String cacheKey = String.format(KEY_GET_UID, userId);
+//    	list = getFromCache(cacheKey, List.class);
     	if(list==null){
     		SysUser user = sysUserDao.get(userId);
     		if(user!=null){

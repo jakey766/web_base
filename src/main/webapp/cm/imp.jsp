@@ -36,6 +36,7 @@
 								<label class="control-label"> 来源：</label>
 								<div class="controls">
 									<select id="type" name="type" class="m-wrap media">
+										<option value="0">本系统</option>
 										<option value="1">金融公司</option>
 										<option value="2">八部系统</option>
 										<option value="3">销服系统</option>

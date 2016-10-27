@@ -173,9 +173,9 @@ public class CmInfoService extends BaseService {
         int userId = UserInfoContext.getId();
         if(userId<1)
             return null;
+        List<SysField> list = null;
         String cacheKey = String.format(KEY_FIELDS_USER, userId);
-        @SuppressWarnings("unchecked")
-		List<SysField> list = getFromCache(cacheKey, List.class);
+//		list = getFromCache(cacheKey, List.class);
         if(list==null){
             SysUser user = sysUserDao.get(userId);
             if(user==null) {
@@ -450,8 +450,8 @@ public class CmInfoService extends BaseService {
             if(vo.getSjgcr_zjhm().length()>0)
                 svo.getMap().put("Q^sjgcr_zjhm^EQ", vo.getSjgcr_zjhm());
             exists = cmInfoDao.list(svo);
-            if(exists!=null&&exists.getCount()>0){
-                for(int i=0;i<exists.getCount();i++){
+            if(exists!=null&&exists.getList()!=null&&exists.getList().size()>0){
+                for(int i=0;i<exists.getList().size();i++){
                     CmInfo _vo = (CmInfo)exists.getList().get(i);
                     if(vo.getSqr_zjhm().equals(_vo.getSqr_zjhm())&&vo.getSjgcr_zjhm().equals(_vo.getSjgcr_zjhm())){
                         exist = _vo;
@@ -641,11 +641,12 @@ public class CmInfoService extends BaseService {
     private SysTree getTreeByVal(String distType, String val, int pid, boolean newIfNotExist){
         if(treeCache==null){
             SysTreeSearchVO svo = new SysTreeSearchVO();
+            svo.setPid(-1);
             List<SysTree> list = sysTreeDao.list(svo);
             Map<String, SysTree> map = new HashMap<>();
             if(list!=null){
                 for(SysTree tree:list){
-                    map.put(tree.getType()+":"+tree.getPid()+":"+tree.getName(), tree);
+                    map.put(tree.getType() + ":" + tree.getPid() + ":" + tree.getName(), tree);
                 }
             }
             treeCache = map;
@@ -667,6 +668,7 @@ public class CmInfoService extends BaseService {
     private SysOrg getOrgByVal(String val, int pid, boolean newIfNotExist){
         if(orgCache==null){
             SysOrgSearchVO svo = new SysOrgSearchVO();
+            svo.setPid(-1);
             List<SysOrg> list = sysOrgDao.list(svo);
             Map<String, SysOrg> map = new HashMap<>();
             if(list!=null){

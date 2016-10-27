@@ -98,6 +98,18 @@ public class CmInfoDao{
 			}
 		}
 
+		List<String> codes = svo.getOrgCodes();
+		if(codes!=null&&!codes.isEmpty()){
+			sql.append(" AND (org_code is null OR org_code = '' OR(");
+			for(int i=0,len=codes.size();i<len;i++){
+				if(i>0)
+					sql.append(" OR ");
+				sql.append("org_code LIKE ?");
+				params.add(codes.get(i) + "%");
+			}
+			sql.append("))");
+		}
+
         PageResultVO page = new PageResultVO();
         Object[] _params = params.toArray();
         String _sql = "SELECT COUNT(id) FROM cm_info WHERE 1=1 " + sql.toString();
