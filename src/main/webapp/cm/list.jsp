@@ -261,7 +261,7 @@
 				var data = json.object;
 				if(!!data&&data.length>0){
 					$.each(data, function(i, n){
-						h += '<option value="'+ n.id + '">' + n.name + '</option>';
+						h += '<option value="'+ n.id + '" auth="'+ n.auth+'" level="'+n.type+'">' + n.name + '</option>';
 					});
 				}else{
 					if(h=='')

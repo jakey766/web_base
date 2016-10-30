@@ -180,9 +180,9 @@
 				if(!!data&&data.length>0){
 					$.each(data, function(i, n){
 						if(defVal== n.id)
-							h += '<option value="'+ n.id + '" selected="selected">' + n.name + '</option>';
+							h += '<option value="'+ n.id + '" auth="'+ n.auth+'" level="'+ n.type+'" selected="selected">' + n.name + '</option>';
 						else
-							h += '<option value="'+ n.id + '">' + n.name + '</option>';
+							h += '<option value="'+ n.id + '" auth="'+ n.auth+'" level="'+ n.type+'">' + n.name + '</option>';
 					});
 				}else{
 					if(h=='')

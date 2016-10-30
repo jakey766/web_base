@@ -625,7 +625,7 @@ public class CmInfoService extends BaseService {
             Map<String, SysDist> map = new HashMap<>();
             if(list!=null){
                 for(SysDist dist:list){
-                    map.put(dist.getType()+":"+dist.getKey(), dist);
+                    map.put(dist.getType()+":"+dist.getName(), dist);
                 }
             }
             distCache = map;
@@ -684,12 +684,21 @@ public class CmInfoService extends BaseService {
             }
             orgCache = map;
         }
+        int type = 1;
+        if(pid>0){
+            SysOrg parent = sysOrgDao.get(pid);
+            if(parent!=null)
+                type = parent.getType()+1;
+            else
+                type = 2;
+        }
         String cacheKey = pid + ":" + val;
         SysOrg org = orgCache.get(cacheKey);
         if(org==null&&newIfNotExist){
             org = new SysOrg();
             org.setPid(pid);
             org.setName(val);
+            org.setType(type);
             sysOrgService.add(org);
             orgCache.put(cacheKey, org);
         }
