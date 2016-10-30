@@ -73,7 +73,7 @@
 														<option value="">所有</option>
 														<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
 															<c:forEach var="v" items="${cm:loadOrg(vo.distType)}">
-																<option value="${v.id}">${v.name}</option>
+																<option value="${v.id}" auth="${v.auth}" level="${v.type}">${v.name}</option>
 															</c:forEach>
 														</c:if>
 													</select>
@@ -110,6 +110,18 @@
 											</div>
 										</div>
 									</c:when>
+									<c:when test="${vo.stype eq 'text' and (vo.ftype eq 'int' or vo.ftype eq 'double')}">
+										<div class="span4">
+											<div class="control-group">
+												<label class="control-label"> ${vo.name}：</label>
+												<div class="controls">
+													<input type="text" class="v-num" id="${vo.fname}_GE" name="Q^${vo.fname}^GE" s="${vo.name}" style="width:50px;"/>
+													&nbsp;至&nbsp;
+													<input type="text" class="v-num" id="${vo.fname}_LE" name="Q^${vo.fname}^LE" s="${vo.name}" style="width:50px;"/>
+												</div>
+											</div>
+										</div>
+									</c:when>
 									<c:otherwise>
 										<div class="span4">
 											<div class="control-group">
@@ -127,9 +139,9 @@
 						</form>
 
 						<div class="form-actions">
-							<button type="button" class="btn green" id="btnSearch" onclick="search()">
-								<i class="icon-search"></i> 查询
-							</button>
+							<button type="button" class="btn green" id="btnSearch" onclick="search()">查询</button>
+							<button type="button" class="btn blue" onclick="reset()">重置</button>
+							<button type="button" class="btn yellow" onclick="exportExcel()" >导出</button>
 						</div>
 					</div>
 				</div>
@@ -144,6 +156,7 @@
 							<i class="icon-reorder"></i>客户信息列表
 						</div>
 						<div class="tools">
+							<!--
 							<button type="button" class="btn mini green" onclick="toAdd()" style="margin-top: -10px;">
 								<i class="icon-plus"></i>新增
 							</button>
@@ -151,6 +164,7 @@
 								<i class="icon-download-alt"></i> 导出
 							</button>
 							<a href="${PATH}cm/imp.jspx" class="btn mini blue" style="margin-top: -10px;margin-left:0px;"><i class="icon-upload-alt"></i> 导入</a>
+							-->
 						</div>
 					</div>
 					<div class="portlet-body">
@@ -221,11 +235,21 @@
 		}
 	}
 
+	function reset(){
+		$('#queryForm')[0].reset();
+		orgChange($('#org_yxb')[0], 'org_dq');
+	}
+
 	function orgChange(target, cid){
 		if(!!!cid||cid=='')
 			return;
 		var val = $(target).val();
-		var h = '<option value="">所有</option>';
+		var auth = $(target).find('option:selected').attr('auth');
+		var level = $(target).find('option:selected').attr('level');
+		var h = '';
+		if(val==''||(!!auth&&auth==1)||(!!level&&level==2)){
+			h = '<option value="">所有</option>';
+		}
 		if(!!!val||val==''){
 			$('#'+cid).html(h).change();
 		}else{
@@ -239,6 +263,9 @@
 					$.each(data, function(i, n){
 						h += '<option value="'+ n.id + '">' + n.name + '</option>';
 					});
+				}else{
+					if(h=='')
+						h = '<option value="">所有</option>';
 				}
 				$('#'+cid).html(h).change();
 			});
@@ -272,6 +299,20 @@
 	var curPage = 1;
 	var tableSort = $('#tb_list');
 	function search(page, size) {
+		var nums = $('.v-num');
+		if(!!nums&&nums.length>0){
+			for(var i= 0,len=nums.length;i<len;i++){
+				var obj = $(nums[i]);
+				var val = $.trim(obj.val());
+				if(val=='')
+					continue;
+				if(isNaN(val)){
+					$.alert('[' + obj.attr('s') + ']只能为数字!');
+					return;
+				}
+			}
+		}
+
 		var fn = arguments.callee;
 		var formData = $("#queryForm").serializeJson();
 		formData['page'] = page||1;

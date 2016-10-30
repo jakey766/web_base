@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service()
@@ -146,16 +143,71 @@ public class SysOrgService extends BaseService {
      */
     public List<SysOrg> loadByPidAndUserId(int pid, int userId){
         List<SysOrg> list = null;
-        String cacheKey = String.format(KEY_PID_LIST_UID, pid, userId);
-//        list = getFromCache(cacheKey, List.class);
-        if(list==null){
+
+        SysOrg cur = sysOrgDao.get(pid);
+        if(cur!=null&&cur.getType()==2){
             SysOrgSearchVO svo = new SysOrgSearchVO();
             svo.setPid(pid);
-            svo.setCodes(getUserOrgCodes(userId));
             list = sysOrgDao.list(svo);
-            putIntoCache(cacheKey, list);
+        }else{
+            List<String> codes = getUserOrgCodes(userId);
+            if(codes!=null&&codes.size()>0){
+                SysOrgSearchVO svo = new SysOrgSearchVO();
+                svo.setPid(-1);
+                svo.setCodes(codes);
+                List<SysOrg> _list = sysOrgDao.list(svo);
+                if(_list!=null){
+                    Map<Integer, SysOrg> map = new HashMap<>();
+                    for(SysOrg org:_list){
+                        org.setAuth(1);
+                        map.put(org.getId(), org);
+                    }
+
+                    for(int i=_list.size()-1;i>-1;i--){
+                        SysOrg org = _list.get(i);
+                        buildParentOrgWithAuth(map, _list, org);
+                    }
+
+                    list = new ArrayList<>();
+
+                    if(pid==0){
+                        for(SysOrg org:_list){
+                            if(org.getPid()==pid)
+                                list.add(org);
+                        }
+                    }else if(cur!=null){
+                        if(cur.getType()==1){
+                            for(SysOrg org:_list){
+                                if(org.getPid()==pid&&org.getAuth()==1)
+                                    list.add(org);
+                            }
+                        }else if(cur.getType()==2){
+                            for(SysOrg org:_list){
+                                if(org.getPid()==pid)
+                                    list.add(org);
+                            }
+                        }
+                    }
+                }
+
+            }
         }
         return list;
+    }
+
+    private void buildParentOrgWithAuth(Map<Integer, SysOrg> map, List<SysOrg> list, SysOrg org){
+        if(org.getPid()>0){
+            SysOrg _org = map.get(org.getPid());
+            if(_org==null){
+                _org = sysOrgDao.get(org.getPid());
+                if(_org!=null){
+                    _org.setAuth(0);
+                    map.put(_org.getId(), _org);
+                    list.add(_org);
+                    buildParentOrgWithAuth(map, list, _org);
+                }
+            }
+        }
     }
     
     /**
@@ -192,6 +244,28 @@ public class SysOrgService extends BaseService {
     		}
     	}
     	return list;
+    }
+
+    /**
+     * 获取用户的组织机构ID集合
+     * @param userId
+     * @return
+     */
+    public List<Integer> getUserOrgIds(int userId){
+        List<Integer> list = null;
+        SysUser user = sysUserDao.get(userId);
+        if(user!=null){
+            String oids = user.getOrgIds();
+            if(oids!=null&&oids.length()>0){
+                String[] oidArr = StringUtils.split(oids, ",");
+                list = new ArrayList<>();
+                for(String oid:oidArr){
+                    if(oid.length()>0)
+                        list.add(Integer.parseInt(oid));
+                }
+            }
+        }
+        return list;
     }
 
     /**

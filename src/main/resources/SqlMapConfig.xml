@@ -23,6 +23,7 @@
 		 
 		<!-- 允许二级缓存 -->
 		<setting name="cacheEnabled" value="true"/>
+		<setting name="logImpl" value="LOG4J" />
 	</settings>
 
 	<!-- 别名配置 -->

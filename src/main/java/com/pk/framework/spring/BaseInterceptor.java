@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,8 @@ public class BaseInterceptor implements HandlerInterceptor {
 	@Autowired
 	private CommonService commonService;
 	
-	private String[] excludeUrls;
+	private List<String> excludeUrls;
+	private List<String> excludeIfLoginUrls;
 	private String   loginUrl;
 	private String   errorUrl;
 	
@@ -52,13 +54,29 @@ public class BaseInterceptor implements HandlerInterceptor {
 		//这里检测权限
 		String uri = getURI(request);
 		System.out.println(uri);
-		if(exclude(uri)) {
+		if(exclude(excludeUrls, uri)) {
 			return true;
 		}
 
 		if(userId==-1){
 			result.setMessage("用户没有登录.");
 			dealHandle(request, response, result, true);
+			return false;
+		}
+
+		if(exclude(excludeIfLoginUrls, uri)) {
+			return true;
+		}
+
+		/*
+		if(uri.endsWith(".do")){
+			return true;
+		}
+		*/
+
+		if(!exclude(commonService.getUserUris(userId), uri)){
+			result.setMessage("没有权限.");
+			dealHandle(request, response, result, false);
 			return false;
 		}
 
@@ -144,9 +162,9 @@ public class BaseInterceptor implements HandlerInterceptor {
 	 * @param uri
 	 * @return
 	 */
-	private boolean exclude(String uri) {
-		if (excludeUrls != null) {
-			for (String exc : excludeUrls) {
+	private boolean exclude(List<String> urls, String uri) {
+		if (urls != null) {
+			for (String exc : urls) {
 				if (exc.equals(uri)) {
 					return true;
 				}
@@ -155,12 +173,6 @@ public class BaseInterceptor implements HandlerInterceptor {
 		return false;
 	}
 
-	public String[] getExcludeUrls() {
-		return excludeUrls;
-	}
-	public void setExcludeUrls(String[] excludeUrls) {
-		this.excludeUrls = excludeUrls;
-	}
 	public String getLoginUrl() {
 		return loginUrl;
 	}
@@ -172,5 +184,21 @@ public class BaseInterceptor implements HandlerInterceptor {
 	}
 	public void setErrorUrl(String errorUrl) {
 		this.errorUrl = errorUrl;
+	}
+
+	public List<String> getExcludeUrls() {
+		return excludeUrls;
+	}
+
+	public void setExcludeUrls(List<String> excludeUrls) {
+		this.excludeUrls = excludeUrls;
+	}
+
+	public List<String> getExcludeIfLoginUrls() {
+		return excludeIfLoginUrls;
+	}
+
+	public void setExcludeIfLoginUrls(List<String> excludeIfLoginUrls) {
+		this.excludeIfLoginUrls = excludeIfLoginUrls;
 	}
 }

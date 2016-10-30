@@ -14,6 +14,8 @@ public final class Constants {
     public static final String KEY_USER_NAME = "USER_NAME";
     //用户菜单缓存
 	public static final String KEY_USER_MENU ="USER_MENU";
+    //用户URL权限缓存
+    public static final String KEY_USER_URI ="USER_URL";
     //字典类型
     private static final Map<String, String> DIST_TYPE_MAP = new HashMap<String, String>();
     //树形字典类型

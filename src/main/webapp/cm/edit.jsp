@@ -44,7 +44,7 @@
 											<option value="">请选择</option>
 											<c:if test="${vo.distKey ne null and vo.distKey ne ''}">
 												<c:forEach var="v" items="${cm:loadOrg(vo.distType)}">
-													<option value="${v.id}">${v.name}</option>
+													<option value="${v.id}" auth="${v.auth}" level="${v.type}">${v.name}</option>
 												</c:forEach>
 											</c:if>
 										</select>
@@ -162,7 +162,12 @@
 		var defVal = cobj.attr('v');
 		if(!!!defVal)
 			defVal = '';
-		var h = '<option value="">所有</option>';
+		var auth = $(target).find('option:selected').attr('auth');
+		var level = $(target).find('option:selected').attr('level');
+		var h = '';
+		if(val==''||(!!auth&&auth==1)||(!!level&&level==2)){
+			h = '<option value="">请选择</option>';
+		}
 		if(!!!val||val==''){
 			cobj.html(h).change();
 		}else{
@@ -179,6 +184,9 @@
 						else
 							h += '<option value="'+ n.id + '">' + n.name + '</option>';
 					});
+				}else{
+					if(h=='')
+						h = '<option value="">请选择</option>';
 				}
 				cobj.html(h).change();
 			});

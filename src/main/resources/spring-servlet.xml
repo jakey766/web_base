@@ -65,11 +65,36 @@
    	<bean id="springAuthInterceptor" class="com.pk.framework.spring.BaseInterceptor">
    		<property name="loginUrl"  value="/login.jsp"/>
 		<property name="errorUrl" value="/hint/error.jsp"/>
+		<!-- 不用登录 -->
 		<property name="excludeUrls">
 			<list>
 				<value>/login.jspx</value>
 				<value>/login.do</value>
 				<value>/logout.do</value>
+			</list>
+		</property>
+		<!-- 需要登录 -->
+		<property name="excludeIfLoginUrls">
+			<list>
+				<value>/common/menu.do</value>
+				<value>/admin/dist/get.do</value>
+				<value>/admin/menu/loadAll.do</value>
+				<value>/admin/menu/get.do</value>
+				<value>/admin/menu/list.do</value>
+				<value>/admin/field/loadAll.do</value>
+				<value>/admin/org/get.do</value>
+				<value>/admin/role/loadAll.do</value>
+				<value>/admin/role/get.do</value>
+				<value>/admin/role/getWithMenuIds.do</value>
+				<value>/admin/tree/get.do</value>
+				<value>/admin/user/get.do</value>
+				<value>/cm/list.do</value>
+				<value>/cm/get.do</value>
+				<value>/cm/loadOrgs.do</value>
+				<value>/cm/loadTrees.do</value>
+				<value>/cm/add.do</value>
+				<value>/cm/update.do</value>
+				<value>/cm/imp.do</value>
 			</list>
 		</property>
 	</bean>

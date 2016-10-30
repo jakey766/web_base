@@ -13,6 +13,7 @@ public class SysOrg implements Serializable {
     private int pid;
     private String name;
     private String code;
+    private int auth = 0;
 
     public int getId() {
         return id;
@@ -52,5 +53,13 @@ public class SysOrg implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public int getAuth() {
+        return auth;
+    }
+
+    public void setAuth(int auth) {
+        this.auth = auth;
     }
 }

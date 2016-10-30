@@ -30,15 +30,12 @@
 .vertical-center{ position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
 </style>
 </head>
-<%
- 	String error = (String)request.getAttribute("error");
-%>
 <body>
 <div class="row-fluid">
-	<div class="vertical-center">
+	<div class="vertical-center warn-wrap">
         <h1><span class="text">提示</span></h1>
         <div class="content">
-	   		系统提醒：<span><%=error%></span>
+	   		系统提醒：<span>${msg}</span>
         </div>
         <div class="dashline"></div>
         <div class="foot">

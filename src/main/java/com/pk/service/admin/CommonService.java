@@ -79,6 +79,8 @@ public class CommonService extends BaseService{
         int userId = UserInfoContext.getId();
         String cacheKey = Constants.KEY_USER_MENU + "_" +userId;
         removeCache(cacheKey);
+        cacheKey = Constants.KEY_USER_URI + "_" +userId;
+        removeCache(cacheKey);
         return Result.SUCCESS();
     }
     
@@ -116,6 +118,45 @@ public class CommonService extends BaseService{
     		}
     	}
     	return Result.SUCCESS(list);
+    }
+
+    public List<String> getUserUris(int userId){
+        List<String> list = null;
+
+        String cacheKey = Constants.KEY_USER_URI + "_" +userId;
+        //先从缓存拿
+        list = getFromCache(cacheKey, List.class);
+
+        if(list==null){
+            SysUser user = sysUserDao.get(userId);
+            if(user!=null){
+                String roleIds = user.getRoleIds();
+                if(roleIds!=null&&roleIds.length()>0){
+                    String[] ridStrs = StringUtils.split(roleIds, ",");
+                    List<Integer> rids = new ArrayList<Integer>();
+                    for(String rid:ridStrs){
+                        rids.add(Integer.parseInt(rid));
+                    }
+                    SysRoleMenuSearchVO rsvo = new SysRoleMenuSearchVO();
+                    rsvo.setRoleIds(rids);
+                    rsvo.setIsMenu(-1);
+                    List<SysMenu> _list = sysRoleMenuDao.loadMenus(rsvo);
+
+                    list = new ArrayList<>();
+                    String uri = null;
+                    for(SysMenu menu:_list){
+                        uri = menu.getUri();
+                        if(uri!=null&&uri.length()>0)
+                            uri = "/" + uri;
+                        list.add(uri);
+                    }
+
+                    //存缓存.......
+                    putIntoCache(cacheKey, list);
+                }
+            }
+        }
+        return list;
     }
 
 }

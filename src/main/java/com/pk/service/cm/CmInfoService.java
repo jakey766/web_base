@@ -92,25 +92,29 @@ public class CmInfoService extends BaseService {
     private SysTreeDao sysTreeDao;
     
     public Result list(CmInfoSearchVO svo){
-    	Map<String, String> map = svo.getMap();
-    	boolean hasOrg = false;
-    	if(map!=null){
-    		for(Entry<String, String> entry:map.entrySet()){
-    			if(entry.getValue()==null||entry.getValue().length()<1)
-    				continue;
-    			if(entry.getKey().startsWith("Q^org_")){
-    				hasOrg = true;
-    				break;
-    			}
-    		}
-    	}
-    	if(!hasOrg){
-    		int userId = UserInfoContext.getId();
-    		if(userId<1)
-    			return Result.FAILURE("没有登录信息");
-    		svo.setOrgCodes(sysOrgService.getUserOrgCodes(userId));
-    	}
-        return Result.SUCCESS(cmInfoDao.list(svo));
+        return Result.SUCCESS(listMine(svo));
+    }
+
+    public PageResultVO listMine(CmInfoSearchVO svo){
+        Map<String, String> map = svo.getMap();
+        boolean hasOrg = false;
+        if(map!=null){
+            for(Entry<String, String> entry:map.entrySet()){
+                if(entry.getValue()==null||entry.getValue().length()<1)
+                    continue;
+                if(entry.getKey().startsWith("Q^org_")){
+                    hasOrg = true;
+                    break;
+                }
+            }
+        }
+        if(!hasOrg){
+            int userId = UserInfoContext.getId();
+            if(userId<1)
+                throw new RuntimeException("没有登录信息");
+            svo.setOrgCodes(sysOrgService.getUserOrgCodes(userId));
+        }
+        return cmInfoDao.list(svo);
     }
 
     @Transactional
@@ -120,16 +124,18 @@ public class CmInfoService extends BaseService {
         CmInfoSearchVO svo = new CmInfoSearchVO();
         svo.setSize(10);
         svo.setMap(new HashMap<String, String>());
-        if(vo.getSqr_zjhm().length()>0)
-            svo.getMap().put("Q^sqr_zjhm^EQ", vo.getSqr_zjhm());
-        if(vo.getSjgcr_zjhm().length()>0)
-            svo.getMap().put("Q^sjgcr_zjhm^EQ", vo.getSjgcr_zjhm());
-        exists = cmInfoDao.list(svo);
-        if(exists!=null&&exists.getCount()>0){
-            for(int i=0;i<exists.getCount();i++){
-                CmInfo _vo = (CmInfo)exists.getList().get(i);
-                if(vo.getSqr_zjhm().equals(_vo.getSqr_zjhm())&&vo.getSjgcr_zjhm().equals(_vo.getSjgcr_zjhm())){
-                    exist = _vo;
+        if(vo.getSqr_zjhm().length()>0||vo.getSjgcr_zjhm().length()>0){
+            if(vo.getSqr_zjhm().length()>0)
+                svo.getMap().put("Q^sqr_zjhm^EQ", vo.getSqr_zjhm());
+            if(vo.getSjgcr_zjhm().length()>0)
+                svo.getMap().put("Q^sjgcr_zjhm^EQ", vo.getSjgcr_zjhm());
+            exists = cmInfoDao.list(svo);
+            if(exists!=null&&exists.getList()!=null&&exists.getList().size()>0){
+                for(int i=0;i<exists.getList().size();i++){
+                    CmInfo _vo = (CmInfo)exists.getList().get(i);
+                    if(vo.getSqr_zjhm().equals(_vo.getSqr_zjhm())&&vo.getSjgcr_zjhm().equals(_vo.getSjgcr_zjhm())){
+                        exist = _vo;
+                    }
                 }
             }
         }
@@ -221,7 +227,7 @@ public class CmInfoService extends BaseService {
     		XSSFWorkbook workbook = new XSSFWorkbook();
     		XSSFSheet sheet = workbook.createSheet();
     		
-    		PageResultVO page = cmInfoDao.list(svo);
+    		PageResultVO page = listMine(svo);
     		List<CmInfo> list = page.getList();
     		List<SysField> fields = getMyFields();
     		

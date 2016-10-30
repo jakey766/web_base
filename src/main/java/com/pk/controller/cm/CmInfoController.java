@@ -3,6 +3,7 @@ package com.pk.controller.cm;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pk.framework.cfg.UserInfoContext;
 import com.pk.model.admin.SysField;
 import com.pk.model.cm.CmInfo;
 import com.pk.service.admin.SysOrgService;
@@ -156,7 +157,7 @@ public class CmInfoController {
 	@ResponseBody
 	public Result loadOrgs(int pid) {
 		try{
-			return Result.SUCCESS(sysOrgService.loadByPid(pid));
+			return Result.SUCCESS(sysOrgService.loadByPidAndUserId(pid, UserInfoContext.getId()));
 		}catch(Exception e){
 			e.printStackTrace();
 			return Result.FAILURE("后台异常:"+e.getMessage());
